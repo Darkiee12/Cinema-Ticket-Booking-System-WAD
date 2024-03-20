@@ -33,7 +33,7 @@ func ListCinema(ctx appctx.AppContext) gin.HandlerFunc {
 			}
 			filter.CinemaID = int(uid.GetLocalID())
 		}
-		//filter.Status = []int{1}
+		filter.Status = []int{1}
 
 		store := cinemastore.NewSQLStore(db)
 		biz := cinemabuisness.NewListRestaurantBusiness(store)

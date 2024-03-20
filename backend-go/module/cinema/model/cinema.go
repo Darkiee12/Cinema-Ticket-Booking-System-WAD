@@ -1,12 +1,15 @@
 package cinemamodel
 
-import "cinema/common"
+import (
+	"cinema/common"
+	"errors"
+	"strings"
+)
 
 const EntityName = "Cinema"
 
 type Cinema struct {
 	common.SQLModel `json:",inline"`
-	Id              int    `json:"-" gorm:"column:cinema_id"`
 	Name            string `json:"name" gorm:"column:name;"`
 	Address         string `json:"address"  gorm:"column:address;"`
 	Capacity        int    `json:"capacity" gorm:"column:capacity;"`
@@ -16,6 +19,60 @@ type Cinema struct {
 
 func (Cinema) TableName() string { return "cinemas" }
 
-func (r *Cinema) Mask(isAdminOrOwner bool) {
-	r.GenUID(common.DbTypeCinema)
+func (c *Cinema) Mask(isAdminOrOwner bool) {
+	c.GenUID(common.DbTypeCinema)
 }
+
+type CinemaCreate struct {
+	common.SQLModel `json:",inline"`
+	Name            string `json:"name" gorm:"column:name;"`
+	Address         string `json:"address"  gorm:"column:address;"`
+	Email           string `json:"email" gorm:"column:email;"`
+	PhoneNumber     string `json:"phone_number" gorm:"column:phone_number;"`
+}
+
+func (CinemaCreate) TableName() string { return Cinema{}.TableName() }
+
+func (data *CinemaCreate) Mask(isAdminOrOwner bool) {
+	data.GenUID(common.DbTypeCinema)
+}
+
+func (data *CinemaCreate) Validate() error {
+	data.Name = strings.TrimSpace(data.Name)
+	if data.Name == "" {
+		return ErrNameIsEmpty
+	}
+
+	data.Email = strings.TrimSpace(data.Email)
+	if data.Email == "" {
+		return ErrEmailIsEmpty
+	}
+
+	data.PhoneNumber = strings.TrimSpace(data.PhoneNumber)
+	if data.PhoneNumber == "" {
+		return ErrPhoneNumberIsEmpty
+
+	}
+
+	data.Address = strings.TrimSpace(data.Address)
+	if data.Address == "" {
+		return ErrAddressIsEmpty
+	}
+	return nil
+}
+
+type UpdateCinema struct {
+	Name        string `json:"name" gorm:"column:name;"`
+	Address     string `json:"address"  gorm:"column:address;"`
+	Email       string `json:"email" gorm:"column:email;"`
+	PhoneNumber string `json:"phone_number" gorm:"column:phone_number;"`
+}
+
+func (UpdateCinema) TableName() string { return Cinema{}.TableName() }
+
+var (
+	ErrNameIsEmpty        = errors.New("name can not be empty")
+	ErrEmailIsEmpty       = errors.New("email can not be empty")
+	ErrPhoneNumberIsEmpty = errors.New("phone number can not be empty")
+	ErrAddressIsEmpty     = errors.New("address can not be empty")
+)
