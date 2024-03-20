@@ -26,12 +26,12 @@ func ListCinema(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		if filter.FakeCinemaID != "" {
-			uid, err := common.FromBase58(filter.FakeCinemaID)
+		if filter.FakeOwnerID != "" {
+			uid, err := common.FromBase58(filter.FakeOwnerID)
 			if err != nil {
 				panic(common.ErrInvalidRequest(err))
 			}
-			filter.CinemaID = int(uid.GetLocalID())
+			filter.OwnerID = int(uid.GetLocalID())
 		}
 		filter.Status = []int{1}
 

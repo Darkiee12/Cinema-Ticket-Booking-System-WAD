@@ -26,7 +26,7 @@ func (business *listCinemaBusiness) ListRestaurant(
 	filter *cinemamodel.Filter,
 	paging *common.Paging,
 ) ([]cinemamodel.Cinema, error) {
-	res, err := business.store.ListCinemaWithCondition(context, filter, paging)
+	res, err := business.store.ListCinemaWithCondition(context, filter, paging, "Owner")
 	if err != nil {
 		return nil, err
 	}

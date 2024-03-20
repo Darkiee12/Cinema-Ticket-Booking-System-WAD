@@ -17,8 +17,8 @@ func (s *sqlStore) ListCinemaWithCondition(
 	db := s.db.Table(cinemamodel.Cinema{}.TableName())
 
 	if f := filter; f != nil {
-		if f.CinemaID > 0 {
-			db = db.Where("user_id = ?", f.CinemaID)
+		if f.OwnerID > 0 {
+			db = db.Where("user_id = ?", f.OwnerID)
 		}
 		if len(f.Status) > 0 {
 			db = db.Where("status in (?)", f.Status)
@@ -45,7 +45,7 @@ func (s *sqlStore) ListCinemaWithCondition(
 
 	if err := db.
 		Limit(paging.Limit).
-		Order("cinema_id desc").
+		Order("id desc").
 		Find(&result).
 		Error; err != nil {
 		return nil, common.ErrDB(err)

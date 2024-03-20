@@ -10,17 +10,23 @@ const EntityName = "Cinema"
 
 type Cinema struct {
 	common.SQLModel `json:",inline"`
-	Name            string `json:"name" gorm:"column:name;"`
-	Address         string `json:"address"  gorm:"column:address;"`
-	Capacity        int    `json:"capacity" gorm:"column:capacity;"`
-	Email           string `json:"email" gorm:"column:email;"`
-	PhoneNumber     string `json:"phone_number" gorm:"column:phone_number;"`
+	OwnerID         int                `json:"owner_id" gorm:"column:owner_id;"`
+	Owner           *common.SimpleUser `json:"owner" gorm:"preload:false;foreignKey:OwnerID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Name            string             `json:"name" gorm:"column:name;"`
+	Address         string             `json:"address"  gorm:"column:address;"`
+	Capacity        int                `json:"capacity" gorm:"column:capacity;"`
+	Email           string             `json:"email" gorm:"column:email;"`
+	PhoneNumber     string             `json:"phone_number" gorm:"column:phone_number;"`
 }
 
 func (Cinema) TableName() string { return "cinemas" }
 
 func (c *Cinema) Mask(isAdminOrOwner bool) {
 	c.GenUID(common.DbTypeCinema)
+
+	if owner := c.Owner; owner != nil {
+		owner.Mask(isAdminOrOwner)
+	}
 }
 
 type CinemaCreate struct {

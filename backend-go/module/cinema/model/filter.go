@@ -1,7 +1,7 @@
 package cinemamodel
 
 type Filter struct {
-	FakeCinemaID string `json:"-" form:"cinema_id"`
-	CinemaID     int    `json:"cinema_id,omitempty" form:"-"`
-	Status       []int  `json:"-"`
+	FakeOwnerID string `json:"-" form:"owner_id"`
+	OwnerID     int    `json:"owner_id,omitempty" form:"-"`
+	Status      []int  `json:"-"`
 }
