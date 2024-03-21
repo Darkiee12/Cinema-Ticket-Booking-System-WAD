@@ -42,6 +42,8 @@ func main() {
 	cinemas := v1.Group("/cinemas")
 	//GET /v1/cinemas
 	cinemas.GET("", gincinema.ListCinema(appCtx))
+	//GET /v1/cinemas/:id
+	cinemas.GET("/:id", gincinema.GetCinemaWithID(appCtx))
 
 	//POST /v1/cinemas
 	cinemas.POST("", gincinema.CreateCinema(appCtx))

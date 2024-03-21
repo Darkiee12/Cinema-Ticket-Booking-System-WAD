@@ -6,7 +6,7 @@ import (
 	"context"
 )
 
-func (s *sqlStore) ListCinemaWithCondition(
+func (store *sqlStore) ListCinemaWithCondition(
 	ctx context.Context,
 	filter *cinemamodel.Filter,
 	paging *common.Paging,
@@ -14,7 +14,7 @@ func (s *sqlStore) ListCinemaWithCondition(
 ) ([]cinemamodel.Cinema, error) {
 	var result []cinemamodel.Cinema
 
-	db := s.db.Table(cinemamodel.Cinema{}.TableName())
+	db := store.db.Table(cinemamodel.Cinema{}.TableName())
 
 	if f := filter; f != nil {
 		if f.OwnerID > 0 {
