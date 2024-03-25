@@ -7,6 +7,7 @@ import (
 )
 
 const EntityName = "Cinema"
+const TableName = "cinemas"
 
 type Cinema struct {
 	common.SQLModel `json:",inline"`
@@ -19,7 +20,7 @@ type Cinema struct {
 	PhoneNumber     string             `json:"phone_number" gorm:"column:phone_number;"`
 }
 
-func (Cinema) TableName() string { return "cinemas" }
+func (Cinema) TableName() string { return TableName }
 
 func (c *Cinema) Mask(isAdminOrOwner bool) {
 	c.GenUID(common.DbTypeCinema)
@@ -37,7 +38,7 @@ type CinemaCreate struct {
 	PhoneNumber     string `json:"phone_number" gorm:"column:phone_number;"`
 }
 
-func (CinemaCreate) TableName() string { return Cinema{}.TableName() }
+func (CinemaCreate) TableName() string { return TableName }
 
 func (data *CinemaCreate) Mask(isAdminOrOwner bool) {
 	data.GenUID(common.DbTypeCinema)
@@ -74,7 +75,7 @@ type UpdateCinema struct {
 	PhoneNumber string `json:"phone_number" gorm:"column:phone_number;"`
 }
 
-func (UpdateCinema) TableName() string { return Cinema{}.TableName() }
+func (UpdateCinema) TableName() string { return TableName }
 
 var (
 	ErrNameIsEmpty        = errors.New("name can not be empty")

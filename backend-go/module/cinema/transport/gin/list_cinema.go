@@ -26,19 +26,20 @@ func ListCinema(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		if filter.FakeOwnerID != "" {
-			uid, err := common.FromBase58(filter.FakeOwnerID)
+		if fakeID, ok := c.GetQuery("id"); ok {
+			uid, err := common.FromBase58(fakeID)
 			if err != nil {
 				panic(common.ErrInvalidRequest(err))
 			}
 			filter.OwnerID = int(uid.GetLocalID())
 		}
+
 		filter.Status = []int{1}
 
 		store := cinemastore.NewSQLStore(db)
-		biz := cinemabuisness.NewListRestaurantBusiness(store)
+		biz := cinemabuisness.NewListCinemaBusiness(store)
 
-		result, err := biz.ListRestaurant(c.Request.Context(), &filter, &pagingData)
+		result, err := biz.ListCinema(c.Request.Context(), &filter, &pagingData)
 		if err != nil {
 			panic(err)
 		}

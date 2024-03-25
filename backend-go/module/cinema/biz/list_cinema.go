@@ -18,10 +18,10 @@ type listCinemaBusiness struct {
 	store ListCinemaStore
 }
 
-func NewListRestaurantBusiness(store ListCinemaStore) *listCinemaBusiness {
+func NewListCinemaBusiness(store ListCinemaStore) *listCinemaBusiness {
 	return &listCinemaBusiness{store: store}
 }
-func (business *listCinemaBusiness) ListRestaurant(
+func (business *listCinemaBusiness) ListCinema(
 	context context.Context,
 	filter *cinemamodel.Filter,
 	paging *common.Paging,

@@ -3,6 +3,7 @@ package main
 import (
 	"cinema/component/appctx"
 	"cinema/middleware"
+	ginauditorium "cinema/module/auditorium/transport/gin"
 	gincinema "cinema/module/cinema/transport/gin"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -47,6 +48,9 @@ func main() {
 
 	//POST /v1/cinemas
 	cinemas.POST("", gincinema.CreateCinema(appCtx))
+
+	//GET /v1/cinemas/:id/auditoriums
+	cinemas.GET("/:id/auditoriums", ginauditorium.ListAuditoriumWithCinemaID(appCtx))
 
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)
