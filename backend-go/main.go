@@ -52,6 +52,8 @@ func main() {
 	//GET /v1/cinemas/:id/auditoriums
 	cinemas.GET("/:id/auditoriums", ginauditorium.ListAuditoriumWithCinemaID(appCtx))
 
+	//GET /v1/cinemas/name/:name/auditoriums
+	cinemas.GET("/name/:name/auditoriums", ginauditorium.ListAuditoriumWithCinemaName(appCtx))
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)
 	}

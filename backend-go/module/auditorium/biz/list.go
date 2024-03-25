@@ -33,3 +33,34 @@ func (business *listAuditoriumBusiness) ListAuditorium(
 	}
 	return res, nil
 }
+
+type ListAuditoriumWithCinemaNameRepo interface {
+	ListAuditoriumWithCinemaName(
+		context context.Context,
+		filter *auditoriummodel.Filter,
+		paging *common.Paging,
+		cinemaName string,
+		moreKeys ...string,
+	) ([]auditoriummodel.Auditorium, error)
+}
+
+type listAuditoriumWithCinemaNameBusiness struct {
+	repo ListAuditoriumWithCinemaNameRepo
+}
+
+func NewListAuditoriumWithCinemaNameBusiness(repo ListAuditoriumWithCinemaNameRepo) *listAuditoriumWithCinemaNameBusiness {
+	return &listAuditoriumWithCinemaNameBusiness{repo: repo}
+}
+
+func (business *listAuditoriumWithCinemaNameBusiness) ListAuditoriumWithCinemaName(
+	context context.Context,
+	filter *auditoriummodel.Filter,
+	paging *common.Paging,
+	cinemaName string,
+) ([]auditoriummodel.Auditorium, error) {
+	res, err := business.repo.ListAuditoriumWithCinemaName(context, filter, paging, cinemaName, "Cinema")
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
