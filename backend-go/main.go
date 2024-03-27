@@ -54,6 +54,11 @@ func main() {
 
 	//GET /v1/cinemas/name/:name/auditoriums
 	cinemas.GET("/name/:name/auditoriums", ginauditorium.ListAuditoriumWithCinemaName(appCtx))
+
+	auditoriums := v1.Group("/auditoriums")
+	//POST /v1/auditoriums
+	auditoriums.POST("", ginauditorium.CreateAuditorium(appCtx))
+
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)
 	}

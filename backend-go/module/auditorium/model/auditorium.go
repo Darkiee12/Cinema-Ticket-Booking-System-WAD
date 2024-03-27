@@ -39,6 +39,13 @@ func (data *AuditoriumCreate) Mask(isAdminOrOwner bool) {
 	data.GenUID(common.DbTypeCinema)
 }
 
+func (data *AuditoriumCreate) GetSeats() int {
+	return data.Seats
+}
+func (data *AuditoriumCreate) GetID() int {
+	return data.ID
+}
+
 func (data *AuditoriumCreate) Validate() error {
 	data.Name = strings.TrimSpace(data.Name)
 	if data.Name == "" {
@@ -47,13 +54,13 @@ func (data *AuditoriumCreate) Validate() error {
 	return nil
 }
 
-type UpdateCinema struct {
+type AuditoriumUpdate struct {
 	Name     string `json:"name" gorm:"column:name;"`
 	Seats    int    `json:"seats" gorm:"column:seats;"`
 	CinemaID int    `json:"cinema_id" gorm:"column:cinema_id;"`
 }
 
-func (UpdateCinema) TableName() string { return TableName }
+func (AuditoriumUpdate) TableName() string { return TableName }
 
 var (
 	ErrNameIsEmpty = errors.New("name can not be empty")
