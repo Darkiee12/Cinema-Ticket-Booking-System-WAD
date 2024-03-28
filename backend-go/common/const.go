@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	DbTypeCinema     = 1
-	DbTypeUser       = 2
-	DbTypeAuditorium = 3
+	DbTypeCinema = iota + 1
+	DbTypeUser
+	DbTypeAuditorium
+	DbTypeCompany
 )
 
 const (

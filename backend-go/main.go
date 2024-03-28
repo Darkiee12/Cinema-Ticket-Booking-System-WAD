@@ -5,6 +5,7 @@ import (
 	"cinema/middleware"
 	ginauditorium "cinema/module/auditorium/transport/gin"
 	gincinema "cinema/module/cinema/transport/gin"
+	gincompany "cinema/module/company/transport/gin"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -58,6 +59,12 @@ func main() {
 	auditoriums := v1.Group("/auditoriums")
 	//POST /v1/auditoriums
 	auditoriums.POST("", ginauditorium.CreateAuditorium(appCtx))
+
+	companies := v1.Group("/companies")
+	//GET /v1/companies
+	companies.GET("", gincompany.ListCompany(appCtx))
+	//GET /v1/companies/:id
+	companies.GET("/:id", gincompany.GetCompanyWithID(appCtx))
 
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)

@@ -13,7 +13,7 @@ type FindCinemaStore interface {
 	) (*cinemamodel.Cinema, error)
 }
 
-func NewFindRestaurantBiz(store FindCinemaStore) *findCinemaBiz {
+func NewFindCinemaBiz(store FindCinemaStore) *findCinemaBiz {
 	return &findCinemaBiz{store: store}
 }
 

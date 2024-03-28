@@ -1,18 +1,19 @@
-package cinemastore
+package companystore
 
 import (
 	"cinema/common"
 	cinemamodel "cinema/module/cinema/model"
+	companymodel "cinema/module/company/model"
 	"context"
 )
 
-func (store *sqlStore) ListCinemaWithCondition(
+func (store *sqlStore) ListCompanyWithCondition(
 	ctx context.Context,
-	filter *cinemamodel.Filter,
+	filter *companymodel.Filter,
 	paging *common.Paging,
 	moreKeys ...string,
-) ([]cinemamodel.Cinema, error) {
-	var result []cinemamodel.Cinema
+) ([]companymodel.Company, error) {
+	var result []companymodel.Company
 
 	db := store.db.Table(cinemamodel.TableName)
 

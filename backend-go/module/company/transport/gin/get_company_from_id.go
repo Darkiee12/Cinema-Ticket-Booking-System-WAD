@@ -1,15 +1,15 @@
-package gincinema
+package gincompany
 
 import (
 	"cinema/common"
 	"cinema/component/appctx"
-	cinemabuisness "cinema/module/cinema/biz"
-	cinemastore "cinema/module/cinema/store"
+	companybusiness "cinema/module/company/biz"
+	companystore "cinema/module/company/store"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func GetCinemaWithID(ctx appctx.AppContext) gin.HandlerFunc {
+func GetCompanyWithID(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//id, err := strconv.Atoi(c.Param("restaurant_id"))
 
@@ -21,10 +21,10 @@ func GetCinemaWithID(ctx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		db := ctx.GetMainDBConnection()
-		storage := cinemastore.NewSQLStore(db)
-		biz := cinemabuisness.NewFindCinemaBiz(storage)
+		storage := companystore.NewSQLStore(db)
+		biz := companybusiness.NewFindCompanyBiz(storage)
 
-		data, err := biz.FindCinemaById(c.Request.Context(), int(uid.GetLocalID()))
+		data, err := biz.FindCompanyById(c.Request.Context(), int(uid.GetLocalID()))
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
