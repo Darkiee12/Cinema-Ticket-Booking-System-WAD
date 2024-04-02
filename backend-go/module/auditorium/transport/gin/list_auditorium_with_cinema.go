@@ -12,6 +12,20 @@ import (
 	"net/http"
 )
 
+// ListAuditoriumWithCinemaID
+// @Summary List auditoriums with cinema ID
+// @Description List auditoriums with cinema ID
+// @Tags auditoriums
+// @ID list-auditoriums-with-cinema-id
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Cinema ID"
+// @Param page query int false "Page"
+// @Param limit query int false "Limit"
+// @Param cursor query string false "Cursor"
+// @Param cinema_name query string false "Cinema Name"
+// @Success 200 {object} common.successRes{data=[]auditoriummodel.Auditorium}
+// @Router /cinemas/{id}/auditoriums [get]
 func ListAuditoriumWithCinemaID(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		uid, err := common.FromBase58(c.Param("id"))
@@ -53,6 +67,19 @@ func ListAuditoriumWithCinemaID(ctx appctx.AppContext) gin.HandlerFunc {
 	}
 }
 
+// ListAuditoriumWithCinemaName
+// @Summary List auditoriums with cinema name
+// @Description List auditoriums with cinema name
+// @Tags auditoriums
+// @ID list-auditoriums-with-cinema-name
+// @Accept  json
+// @Produce  json
+// @Param name path string true "Cinema Name"
+// @Param page query int false "Page"
+// @Param limit query int false "Limit"
+// @Param cursor query string false "Cursor"
+// @Success 200 {object} common.successRes{data=[]auditoriummodel.Auditorium}
+// @Router /cinemas/{name}/auditoriums [get]
 func ListAuditoriumWithCinemaName(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		cinemaName := c.Param("name")

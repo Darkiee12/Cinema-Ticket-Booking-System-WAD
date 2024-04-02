@@ -10,8 +10,16 @@ import (
 	"net/http"
 )
 
-// CreateCinema gin handler for create cinema
-// input:  {name, address, email, phone_number}
+// CreateCinema
+// @Summary Create a cinema
+// @Description Create a new cinema
+// @Tags cinemas
+// @ID create-cinema
+// @Accept  json
+// @Produce  json
+// @Param cinema body cinemamodel.CinemaCreate true "Cinema"
+// @Success 200 {object} common.successRes{data=string}
+// @Router /cinemas [post]
 func CreateCinema(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()

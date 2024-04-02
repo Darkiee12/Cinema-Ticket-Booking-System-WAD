@@ -10,6 +10,19 @@ import (
 	"net/http"
 )
 
+// ListCompany
+// @Summary List all companies
+// @Description Returns a list of companies
+// @Tags companies
+// @ID list-companies
+// @Accept  json
+// @Produce  json
+// @Param page query int false "Page"
+// @Param limit query int false "Limit"
+// @Param cursor query string false "Cursor"
+// @Param owner_id query string false "Owner ID"
+// @Success 200 {object} common.successRes{data=[]companymodel.Company}
+// @Router /companies [get]
 func ListCompany(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()

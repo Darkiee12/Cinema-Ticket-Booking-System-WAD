@@ -9,35 +9,26 @@ import (
 	"net/http"
 )
 
-// GetCinemaWithID
-// @Summary Get a cinema by its ID
+// GetCinemaWithName
+// @Summary Get a cinema by its name
 // @Description Returns a single cinema
 // @Tags cinemas
-// @ID get-cinema-by-id
+// @ID get-cinema-by-name
 // @Accept  json
 // @Produce  json
-// @Param id path string true "Cinema ID"
+// @Param name path string true "Cinema Name"
 // @Success 200 {object} common.successRes{data=cinemamodel.Cinema}
-// @Router /cinemas/{id} [get]
-func GetCinemaWithID(ctx appctx.AppContext) gin.HandlerFunc {
+// @Router /cinemas/name/{name} [get]
+func GetCinemaWithName(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//id, err := strconv.Atoi(c.Param("restaurant_id"))
-
-		uid, err := common.FromBase58(c.Param("id"))
-
-		if err != nil {
-			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
-			return
-		}
-
 		db := ctx.GetMainDBConnection()
 		storage := cinemastore.NewSQLStore(db)
 		biz := cinemabuisness.NewFindCinemaBiz(storage)
 
-		data, err := biz.FindCinemaById(c.Request.Context(), int(uid.GetLocalID()))
+		data, err := biz.FindCinemaByName(c.Request.Context(), c.Param("name"))
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
 			return
 		}
 

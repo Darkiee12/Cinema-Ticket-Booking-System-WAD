@@ -27,8 +27,8 @@ func (c *Company) Mask(isAdminOrOwner bool) {
 }
 
 type CompanyCreate struct {
-	common.SQLModel `json:",inline"`
-	OwnerID         int    `json:"owner_id" gorm:"column:owner_id;"`
+	common.SQLModel `json:",inline" swaggerignore:"true"`
+	OwnerID         int    `json:"owner_id" gorm:"column:user_id;" swaggerignore:"true"`
 	LogoPath        string `json:"logo_path" gorm:"column:logo_path;"`
 	Name            string `json:"name" gorm:"column:name;"`
 }

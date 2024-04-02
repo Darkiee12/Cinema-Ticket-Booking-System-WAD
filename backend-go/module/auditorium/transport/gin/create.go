@@ -12,8 +12,16 @@ import (
 	"net/http"
 )
 
-// CreateAuditorium input: {name, seats, cinema_id}
-// example: curl -X POST http://localhost:8080/v1/auditoriums -d '{"name":"A1","seats":100,"cinema_id":1}'
+// CreateAuditorium
+// @Summary Create an auditorium
+// @Description Create an auditorium
+// @Tags auditoriums
+// @ID create-auditorium
+// @Accept  json
+// @Produce  json
+// @Param auditorium body auditoriummodel.AuditoriumCreate true "Auditorium"
+// @Success 200 {object} common.successRes{data=string}
+// @Router /auditoriums [post]
 func CreateAuditorium(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()
@@ -31,6 +39,7 @@ func CreateAuditorium(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 		data.Mask(false)
+
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.FakeID.String()))
 	}
 }

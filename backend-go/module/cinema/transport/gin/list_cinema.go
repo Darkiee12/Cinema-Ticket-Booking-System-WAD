@@ -10,6 +10,19 @@ import (
 	"net/http"
 )
 
+// ListCinema
+// @Summary List all cinemas
+// @Description Returns a list of cinemas
+// @Tags cinemas
+// @ID list-cinemas
+// @Accept  json
+// @Produce  json
+// @Param page query int false "Page"
+// @Param limit query int false "Limit"
+// @Param cursor query string false "Cursor"
+// @Param owner_id query string false "Owner ID"
+// @Success 200 {object} common.successRes{data=[]cinemamodel.Cinema}
+// @Router /cinemas [get]
 func ListCinema(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()

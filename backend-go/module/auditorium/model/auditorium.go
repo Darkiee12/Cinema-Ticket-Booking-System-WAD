@@ -27,7 +27,7 @@ func (c *Auditorium) Mask(isAdminOrOwner bool) {
 }
 
 type AuditoriumCreate struct {
-	common.SQLModel `json:",inline"`
+	common.SQLModel `json:",inline" swaggerignore:"true"`
 	Name            string `json:"name" gorm:"column:name;"`
 	Seats           int    `json:"seats" gorm:"column:seats;"`
 	CinemaID        int    `json:"cinema_id" gorm:"column:cinema_id;"`

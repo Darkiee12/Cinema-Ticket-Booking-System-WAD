@@ -10,7 +10,16 @@ import (
 	"net/http"
 )
 
-// CreateCompany gin handler for create cinema
+// CreateCompany
+// @Summary Create a company
+// @Description Create a new company
+// @Tags companies
+// @ID create-company
+// @Accept  json
+// @Produce  json
+// @Param company body companymodel.CompanyCreate true "Company"
+// @Success 200 {object} common.successRes{data=string}
+// @Router /companies [post]
 func CreateCompany(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()

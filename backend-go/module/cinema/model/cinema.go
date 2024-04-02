@@ -31,7 +31,7 @@ func (c *Cinema) Mask(isAdminOrOwner bool) {
 }
 
 type CinemaCreate struct {
-	common.SQLModel `json:",inline"`
+	common.SQLModel `json:",inline" swaggerignore:"true"`
 	Name            string `json:"name" gorm:"column:name;"`
 	Address         string `json:"address"  gorm:"column:address;"`
 	Email           string `json:"email" gorm:"column:email;"`
