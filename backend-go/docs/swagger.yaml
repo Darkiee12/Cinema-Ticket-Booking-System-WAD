@@ -1,0 +1,462 @@
+definitions:
+  auditoriummodel.Auditorium:
+    properties:
+      cinema:
+        $ref: '#/definitions/common.SimpleCinema'
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      seats:
+        type: integer
+      status:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  auditoriummodel.AuditoriumCreate:
+    properties:
+      cinema_id:
+        type: integer
+      name:
+        type: string
+      seats:
+        type: integer
+    type: object
+  cinemamodel.Cinema:
+    properties:
+      address:
+        type: string
+      capacity:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      owner:
+        $ref: '#/definitions/common.SimpleUser'
+      owner_id:
+        type: integer
+      phone_number:
+        type: string
+      status:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  cinemamodel.CinemaCreate:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  common.SimpleCinema:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  common.SimpleUser:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        type: integer
+      tier:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  common.successRes:
+    properties:
+      data: {}
+      filter: {}
+      paging: {}
+    type: object
+  companymodel.Company:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      logo_path:
+        type: string
+      name:
+        type: string
+      owner:
+        $ref: '#/definitions/common.SimpleUser'
+      owner_id:
+        type: integer
+      status:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  companymodel.CompanyCreate:
+    properties:
+      logo_path:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auditoriums:
+    post:
+      consumes:
+      - application/json
+      description: Create an auditorium
+      operationId: create-auditorium
+      parameters:
+      - description: Auditorium
+        in: body
+        name: auditorium
+        required: true
+        schema:
+          $ref: '#/definitions/auditoriummodel.AuditoriumCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create an auditorium
+      tags:
+      - auditoriums
+  /cinemas:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of cinemas
+      operationId: list-cinemas
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        type: string
+      - description: Owner ID
+        in: query
+        name: owner_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/cinemamodel.Cinema'
+                  type: array
+              type: object
+      summary: List all cinemas
+      tags:
+      - cinemas
+    post:
+      consumes:
+      - application/json
+      description: Create a new cinema
+      operationId: create-cinema
+      parameters:
+      - description: Cinema
+        in: body
+        name: cinema
+        required: true
+        schema:
+          $ref: '#/definitions/cinemamodel.CinemaCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create a cinema
+      tags:
+      - cinemas
+  /cinemas/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a single cinema
+      operationId: get-cinema-by-id
+      parameters:
+      - description: Cinema ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/cinemamodel.Cinema'
+              type: object
+      summary: Get a cinema by its ID
+      tags:
+      - cinemas
+  /cinemas/{id}/auditoriums:
+    get:
+      consumes:
+      - application/json
+      description: List auditoriums with cinema ID
+      operationId: list-auditoriums-with-cinema-id
+      parameters:
+      - description: Cinema ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        type: string
+      - description: Cinema Name
+        in: query
+        name: cinema_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/auditoriummodel.Auditorium'
+                  type: array
+              type: object
+      summary: List auditoriums with cinema ID
+      tags:
+      - auditoriums
+  /cinemas/{name}/auditoriums:
+    get:
+      consumes:
+      - application/json
+      description: List auditoriums with cinema name
+      operationId: list-auditoriums-with-cinema-name
+      parameters:
+      - description: Cinema Name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/auditoriummodel.Auditorium'
+                  type: array
+              type: object
+      summary: List auditoriums with cinema name
+      tags:
+      - auditoriums
+  /cinemas/name/{name}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a single cinema
+      operationId: get-cinema-by-name
+      parameters:
+      - description: Cinema Name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/cinemamodel.Cinema'
+              type: object
+      summary: Get a cinema by its name
+      tags:
+      - cinemas
+  /companies:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of companies
+      operationId: list-companies
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        type: string
+      - description: Owner ID
+        in: query
+        name: owner_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/companymodel.Company'
+                  type: array
+              type: object
+      summary: List all companies
+      tags:
+      - companies
+    post:
+      consumes:
+      - application/json
+      description: Create a new company
+      operationId: create-company
+      parameters:
+      - description: Company
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/companymodel.CompanyCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create a company
+      tags:
+      - companies
+  /companies/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns a single company
+      operationId: get-company
+      parameters:
+      - description: Company ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/companymodel.Company'
+              type: object
+      summary: Get a company by its ID
+      tags:
+      - companies
+swagger: "2.0"
