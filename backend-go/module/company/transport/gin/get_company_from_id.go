@@ -17,12 +17,11 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param id path string true "Company ID"
-// @Success 200 {object} common.successRes{data=companymodel.Company}
+// @Success 200 {object} common.successRes{data=cinema_module_company_model.Company}
 // @Router /companies/{id} [get]
 func GetCompanyWithID(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//id, err := strconv.Atoi(c.Param("restaurant_id"))
-
 		uid, err := common.FromBase58(c.Param("id"))
 
 		if err != nil {

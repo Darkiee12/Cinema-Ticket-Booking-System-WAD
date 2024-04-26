@@ -2,7 +2,7 @@ package auditoriumseatsstore
 
 import (
 	"cinema/common"
-	auditoriumseatsmodel "cinema/module/auditorium_seats/model"
+	auditoriumseatsmodel "cinema/module/auditorium_seat/model"
 	"context"
 )
 

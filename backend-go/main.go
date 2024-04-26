@@ -31,7 +31,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	db.Debug()
+	db = db.Debug()
 
 	appCtx := appctx.NewAppContext(db)
 	r := gin.Default()

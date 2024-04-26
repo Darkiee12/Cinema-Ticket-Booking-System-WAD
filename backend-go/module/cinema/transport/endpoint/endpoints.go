@@ -8,7 +8,7 @@ import (
 	"github.com/go-kit/kit/endpoint"
 )
 
-func ListCinemaEndpoint(appCtx appctx.AppContext) endpoint.Endpoint {
+func NewListCinemaEndpoint(appCtx appctx.AppContext) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		db := appCtx.GetMainDBConnection()
 

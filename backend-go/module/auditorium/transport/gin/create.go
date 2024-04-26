@@ -7,7 +7,7 @@ import (
 	auditoriummodel "cinema/module/auditorium/model"
 	auditoriumrepository "cinema/module/auditorium/repository"
 	auditoriumstore "cinema/module/auditorium/store"
-	auditoriumseatsstore "cinema/module/auditorium_seats/store"
+	auditoriumseatsstore "cinema/module/auditorium_seat/store"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

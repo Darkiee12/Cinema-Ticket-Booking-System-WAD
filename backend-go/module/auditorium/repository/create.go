@@ -3,7 +3,7 @@ package auditoriumrepository
 import (
 	"cinema/common"
 	auditoriummodel "cinema/module/auditorium/model"
-	auditoriumseatsmodel "cinema/module/auditorium_seats/model"
+	auditoriumseatsmodel "cinema/module/auditorium_seat/model"
 	"context"
 )
 
