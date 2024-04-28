@@ -1,24 +1,24 @@
-package moviestore
+package ticketstore
 
 import (
 	"cinema/common"
 	cinemamodel "cinema/module/cinema/model"
-	moviemodel "cinema/module/movie/model"
+	ticketmodel "cinema/module/ticket/model"
 	"context"
 )
 
-func (store *sqlStore) ListMoviesWithCondition(
+func (store *sqlStore) ListTicketsWithCondition(
 	_ context.Context,
-	filter *moviemodel.Filter,
+	filter *ticketmodel.Filter,
 	moreKeys ...string,
-) ([]moviemodel.Movie, error) {
-	var result []moviemodel.Movie
+) ([]ticketmodel.Ticket, error) {
+	var result []ticketmodel.Ticket
 
 	db := store.db.Table(cinemamodel.TableName)
 
 	if f := filter; f != nil {
-		if f.OwnerID > 0 {
-			db = db.Where("user_id = ?", f.OwnerID)
+		if f.ShowID > 0 {
+			db = db.Where("show_id = ?", f.ShowID)
 		}
 		if len(f.Status) > 0 {
 			db = db.Where("status in (?)", f.Status)

@@ -6,7 +6,7 @@ import (
 )
 
 type ListMovieStore interface {
-	ListCompanyWithCondition(
+	ListMoviesWithCondition(
 		context context.Context,
 		filter *moviemodel.Filter,
 		moreKeys ...string,
@@ -23,7 +23,7 @@ func (business *listMovieBusiness) ListMovies(
 	context context.Context,
 	filter *moviemodel.Filter,
 ) ([]moviemodel.Movie, error) {
-	res, err := business.store.ListCompanyWithCondition(context, filter)
+	res, err := business.store.ListMoviesWithCondition(context, filter)
 	if err != nil {
 		return nil, err
 	}
