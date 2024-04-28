@@ -1,15 +1,15 @@
-package ticketstore
+package showstore
 
 import (
 	"cinema/common"
-	ticketmodel "cinema/module/ticket/model"
+	showmodel "cinema/module/show/model"
 	"context"
 )
 
-func (store *sqlStore) UpdateTicket(
-	_ context.Context,
+func (store *sqlStore) UpdateShow(
+	ctx context.Context,
 	cond map[string]interface{},
-	data *ticketmodel.TicketUpdate,
+	data *showmodel.Show,
 ) error {
 	if err := store.db.Where(cond).Updates(data).Error; err != nil {
 		return common.ErrDB(err)

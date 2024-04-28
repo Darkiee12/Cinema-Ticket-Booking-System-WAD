@@ -1,4 +1,4 @@
-package ticketstore
+package showstore
 
 import (
 	"context"

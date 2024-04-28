@@ -6,9 +6,10 @@ import (
 	"context"
 )
 
-func (store *sqlStore) Create(context context.Context, data *auditoriumseatsmodel.AuditoriumSeat) error {
+func (store *sqlStore) Create(_ context.Context, data *auditoriumseatsmodel.AuditoriumSeat) error {
 	//data.PrepareForInsert()
-	if err := store.db.Create(&data).Error; err != nil {
+
+	if err := store.db.Omit("UpdatedAt").Create(&data).Error; err != nil {
 		return common.ErrDB(err)
 	}
 	return nil

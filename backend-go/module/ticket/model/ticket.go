@@ -1,6 +1,7 @@
 package ticketmodel
 
 import (
+	"cinema/common"
 	"errors"
 	"time"
 )
@@ -9,22 +10,27 @@ const EntityName = "Ticket"
 const TableName = "tickets"
 
 type Ticket struct {
-	ID         int       `gorm:"column:id;primary_key"`
-	SeatNumber int       `gorm:"column:seat_number"`
-	Status     int16     `gorm:"column:status"`
-	Timestamp  time.Time `gorm:"column:timestamp"`
-	ShowID     int64     `gorm:"column:show_id"`
-	UserID     int64     `gorm:"column:user_id"`
-	CreatedAt  time.Time `gorm:"column:created_at"`
+	common.SQLModel `json:",inline"`
+	SeatNumber      int                `gorm:"column:seat_number" json:"seat_number"`
+	Timestamp       time.Time          `gorm:"column:timestamp" json:"timestamp"`
+	ShowID          int64              `gorm:"column:show_id" json:"show_id"`
+	UserID          int64              `gorm:"column:user_id" json:"-"`
+	User            *common.SimpleUser `gorm:"preload:false;foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"user"`
 }
 
 func (Ticket) TableName() string { return TableName }
 
+func (t *Ticket) Mask(isAdminOrOwner bool) {
+	if user := t.User; user != nil {
+		user.Mask(isAdminOrOwner)
+	}
+}
+
 type TicketCreate struct {
-	SeatNumber int       `gorm:"column:seat_number"`
-	Status     int16     `gorm:"column:status"`
-	Timestamp  time.Time `gorm:"column:timestamp"`
-	ShowID     int64     `gorm:"column:show_id"`
+	SeatNumber int       `gorm:"column:seat_number" json:"seat_number"`
+	Status     int16     `gorm:"column:status" json:"status"`
+	Timestamp  time.Time `gorm:"column:timestamp" json:"timestamp"`
+	ShowID     int64     `gorm:"column:show_id" json:"showID"`
 }
 
 func (TicketCreate) TableName() string { return TableName }
