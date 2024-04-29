@@ -6,9 +6,9 @@ import (
 	"context"
 )
 
-func (store *sqlStore) Create(context context.Context, data *auditoriummodel.AuditoriumCreate) error {
+func (store *sqlStore) Create(ctx context.Context, data *auditoriummodel.AuditoriumCreate) error {
 	//data.PrepareForInsert()
-	if err := store.db.Create(&data).Error; err != nil {
+	if err := store.model(ctx).Create(&data).Error; err != nil {
 		return common.ErrDB(err)
 	}
 	return nil

@@ -8,6 +8,8 @@ import (
 	auditoriumrepository "cinema/module/auditorium/repository"
 	auditoriumstore "cinema/module/auditorium/store"
 	auditoriumseatsstore "cinema/module/auditorium_seat/store"
+	cinemabuisness "cinema/module/cinema/biz"
+	cinemastore "cinema/module/cinema/store"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -21,6 +23,7 @@ import (
 // @Produce  json
 // @Param auditorium body auditoriummodel.AuditoriumCreate true "Auditorium"
 // @Success 200 {object} common.successRes{data=string}
+// @Security ApiKeyAuth
 // @Router /auditoriums [post]
 func CreateAuditorium(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -28,6 +31,17 @@ func CreateAuditorium(ctx appctx.AppContext) gin.HandlerFunc {
 		var data auditoriummodel.AuditoriumCreate
 		if err := c.ShouldBind(&data); err != nil {
 			panic(err)
+		}
+
+		requester := c.MustGet(common.CurrentUser).(common.Requester)
+		{
+			store := cinemastore.NewSQLStore(db)
+			biz := cinemabuisness.NewFindCinemaBiz(store)
+			cinema, err := biz.FindCinemaByOwnerID(c.Request.Context(), requester.GetUserId())
+			if err != nil {
+				panic(err)
+			}
+			(&data).CinemaID = cinema.ID
 		}
 
 		store := auditoriumstore.NewSQLStore(db)
@@ -40,6 +54,6 @@ func CreateAuditorium(ctx appctx.AppContext) gin.HandlerFunc {
 		}
 		data.Mask(false)
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.FakeID.String()))
+		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data.FakeID.String()))
 	}
 }

@@ -1,24 +1,59 @@
 package auditoriumseatsstore
 
 import (
-	"cinema/common"
 	"context"
+	"gorm.io/gorm"
+	"log"
 )
 
-func (store *sqlStore) OpenTransaction(context context.Context) (*sqlStore, error) {
-	tx := store.db.Begin()
-	if tx.Error != nil {
-		return nil, common.ErrDB(tx.Error)
+func (store *sqlStore) model(ctx context.Context, model ...interface{}) *gorm.DB {
+	tx := extractTx(ctx)
+
+	if tx != nil {
+		return tx
 	}
-	return &sqlStore{db: tx}, nil
+	return store.db
 }
-func (store *sqlStore) RollbackTransaction(context context.Context) {
-	store.db.Rollback()
+
+var (
+	txKey = "txKey"
+)
+
+// injectTx injects transaction to context
+func injectTx(ctx context.Context, tx *gorm.DB) context.Context {
+	return context.WithValue(ctx, txKey, tx)
 }
-func (store *sqlStore) CloseTransaction(context context.Context) error {
-	if err := store.db.Commit().Error; err != nil {
-		store.db.Rollback()
-		return common.ErrDB(err)
+
+// extractTx extracts transaction from context
+func extractTx(ctx context.Context) *gorm.DB {
+	if tx, ok := ctx.Value(txKey).(*gorm.DB); ok {
+		return tx
+	}
+	return nil
+}
+
+func (store *sqlStore) WithinTransaction(ctx context.Context, tFunc func(ctx context.Context) error) error {
+	// begin transaction
+	tx := store.db.Begin()
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// run callback
+	err := tFunc(injectTx(ctx, tx))
+	if err != nil {
+		// if error, rollback
+		tx.Rollback()
+		return err
+	}
+	// if no error, commit
+	if errCommit := tx.Commit().Error; errCommit != nil {
+		tx.Rollback()
+		log.Printf("commit transaction: %v", errCommit)
+		return errCommit
 	}
 	return nil
 }

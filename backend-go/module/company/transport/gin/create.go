@@ -39,6 +39,6 @@ func CreateCompany(ctx appctx.AppContext) gin.HandlerFunc {
 
 		data.Mask(false)
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.FakeID.String()))
+		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data.FakeID.String()))
 	}
 }

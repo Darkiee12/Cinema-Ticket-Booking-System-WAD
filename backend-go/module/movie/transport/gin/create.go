@@ -10,6 +10,17 @@ import (
 	"net/http"
 )
 
+// CreateMovie
+// @Summary Create a movie
+// @Description Create a movie
+// @Tags movies
+// @ID create-movie
+// @Accept  json
+// @Produce  json
+// @Param movie body moviemodel.Movie true "Movie"
+// @Success 200 {object} common.successRes{data=string}
+// @Security ApiKeyAuth
+// @Router /movies [post]
 func CreateMovie(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()
@@ -27,6 +38,6 @@ func CreateMovie(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse("true"))
+		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse("true"))
 	}
 }

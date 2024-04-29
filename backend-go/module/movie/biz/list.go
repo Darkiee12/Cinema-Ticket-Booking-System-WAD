@@ -1,6 +1,7 @@
 package moviebusiness
 
 import (
+	"cinema/common"
 	moviemodel "cinema/module/movie/model"
 	"context"
 )
@@ -9,6 +10,7 @@ type ListMovieStore interface {
 	ListMoviesWithCondition(
 		context context.Context,
 		filter *moviemodel.Filter,
+		paging *common.Paging,
 		moreKeys ...string,
 	) ([]moviemodel.Movie, error)
 }
@@ -22,8 +24,9 @@ func NewListMovieBusiness(store ListMovieStore) *listMovieBusiness {
 func (business *listMovieBusiness) ListMovies(
 	context context.Context,
 	filter *moviemodel.Filter,
+	paging *common.Paging,
 ) ([]moviemodel.Movie, error) {
-	res, err := business.store.ListMoviesWithCondition(context, filter)
+	res, err := business.store.ListMoviesWithCondition(context, filter, paging)
 	if err != nil {
 		return nil, err
 	}

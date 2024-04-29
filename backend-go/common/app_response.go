@@ -9,6 +9,6 @@ type successRes struct {
 func NewSuccessResponse(data, paging, filter interface{}) *successRes {
 	return &successRes{Data: data, Paging: paging, Filter: filter}
 }
-func SimpleSuccessResponse(data interface{}) *successRes {
+func SimpleNewSuccessResponse(data interface{}) *successRes {
 	return NewSuccessResponse(data, nil, nil)
 }

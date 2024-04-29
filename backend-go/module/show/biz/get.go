@@ -1,28 +1,28 @@
 package showbusiness
 
 import (
-	ticketmodel "cinema/module/ticket/model"
+	showmodel "cinema/module/show/model"
 	"context"
 )
 
-type GetTicketsStore interface {
-	GetTickets(
+type GetShowsStore interface {
+	GetShows(
 		context context.Context,
 		id []int,
-	) ([]ticketmodel.Ticket, error)
+	) ([]showmodel.Show, error)
 }
-type getTicketsBusiness struct {
-	store GetTicketsStore
+type getShowsBusiness struct {
+	store GetShowsStore
 }
 
-func NewGetTicketsBusiness(store GetTicketsStore) *getTicketsBusiness {
-	return &getTicketsBusiness{store: store}
+func NewGetShowsBusiness(store GetShowsStore) *getShowsBusiness {
+	return &getShowsBusiness{store: store}
 }
-func (business *getTicketsBusiness) GetTickets(
+func (business *getShowsBusiness) GetShows(
 	context context.Context,
 	id []int,
-) ([]ticketmodel.Ticket, error) {
-	res, err := business.store.GetTickets(context, id)
+) ([]showmodel.Show, error) {
+	res, err := business.store.GetShows(context, id)
 	if err != nil {
 		return nil, err
 	}

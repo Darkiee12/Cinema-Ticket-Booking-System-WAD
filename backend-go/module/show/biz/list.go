@@ -1,29 +1,29 @@
 package showbusiness
 
 import (
-	ticketmodel "cinema/module/ticket/model"
+	showmodel "cinema/module/show/model"
 	"context"
 )
 
-type ListTicketsStore interface {
-	ListTicketsWithCondition(
+type ListShowsStore interface {
+	ListShowsWithCondition(
 		context context.Context,
-		filter *ticketmodel.Filter,
+		filter *showmodel.Filter,
 		moreKeys ...string,
-	) ([]ticketmodel.Ticket, error)
+	) ([]showmodel.Show, error)
 }
-type listTicketsBusiness struct {
-	store ListTicketsStore
+type listShowsBusiness struct {
+	store ListShowsStore
 }
 
-func NewListTicketsBusiness(store ListTicketsStore) *listTicketsBusiness {
-	return &listTicketsBusiness{store: store}
+func NewListShowsBusiness(store ListShowsStore) *listShowsBusiness {
+	return &listShowsBusiness{store: store}
 }
-func (business *listTicketsBusiness) ListTickets(
+func (business *listShowsBusiness) ListTickets(
 	context context.Context,
-	filter *ticketmodel.Filter,
-) ([]ticketmodel.Ticket, error) {
-	res, err := business.store.ListTicketsWithCondition(context, filter)
+	filter *showmodel.Filter,
+) ([]showmodel.Show, error) {
+	res, err := business.store.ListShowsWithCondition(context, filter)
 	if err != nil {
 		return nil, err
 	}

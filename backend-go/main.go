@@ -7,6 +7,10 @@ import (
 	ginauditorium "cinema/module/auditorium/transport/gin"
 	gincinema "cinema/module/cinema/transport/gin"
 	gincompany "cinema/module/company/transport/gin"
+	ginmovie "cinema/module/movie/transport/gin"
+	ginshow "cinema/module/show/transport/gin"
+	ginticket "cinema/module/ticket/transport/gin"
+	"cinema/module/user/userstore"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -18,6 +22,9 @@ import (
 	"strings"
 )
 
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	// Read the content of the db_env file
 	content, err := ioutil.ReadFile("local_db_env")
@@ -33,7 +40,9 @@ func main() {
 	}
 	db = db.Debug()
 
-	appCtx := appctx.NewAppContext(db)
+	key := "my_secret"
+	appCtx := appctx.NewAppContext(db, key)
+
 	r := gin.Default()
 	r.Use(middleware.Recover(appCtx))
 
@@ -47,6 +56,8 @@ func main() {
 	})
 
 	v1 := r.Group("/v1")
+
+	userStore := userstore.NewSQLStore(appCtx.GetMainDBConnection())
 	{
 		cinemas := v1.Group("/cinemas")
 		//GET /v1/cinemas
@@ -59,7 +70,10 @@ func main() {
 		cinemas.GET("/:id", gincinema.GetCinemaWithID(appCtx))
 
 		//POST /v1/cinemas
-		cinemas.POST("", gincinema.CreateCinema(appCtx))
+		cinemas.POST("",
+			middleware.RequireAuth(appCtx, userStore),
+			middleware.CheckRole(appCtx, "admin", "cinema_owner"),
+			gincinema.CreateCinema(appCtx))
 
 		//GET /v1/cinemas/:id/auditoriums
 		cinemas.GET("/:id/auditoriums", ginauditorium.ListAuditoriumWithCinemaID(appCtx))
@@ -71,7 +85,10 @@ func main() {
 	{
 		auditoriums := v1.Group("/auditoriums")
 		//POST /v1/auditoriums
-		auditoriums.POST("", ginauditorium.CreateAuditorium(appCtx))
+		auditoriums.POST("",
+			middleware.RequireAuth(appCtx, userStore),
+			middleware.CheckRole(appCtx, "admin", "cinema_owner"),
+			ginauditorium.CreateAuditorium(appCtx))
 	}
 
 	{
@@ -82,6 +99,37 @@ func main() {
 		companies.GET("/:id", gincompany.GetCompanyWithID(appCtx))
 		//POST /v1/companies
 		companies.POST("", gincompany.CreateCompany(appCtx))
+	}
+
+	{
+		movies := v1.Group("/movies")
+		//GET /v1/movies
+		movies.GET("", ginmovie.ListMovie(appCtx))
+		//GET /v1/movies/:imdb_id
+		movies.GET("/:imdb_id", ginmovie.GetMovieWithID(appCtx))
+		//POST /v1/movies
+		movies.POST("",
+			middleware.RequireAuth(appCtx, userStore),
+			middleware.CheckRole(appCtx, "admin"),
+			ginmovie.CreateMovie(appCtx))
+	}
+
+	{
+		shows := v1.Group("/shows")
+		//GET /v1/shows
+		shows.GET("", ginshow.ListShow(appCtx))
+		//GET /v1/shows/:id
+		shows.GET("/:id", ginshow.GetShowWithID(appCtx))
+		//POST /v1/shows
+		shows.POST("", middleware.RequireAuth(appCtx, userStore), ginshow.CreateShow(appCtx))
+	}
+
+	{
+		tickets := v1.Group("/tickets")
+		//GET /v1/tickets
+		tickets.GET("", ginticket.ListTickets(appCtx))
+		//UPDATE /v1/tickets/
+		tickets.PUT("", middleware.RequireAuth(appCtx, userStore), ginticket.UpdateTicket(appCtx))
 	}
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)

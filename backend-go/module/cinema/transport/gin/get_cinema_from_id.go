@@ -43,6 +43,6 @@ func GetCinemaWithID(ctx appctx.AppContext) gin.HandlerFunc {
 
 		data.Mask(true)
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
+		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data))
 	}
 }

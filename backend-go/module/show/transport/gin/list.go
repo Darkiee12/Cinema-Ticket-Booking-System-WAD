@@ -1,28 +1,40 @@
-package ginmovie
+package ginshow
 
 import (
 	"cinema/common"
 	"cinema/component/appctx"
-	moviebusiness "cinema/module/movie/biz"
-	moviemodel "cinema/module/movie/model"
-	moviestore "cinema/module/movie/store"
+	showbusiness "cinema/module/show/biz"
+	showmodel "cinema/module/show/model"
+	showstore "cinema/module/show/store"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func ListMovie(ctx appctx.AppContext) gin.HandlerFunc {
+// ListShow
+// @Summary List shows
+// @Description List shows
+// @Tags shows
+// @ID list-shows
+// @Accept  json
+// @Produce  json
+// @Param imdbID query string false "Movie ID"
+// @Param date query string false "Date"
+// @Param startTime query string false "Start Time"
+// @Success 200 {object} common.successRes{data=[]showmodel.Show}
+// @Router /shows [get]
+func ListShow(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()
 
-		var filter moviemodel.Filter
+		var filter showmodel.Filter
 		if err := c.ShouldBind(&filter); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		store := moviestore.NewSQLStore(db)
-		biz := moviebusiness.NewListMovieBusiness(store)
+		store := showstore.NewSQLStore(db)
+		biz := showbusiness.NewListShowsBusiness(store)
 
-		result, err := biz.ListMovies(c.Request.Context(), &filter)
+		result, err := biz.ListTickets(c.Request.Context(), &filter)
 		if err != nil {
 			panic(err)
 		}

@@ -9,7 +9,7 @@ import (
 func (store *sqlStore) UpdateShow(
 	ctx context.Context,
 	cond map[string]interface{},
-	data *showmodel.Show,
+	data *showmodel.ShowUpdate,
 ) error {
 	if err := store.db.Where(cond).Updates(data).Error; err != nil {
 		return common.ErrDB(err)

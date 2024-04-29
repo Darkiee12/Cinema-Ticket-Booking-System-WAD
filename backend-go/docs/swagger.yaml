@@ -2,7 +2,7 @@ definitions:
   auditoriummodel.Auditorium:
     properties:
       cinema:
-        $ref: '#/definitions/common.SimpleCinema'
+        $ref: '#/definitions/common.Cinema'
       created_at:
         type: string
       id:
@@ -18,8 +18,6 @@ definitions:
     type: object
   auditoriummodel.AuditoriumCreate:
     properties:
-      cinema_id:
-        type: integer
       name:
         type: string
       seats:
@@ -58,13 +56,17 @@ definitions:
         type: string
       name:
         type: string
+      owner_id:
+        type: integer
       phone_number:
         type: string
     type: object
-  common.SimpleCinema:
+  common.Cinema:
     properties:
       address:
         type: string
+      capacity:
+        type: integer
       created_at:
         type: string
       email:
@@ -72,6 +74,12 @@ definitions:
       id:
         type: string
       name:
+        type: string
+      owner:
+        $ref: '#/definitions/common.SimpleUser'
+      owner_id:
+        type: integer
+      phone_number:
         type: string
       status:
         type: integer
@@ -127,6 +135,92 @@ definitions:
       name:
         type: string
     type: object
+  moviemodel.Movie:
+    properties:
+      awards:
+        type: string
+      boxOffice:
+        type: number
+      createdAt:
+        type: string
+      dvd:
+        type: string
+      imdbID:
+        type: string
+      imdbRating:
+        type: number
+      imdbVotes:
+        type: integer
+      metascore:
+        type: integer
+      originalTitle:
+        type: string
+      plot:
+        type: string
+      poster:
+        type: string
+      production:
+        type: string
+      rated:
+        type: string
+      released:
+        type: string
+      runtime:
+        type: integer
+      tagline:
+        type: string
+      title:
+        type: string
+      tmdbID:
+        type: integer
+      type:
+        type: string
+      website:
+        type: string
+      year:
+        type: integer
+    type: object
+  showmodel.Show:
+    properties:
+      auditoriumID:
+        type: string
+      date:
+        type: string
+      endTime:
+        type: string
+      id:
+        type: integer
+      imdbID:
+        type: string
+      startTime:
+        type: string
+    type: object
+  ticketmodel.Ticket:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      seat_number:
+        type: integer
+      show_id:
+        type: integer
+      status:
+        type: integer
+      timestamp:
+        type: string
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/common.SimpleUser'
+    type: object
+  ticketmodel.TicketUpdate:
+    properties:
+      seat_number:
+        type: integer
+      show_id:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
@@ -155,6 +249,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: Create an auditorium
       tags:
       - auditoriums
@@ -222,6 +318,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - BearerAuth: []
       summary: Create a cinema
       tags:
       - cinemas
@@ -459,4 +557,250 @@ paths:
       summary: Get a company by its ID
       tags:
       - companies
+  /movies:
+    get:
+      consumes:
+      - application/json
+      description: List movies
+      operationId: list-movies
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Cursor
+        in: query
+        name: cursor
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/moviemodel.Movie'
+                  type: array
+              type: object
+      summary: List movies
+      tags:
+      - movies
+    post:
+      consumes:
+      - application/json
+      description: Create a movie
+      operationId: create-movie
+      parameters:
+      - description: Movie
+        in: body
+        name: movie
+        required: true
+        schema:
+          $ref: '#/definitions/moviemodel.Movie'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create a movie
+      tags:
+      - movies
+  /movies/{imdb_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a movie with ID
+      operationId: get-movie-with-id
+      parameters:
+      - description: IMDB ID
+        in: path
+        name: imdb_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/moviemodel.Movie'
+              type: object
+      summary: Get a movie with ID
+      tags:
+      - movies
+  /shows:
+    get:
+      consumes:
+      - application/json
+      description: List shows
+      operationId: list-shows
+      parameters:
+      - description: Movie ID
+        in: query
+        name: imdbID
+        type: string
+      - description: Date
+        in: query
+        name: date
+        type: string
+      - description: Start Time
+        in: query
+        name: startTime
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/showmodel.Show'
+                  type: array
+              type: object
+      summary: List shows
+      tags:
+      - shows
+    post:
+      consumes:
+      - application/json
+      description: Create a show
+      operationId: create-show
+      parameters:
+      - description: Show
+        in: body
+        name: show
+        required: true
+        schema:
+          $ref: '#/definitions/showmodel.Show'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create a show
+      tags:
+      - shows
+  /shows/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a show with ID
+      operationId: get-show-with-id
+      parameters:
+      - description: Show ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/showmodel.Show'
+              type: object
+      summary: Get a show with ID
+      tags:
+      - shows
+  /tickets:
+    get:
+      consumes:
+      - application/json
+      description: List tickets
+      operationId: list-tickets
+      parameters:
+      - description: Show ID
+        in: query
+        name: showID
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/ticketmodel.Ticket'
+                  type: array
+              type: object
+      summary: List tickets
+      tags:
+      - tickets
+    put:
+      consumes:
+      - application/json
+      description: Let user buy a ticket
+      operationId: update-ticket
+      parameters:
+      - description: Ticket
+        in: body
+        name: ticket
+        required: true
+        schema:
+          $ref: '#/definitions/ticketmodel.TicketUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Let user buy a ticket
+      tags:
+      - tickets
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

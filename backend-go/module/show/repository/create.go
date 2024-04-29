@@ -34,12 +34,12 @@ type createShowRepo struct {
 
 func NewCreateShowRepo(
 	store CreateShowStore,
-	seatsStore CreateTicketStore,
+	ticketStore CreateTicketStore,
 	auditoriumSeatsStore ListAuditoriumSeatsStore,
 ) *createShowRepo {
 	return &createShowRepo{
 		store:                    store,
-		createTicketStoreStore:   seatsStore,
+		createTicketStoreStore:   ticketStore,
 		listAuditoriumSeatsStore: auditoriumSeatsStore,
 	}
 }

@@ -6,6 +6,11 @@
     "paths": {
         "/auditoriums": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create an auditorium",
                 "consumes": [
                     "application/json"
@@ -116,6 +121,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new cinema",
                 "consumes": [
                     "application/json"
@@ -543,6 +553,411 @@
                     }
                 }
             }
+        },
+        "/movies": {
+            "get": {
+                "description": "List movies",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "movies"
+                ],
+                "summary": "List movies",
+                "operationId": "list-movies",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Cursor",
+                        "name": "cursor",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/moviemodel.Movie"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a movie",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "movies"
+                ],
+                "summary": "Create a movie",
+                "operationId": "create-movie",
+                "parameters": [
+                    {
+                        "description": "Movie",
+                        "name": "movie",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/moviemodel.Movie"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/movies/{imdb_id}": {
+            "get": {
+                "description": "Get a movie with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "movies"
+                ],
+                "summary": "Get a movie with ID",
+                "operationId": "get-movie-with-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "IMDB ID",
+                        "name": "imdb_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/moviemodel.Movie"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/shows": {
+            "get": {
+                "description": "List shows",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shows"
+                ],
+                "summary": "List shows",
+                "operationId": "list-shows",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Movie ID",
+                        "name": "imdbID",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start Time",
+                        "name": "startTime",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/showmodel.Show"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a show",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shows"
+                ],
+                "summary": "Create a show",
+                "operationId": "create-show",
+                "parameters": [
+                    {
+                        "description": "Show",
+                        "name": "show",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/showmodel.Show"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/shows/{id}": {
+            "get": {
+                "description": "Get a show with ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "shows"
+                ],
+                "summary": "Get a show with ID",
+                "operationId": "get-show-with-id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Show ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/showmodel.Show"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/tickets": {
+            "get": {
+                "description": "List tickets",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tickets"
+                ],
+                "summary": "List tickets",
+                "operationId": "list-tickets",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Show ID",
+                        "name": "showID",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/ticketmodel.Ticket"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Let user buy a ticket",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tickets"
+                ],
+                "summary": "Let user buy a ticket",
+                "operationId": "update-ticket",
+                "parameters": [
+                    {
+                        "description": "Ticket",
+                        "name": "ticket",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ticketmodel.TicketUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -550,7 +965,7 @@
             "type": "object",
             "properties": {
                 "cinema": {
-                    "$ref": "#/definitions/common.SimpleCinema"
+                    "$ref": "#/definitions/common.Cinema"
                 },
                 "created_at": {
                     "type": "string"
@@ -575,9 +990,6 @@
         "auditoriummodel.AuditoriumCreate": {
             "type": "object",
             "properties": {
-                "cinema_id": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -636,16 +1048,22 @@
                 "name": {
                     "type": "string"
                 },
+                "owner_id": {
+                    "type": "integer"
+                },
                 "phone_number": {
                     "type": "string"
                 }
             }
         },
-        "common.SimpleCinema": {
+        "common.Cinema": {
             "type": "object",
             "properties": {
                 "address": {
                     "type": "string"
+                },
+                "capacity": {
+                    "type": "integer"
                 },
                 "created_at": {
                     "type": "string"
@@ -657,6 +1075,15 @@
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "owner": {
+                    "$ref": "#/definitions/common.SimpleUser"
+                },
+                "owner_id": {
+                    "type": "integer"
+                },
+                "phone_number": {
                     "type": "string"
                 },
                 "status": {
@@ -740,6 +1167,144 @@
                     "type": "string"
                 }
             }
+        },
+        "moviemodel.Movie": {
+            "type": "object",
+            "properties": {
+                "awards": {
+                    "type": "string"
+                },
+                "boxOffice": {
+                    "type": "number"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "dvd": {
+                    "type": "string"
+                },
+                "imdbID": {
+                    "type": "string"
+                },
+                "imdbRating": {
+                    "type": "number"
+                },
+                "imdbVotes": {
+                    "type": "integer"
+                },
+                "metascore": {
+                    "type": "integer"
+                },
+                "originalTitle": {
+                    "type": "string"
+                },
+                "plot": {
+                    "type": "string"
+                },
+                "poster": {
+                    "type": "string"
+                },
+                "production": {
+                    "type": "string"
+                },
+                "rated": {
+                    "type": "string"
+                },
+                "released": {
+                    "type": "string"
+                },
+                "runtime": {
+                    "type": "integer"
+                },
+                "tagline": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "tmdbID": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "showmodel.Show": {
+            "type": "object",
+            "properties": {
+                "auditoriumID": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "imdbID": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "ticketmodel.Ticket": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "seat_number": {
+                    "type": "integer"
+                },
+                "show_id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "timestamp": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/common.SimpleUser"
+                }
+            }
+        },
+        "ticketmodel.TicketUpdate": {
+            "type": "object",
+            "properties": {
+                "seat_number": {
+                    "type": "integer"
+                },
+                "show_id": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

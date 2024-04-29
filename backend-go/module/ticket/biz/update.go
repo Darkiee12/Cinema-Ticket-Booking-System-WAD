@@ -27,8 +27,12 @@ type updateTicketBiz struct {
 	store UpdateTicketStore
 }
 
-func (biz *updateTicketBiz) SellTicketToCustomer(ctx context.Context, seatNumber int, showID, userID int64) error {
-	ticket, err := biz.store.FindTicket(ctx, map[string]interface{}{"seat_number": seatNumber, "show_id": showID})
+func (biz *updateTicketBiz) SellTicketToCustomer(ctx context.Context, data *ticketmodel.TicketUpdate) error {
+	ticket, err := biz.store.FindTicket(ctx,
+		map[string]interface{}{
+			"seat_number": data.SeatNumber,
+			"show_id":     data.ShowID,
+		})
 
 	if err != nil {
 		return err
@@ -41,10 +45,7 @@ func (biz *updateTicketBiz) SellTicketToCustomer(ctx context.Context, seatNumber
 		return ticketmodel.ErrTicketUnavailable
 	}
 
-	data := &ticketmodel.TicketUpdate{
-		Status: ticketmodel.TicketStatusSold,
-		UserID: userID,
-	}
+	data.Status = ticketmodel.TicketStatusSold
 
 	if err := biz.store.UpdateTicket(ctx, map[string]interface{}{"id": ticket.ID}, data); err != nil {
 		return err

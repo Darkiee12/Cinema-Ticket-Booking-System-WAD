@@ -11,10 +11,10 @@ const TableName = "auditoriums"
 
 type Auditorium struct {
 	common.SQLModel `json:",inline"`
-	Name            string               `json:"name" gorm:"column:name;"`
-	Seats           int                  `json:"seats" gorm:"column:seats;"`
-	CinemaID        int                  `json:"-" gorm:"column:cinema_id;"`
-	Cinema          *common.SimpleCinema `json:"cinema" gorm:"preload:false;foreignKey:CinemaID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Name            string         `json:"name" gorm:"column:name;"`
+	Seats           int            `json:"seats" gorm:"column:seats;"`
+	CinemaID        int            `json:"-" gorm:"column:cinema_id;"`
+	Cinema          *common.Cinema `json:"cinema" gorm:"preload:false;foreignKey:CinemaID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 func (Auditorium) TableName() string { return TableName }
@@ -30,7 +30,7 @@ type AuditoriumCreate struct {
 	common.SQLModel `json:",inline" swaggerignore:"true"`
 	Name            string `json:"name" gorm:"column:name;"`
 	Seats           int    `json:"seats" gorm:"column:seats;"`
-	CinemaID        int    `json:"cinema_id" gorm:"column:cinema_id;"`
+	CinemaID        int    `json:"-" gorm:"column:cinema_id;"`
 }
 
 func (AuditoriumCreate) TableName() string { return TableName }

@@ -9,6 +9,16 @@ import (
 	"net/http"
 )
 
+// GetMovieWithID
+// @Summary Get a movie with ID
+// @Description Get a movie with ID
+// @Tags movies
+// @ID get-movie-with-id
+// @Accept  json
+// @Produce  json
+// @Param imdb_id path string true "IMDB ID"
+// @Success 200 {object} common.successRes{data=moviemodel.Movie}
+// @Router /movies/{imdb_id} [get]
 func GetMovieWithID(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//id, err := strconv.Atoi(c.Param("restaurant_id"))
@@ -26,6 +36,6 @@ func GetMovieWithID(ctx appctx.AppContext) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
+		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data))
 	}
 }

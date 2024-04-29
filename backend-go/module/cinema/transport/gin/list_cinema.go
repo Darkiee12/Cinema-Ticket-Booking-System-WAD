@@ -23,16 +23,16 @@ import (
 // @Param owner_id query string false "Owner ID"
 // @Success 200 {object} common.successRes{data=[]cinemamodel.Cinema}
 // @Router /cinemas [get]
-//func ListCinema(ctx appctx.AppContext) gin.HandlerFunc {
-//	return func(c *gin.Context) {
-//		httptransport.NewServer(
-//			cinemaendpoint.NewListCinemaEndpoint(ctx),
-//			cinemaendpoint.DecodeListCinemaRequest,
-//			cinemaendpoint.EncodeListCinemaResponse,
-//		).ServeHTTP(c.Writer, c.Request.WithContext(context.WithValue(c, "ginContext", c)))
+//
+//	func ListCinema(ctx appctx.AppContext) gin.HandlerFunc {
+//		return func(c *gin.Context) {
+//			httptransport.NewServer(
+//				cinemaendpoint.NewListCinemaEndpoint(ctx),
+//				cinemaendpoint.DecodeListCinemaRequest,
+//				cinemaendpoint.EncodeListCinemaResponse,
+//			).ServeHTTP(c.Writer, c.Request.WithContext(context.WithValue(c, "ginContext", c)))
+//		}
 //	}
-//}
-
 func ListCinema(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()

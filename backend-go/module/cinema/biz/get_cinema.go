@@ -40,3 +40,13 @@ func (biz *findCinemaBiz) FindCinemaByName(ctx context.Context, name string) (*c
 
 	return data, nil
 }
+
+func (biz *findCinemaBiz) FindCinemaByOwnerID(ctx context.Context, ownerID int) (*cinemamodel.Cinema, error) {
+	data, err := biz.store.FindCinema(ctx, map[string]interface{}{"owner_id": ownerID}, "Owner")
+
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

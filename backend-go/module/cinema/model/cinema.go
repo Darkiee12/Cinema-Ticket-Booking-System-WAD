@@ -9,16 +9,7 @@ import (
 const EntityName = "Cinema"
 const TableName = "cinemas"
 
-type Cinema struct {
-	common.SQLModel `json:",inline"`
-	OwnerID         int                `json:"owner_id" gorm:"column:owner_id;"`
-	Owner           *common.SimpleUser `json:"owner" gorm:"preload:false;foreignKey:OwnerID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	Name            string             `json:"name" gorm:"column:name;"`
-	Address         string             `json:"address"  gorm:"column:address;"`
-	Capacity        int                `json:"capacity" gorm:"column:capacity;"`
-	Email           string             `json:"email" gorm:"column:email;"`
-	PhoneNumber     string             `json:"phone_number" gorm:"column:phone_number;"`
-}
+type Cinema common.Cinema
 
 func (Cinema) TableName() string { return TableName }
 
@@ -32,6 +23,7 @@ func (c *Cinema) Mask(isAdminOrOwner bool) {
 
 type CinemaCreate struct {
 	common.SQLModel `json:",inline" swaggerignore:"true"`
+	OwnerID         int    `json:"owner_id" gorm:"column:owner_id;"`
 	Name            string `json:"name" gorm:"column:name;"`
 	Address         string `json:"address"  gorm:"column:address;"`
 	Email           string `json:"email" gorm:"column:email;"`

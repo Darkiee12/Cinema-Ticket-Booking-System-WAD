@@ -3,12 +3,11 @@ package showstore
 import (
 	"cinema/common"
 	showmodel "cinema/module/show/model"
-	ticketmodel "cinema/module/ticket/model"
 	"context"
 )
 
-func (store *sqlStore) GetShows(_ context.Context, id []int) ([]ticketmodel.Ticket, error) {
-	var result []ticketmodel.Ticket
+func (store *sqlStore) GetShows(_ context.Context, id []int) ([]showmodel.Show, error) {
+	var result []showmodel.Show
 
 	db := store.db.Table(showmodel.TableName)
 

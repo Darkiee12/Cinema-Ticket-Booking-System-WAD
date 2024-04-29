@@ -36,8 +36,10 @@ type TicketCreate struct {
 func (TicketCreate) TableName() string { return TableName }
 
 type TicketUpdate struct {
-	Status int16 `gorm:"column:status"`
-	UserID int64 `gorm:"column:user_id"`
+	SeatNumber int   `gorm:"column:seat_number" json:"seat_number"`
+	ShowID     int64 `gorm:"column:show_id" json:"show_id"`
+	Status     int16 `gorm:"column:status" json:"-"`
+	UserID     int64 `gorm:"column:user_id" json:"-"`
 }
 
 func (TicketUpdate) TableName() string { return TableName }

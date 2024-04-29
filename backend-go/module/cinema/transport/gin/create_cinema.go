@@ -19,9 +19,11 @@ import (
 // @Produce  json
 // @Param cinema body cinemamodel.CinemaCreate true "Cinema"
 // @Success 200 {object} common.successRes{data=string}
+// @Security BearerAuth
 // @Router /cinemas [post]
 func CreateCinema(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		requester := c.MustGet(common.CurrentUser).(common.Requester)
 		db := ctx.GetMainDBConnection()
 
 		var data cinemamodel.CinemaCreate
@@ -32,13 +34,13 @@ func CreateCinema(ctx appctx.AppContext) gin.HandlerFunc {
 
 		store := cinemastore.NewSQLStore(db)
 		biz := cinemabuisness.NewCreateCinemaBusiness(store)
-
+		data.OwnerID = requester.GetUserId()
 		if err := biz.CreateCinema(c.Request.Context(), &data); err != nil {
 			panic(err)
 		}
 
 		data.Mask(false)
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.FakeID.String()))
+		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data.FakeID.String()))
 	}
 }
