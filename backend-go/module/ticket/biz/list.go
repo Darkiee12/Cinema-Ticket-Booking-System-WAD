@@ -23,7 +23,7 @@ func (business *listTicketsBusiness) ListTickets(
 	context context.Context,
 	filter *ticketmodel.Filter,
 ) ([]ticketmodel.Ticket, error) {
-	res, err := business.store.ListTicketsWithCondition(context, filter)
+	res, err := business.store.ListTicketsWithCondition(context, filter, "User")
 	if err != nil {
 		return nil, err
 	}

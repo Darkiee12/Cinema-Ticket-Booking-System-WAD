@@ -921,6 +921,31 @@ paths:
       summary: Let user buy a ticket
       tags:
       - tickets
+  /tickets/user:
+    get:
+      consumes:
+      - application/json
+      description: Get tickets by user
+      operationId: get-tickets-by-user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/ticketmodel.Ticket'
+                  type: array
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get tickets by user
+      tags:
+      - tickets
 securityDefinitions:
   ApiKeyAuth:
     in: header

@@ -22,6 +22,9 @@ func (store *sqlStore) ListTicketsWithCondition(
 		if len(f.Status) > 0 {
 			db = db.Where("status in (?)", f.Status)
 		}
+		if f.UserID > 0 {
+			db = db.Where("user_id = ?", f.UserID)
+		}
 	}
 
 	for i := range moreKeys {
