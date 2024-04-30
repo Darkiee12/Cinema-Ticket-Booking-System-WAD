@@ -11,6 +11,16 @@ import (
 	"net/http"
 )
 
+// Register
+// @Summary Register
+// @Description Register
+// @Tags users
+// @ID register
+// @Accept  json
+// @Produce  json
+// @Param cinema body usermodel.UserCreate true "User"
+// @Success 200 {object} common.successRes{data=string}
+// @Router /register [post]
 func Register(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := appCtx.GetMainDBConnection()

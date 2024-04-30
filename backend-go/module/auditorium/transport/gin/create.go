@@ -34,7 +34,7 @@ func CreateAuditorium(ctx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		requester := c.MustGet(common.CurrentUser).(common.Requester)
-		{
+		if requester.GetRole() != "admin" {
 			store := cinemastore.NewSQLStore(db)
 			biz := cinemabuisness.NewFindCinemaBiz(store)
 			cinema, err := biz.FindCinemaByOwnerID(c.Request.Context(), requester.GetUserId())

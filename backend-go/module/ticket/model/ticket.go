@@ -27,10 +27,10 @@ func (t *Ticket) Mask(isAdminOrOwner bool) {
 }
 
 type TicketCreate struct {
-	SeatNumber int       `gorm:"column:seat_number" json:"seat_number"`
-	Status     int16     `gorm:"column:status" json:"status"`
-	Timestamp  time.Time `gorm:"column:timestamp" json:"timestamp"`
-	ShowID     int64     `gorm:"column:show_id" json:"showID"`
+	SeatNumber int        `gorm:"column:seat_number" json:"seat_number"`
+	Status     int16      `gorm:"column:status" json:"status"`
+	Timestamp  *time.Time `gorm:"column:timestamp" json:"timestamp"`
+	ShowID     int64      `gorm:"column:show_id" json:"showID"`
 }
 
 func (TicketCreate) TableName() string { return TableName }

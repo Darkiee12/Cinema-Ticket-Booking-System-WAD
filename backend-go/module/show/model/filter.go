@@ -1,9 +1,11 @@
 package showmodel
 
-import "time"
+import (
+	"cinema/common"
+)
 
 type Filter struct {
-	Date      *time.Time `json:"date"`
-	StartTime *time.Time `json:"startTime"`
-	ImdbID    string     `json:"imdbID"`
+	Date *common.Date `json:"date" form:"date"`
+	//StartTime *common.Time `json:"startTime" form:"startTime"`
+	ImdbID string `json:"imdbID" form:"imdbID"`
 }

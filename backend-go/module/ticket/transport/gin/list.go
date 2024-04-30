@@ -35,10 +35,12 @@ func ListTickets(ctx appctx.AppContext) gin.HandlerFunc {
 		biz := ticketbusiness.NewListTicketsBusiness(store)
 
 		result, err := biz.ListTickets(c.Request.Context(), &filter)
+		var pagingData common.Paging
+		pagingData.Total = int64(len(result))
 		if err != nil {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.NewSuccessResponse(result, nil, filter))
+		c.JSON(http.StatusOK, common.NewSuccessResponse(result, &pagingData, &filter))
 	}
 }

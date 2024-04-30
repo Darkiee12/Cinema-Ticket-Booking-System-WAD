@@ -3,6 +3,7 @@ package userbiz
 import (
 	"cinema/common"
 	"cinema/component/appctx"
+	"cinema/component/tokenprovider"
 	"cinema/module/user/usermodel"
 	"context"
 )
@@ -62,7 +63,7 @@ func (biz *loginBusiness) Login(ctx context.Context, data *usermodel.UserLogin) 
 	}
 
 	payload := tokenprovider.TokenPayload{
-		UserId: user.Id,
+		UserId: user.ID,
 		Role:   user.Role,
 	}
 

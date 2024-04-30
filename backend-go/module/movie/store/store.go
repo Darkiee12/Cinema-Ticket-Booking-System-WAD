@@ -7,5 +7,5 @@ type sqlStore struct {
 }
 
 func NewSQLStore(db *gorm.DB) *sqlStore {
-	return &sqlStore{db: db}
+	return &sqlStore{db: db.Omit("created_at", "updated_at")}
 }

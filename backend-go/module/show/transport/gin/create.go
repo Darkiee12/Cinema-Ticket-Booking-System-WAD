@@ -47,7 +47,7 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		// Check if the user has permission to create show
-		{
+		if requester.GetRole() != "admin" {
 			store := auditoriumstore.NewSQLStore(db)
 			biz := auditoriumbusiness.NewFindAuditoriumBiz(store)
 			auditorium, err := biz.FindAuditoriumById(c.Request.Context(), int(uid.GetLocalID()))
@@ -58,6 +58,8 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 				panic(common.ErrNoPermission(errors.New("user does not have permission to create show")))
 			}
 		}
+
+		data.AuditoriumID = int64(uid.GetLocalID())
 
 		store := showstore.NewSQLStore(db)
 		ticketStore := ticketstore.NewSQLStore(db)

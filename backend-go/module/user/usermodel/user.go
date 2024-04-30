@@ -16,9 +16,8 @@ type User struct {
 	Email           string     `json:"email" gorm:"column:email;"`
 	Password        string     `json:"-" gorm:"column:password;"`
 	Gender          string     `json:"gender" gorm:"gender"`
-	LastName        string     `json:"last_name" gorm:"column:last_name;"`
-	FirstName       string     `json:"first_name" gorm:"column:first_name;"`
-	Tier            string     `json:"tier" gorm:"column:tier;"`
+	Name            string     `json:"name" gorm:"column:name;"`
+	Role            string     `json:"role" gorm:"column:tier;"`
 	Salt            string     `json:"-" gorm:"column:salt;"`
 	Phone           string     `json:"phone" gorm:"column:phone_number;"`
 }
@@ -32,7 +31,7 @@ func (u *User) GetEmail() string {
 }
 
 func (u *User) GetRole() string {
-	return u.Tier
+	return u.Role
 }
 
 func (u *User) Mask(isAdmin bool) {

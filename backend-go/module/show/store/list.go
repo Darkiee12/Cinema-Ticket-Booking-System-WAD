@@ -2,10 +2,10 @@ package showstore
 
 import (
 	"cinema/common"
-	cinemamodel "cinema/module/cinema/model"
 	showmodel "cinema/module/show/model"
 	"context"
-	"time"
+	"log"
+	"strings"
 )
 
 func (store *sqlStore) ListShowsWithCondition(
@@ -15,23 +15,26 @@ func (store *sqlStore) ListShowsWithCondition(
 ) ([]showmodel.Show, error) {
 	var result []showmodel.Show
 
-	db := store.db.Table(cinemamodel.TableName)
+	db := store.db.Table(showmodel.TableName)
 
 	if f := filter; f != nil {
-		if f.StartTime != nil {
-			db = db.Where("start_time BETWEEN ? AND ?", f.StartTime, f.StartTime.Add(time.Hour*12))
-		}
+		f.ImdbID = strings.TrimSpace(f.ImdbID)
+
 		if f.Date != nil {
-			db = db.Where("date BETWEEN ? AND ?", f.Date, f.Date.Add(time.Hour*24))
+			db = db.Where("date = ?", f.Date)
 		}
 		if f.ImdbID != "" {
 			db = db.Where("imdb_id = ?", f.ImdbID)
 		}
-		if f.StartTime == nil && f.Date == nil && f.ImdbID != "" {
-			db = db.Where("date BETWEEN ? AND ?", time.Now(), time.Now().Add(time.Hour*24))
+		if f.Date == nil && f.ImdbID == "" {
+			date := common.NowDate()
+			log.Println("Test: ", (&date).String())
+			db = db.Where("date = ?", (&date).String())
 		}
 	} else {
-		db = db.Where("date BETWEEN ? AND ?", time.Now(), time.Now().Add(time.Hour*24))
+		date := common.NowDate()
+		log.Println("Test: ", (&date).String())
+		db = db.Where("date = ?", (&date).String())
 	}
 
 	for i := range moreKeys {

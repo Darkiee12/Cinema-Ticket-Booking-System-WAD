@@ -18,6 +18,8 @@ definitions:
     type: object
   auditoriummodel.AuditoriumCreate:
     properties:
+      cinema_id:
+        type: integer
       name:
         type: string
       seats:
@@ -141,7 +143,7 @@ definitions:
         type: string
       boxOffice:
         type: number
-      createdAt:
+      created_at:
         type: string
       dvd:
         type: string
@@ -188,8 +190,6 @@ definitions:
         type: string
       endTime:
         type: string
-      id:
-        type: integer
       imdbID:
         type: string
       startTime:
@@ -220,6 +220,54 @@ definitions:
         type: integer
       show_id:
         type: integer
+    type: object
+  tokenprovider.Token:
+    properties:
+      created_at:
+        type: string
+      expiry:
+        type: integer
+      token:
+        type: string
+    type: object
+  usermodel.User:
+    properties:
+      created_at:
+        type: string
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+      status:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  usermodel.UserCreate:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  usermodel.UserLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
     type: object
 info:
   contact: {}
@@ -319,7 +367,7 @@ paths:
                   type: string
               type: object
       security:
-      - BearerAuth: []
+      - ApiKeyAuth: []
       summary: Create a cinema
       tags:
       - cinemas
@@ -557,6 +605,34 @@ paths:
       summary: Get a company by its ID
       tags:
       - companies
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      operationId: login
+      parameters:
+      - description: User
+        in: body
+        name: cinema
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.UserLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/tokenprovider.Token'
+              type: object
+      summary: Login
+      tags:
+      - users
   /movies:
     get:
       consumes:
@@ -649,6 +725,57 @@ paths:
       summary: Get a movie with ID
       tags:
       - movies
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Get profile
+      operationId: get-profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  $ref: '#/definitions/usermodel.User'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get profile
+      tags:
+      - users
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      operationId: register
+      parameters:
+      - description: User
+        in: body
+        name: cinema
+        required: true
+        schema:
+          $ref: '#/definitions/usermodel.UserCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Register
+      tags:
+      - users
   /shows:
     get:
       consumes:
@@ -663,10 +790,6 @@ paths:
       - description: Date
         in: query
         name: date
-        type: string
-      - description: Start Time
-        in: query
-        name: startTime
         type: string
       produces:
       - application/json

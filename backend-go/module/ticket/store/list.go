@@ -2,7 +2,6 @@ package ticketstore
 
 import (
 	"cinema/common"
-	cinemamodel "cinema/module/cinema/model"
 	ticketmodel "cinema/module/ticket/model"
 	"context"
 )
@@ -14,7 +13,7 @@ func (store *sqlStore) ListTicketsWithCondition(
 ) ([]ticketmodel.Ticket, error) {
 	var result []ticketmodel.Ticket
 
-	db := store.db.Table(cinemamodel.TableName)
+	db := store.db.Table(ticketmodel.TableName)
 
 	if f := filter; f != nil {
 		if f.ShowID > 0 {

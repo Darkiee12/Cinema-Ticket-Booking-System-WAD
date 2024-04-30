@@ -7,12 +7,11 @@ import (
 const EntityName = "UserID"
 
 type UserCreate struct {
-	common.SQLModel `json:",inline"`
+	common.SQLModel `json:",inline" swaggerignore:"true"`
 	Email           string `json:"email" gorm:"column:email;"`
 	Password        string `json:"password" gorm:"column:password;"`
-	LastName        string `json:"last_name" gorm:"column:last_name;"`
-	FirstName       string `json:"first_name" gorm:"column:first_name;"`
-	Role            string `json:"-" gorm:"column:role;"`
+	Name            string `json:"name" gorm:"column:name;"`
+	Role            string `json:"-" gorm:"column:tier;"`
 	Salt            string `json:"-" gorm:"column:salt;"`
 }
 

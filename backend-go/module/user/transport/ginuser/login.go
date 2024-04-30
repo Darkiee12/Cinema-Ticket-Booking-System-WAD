@@ -12,6 +12,16 @@ import (
 	"net/http"
 )
 
+// Login
+// @Summary Login
+// @Description Login
+// @Tags users
+// @ID login
+// @Accept  json
+// @Produce  json
+// @Param cinema body usermodel.UserLogin true "User"
+// @Success 200 {object} common.successRes{data=tokenprovider.Token}
+// @Router /login [post]
 func Login(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var loginUserData usermodel.UserLogin

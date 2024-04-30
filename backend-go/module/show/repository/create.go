@@ -7,6 +7,7 @@ import (
 	showmodel "cinema/module/show/model"
 	ticketmodel "cinema/module/ticket/model"
 	"context"
+	"errors"
 )
 
 type CreateShowStore interface {
@@ -49,6 +50,9 @@ func (repo *createShowRepo) CreateShow(
 	data *showmodel.Show,
 ) error {
 	return repo.store.WithinTransaction(ctx, func(TxCtx context.Context) error {
+		if data.AuditoriumID == 0 {
+			return errors.New("auditorium id is required")
+		}
 		seats, err := repo.listAuditoriumSeatsStore.ListSeatsWithCondition(TxCtx, &auditoriumseatsmodel.Filter{
 			AuditoriumID: int(data.AuditoriumID),
 			Status:       []int{auditoriumseatsmodel.SeatStatusActive},

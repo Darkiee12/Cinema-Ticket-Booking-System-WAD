@@ -10,6 +10,7 @@ import (
 	ginmovie "cinema/module/movie/transport/gin"
 	ginshow "cinema/module/show/transport/gin"
 	ginticket "cinema/module/ticket/transport/gin"
+	"cinema/module/user/transport/ginuser"
 	"cinema/module/user/userstore"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -130,6 +131,16 @@ func main() {
 		tickets.GET("", ginticket.ListTickets(appCtx))
 		//UPDATE /v1/tickets/
 		tickets.PUT("", middleware.RequireAuth(appCtx, userStore), ginticket.UpdateTicket(appCtx))
+	}
+
+	{
+		users := v1
+		//GET /v1/profile
+		users.GET("/profile", middleware.RequireAuth(appCtx, userStore), ginuser.GetProfile(appCtx))
+		//POST /v1/register
+		users.POST("/register", ginuser.Register(appCtx))
+		//POST /v1/login
+		users.POST("/login", ginuser.Login(appCtx))
 	}
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)

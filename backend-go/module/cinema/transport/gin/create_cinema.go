@@ -19,7 +19,7 @@ import (
 // @Produce  json
 // @Param cinema body cinemamodel.CinemaCreate true "Cinema"
 // @Success 200 {object} common.successRes{data=string}
-// @Security BearerAuth
+// @Security ApiKeyAuth
 // @Router /cinemas [post]
 func CreateCinema(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {

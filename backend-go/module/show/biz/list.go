@@ -19,7 +19,7 @@ type listShowsBusiness struct {
 func NewListShowsBusiness(store ListShowsStore) *listShowsBusiness {
 	return &listShowsBusiness{store: store}
 }
-func (business *listShowsBusiness) ListTickets(
+func (business *listShowsBusiness) ListShows(
 	context context.Context,
 	filter *showmodel.Filter,
 ) ([]showmodel.Show, error) {
