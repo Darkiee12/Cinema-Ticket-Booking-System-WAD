@@ -10,3 +10,4 @@ The database config in `local_db_env`
 5. The app will be available at `localhost:8080` 
 6. The api documentation will be available at `http://localhost:8080/swagger/index.html` 
 
+
