@@ -19,6 +19,7 @@ func CreateCountry(ctx appctx.AppContext) gin.HandlerFunc {
 		if err := c.ShouldBind(&data); err != nil {
 			panic(err)
 		}
+		
 
 		store := countrystore.NewSQLStore(db)
 		biz := countrybusiness.NewCreateCountryBusiness(store)
@@ -27,6 +28,6 @@ func CreateCountry(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.Name))
+		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data.Name))
 	}
 }

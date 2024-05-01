@@ -11,7 +11,9 @@ func (store *sqlStore) UpdateTicket(
 	cond map[string]interface{},
 	data *ticketmodel.TicketUpdate,
 ) error {
-	if err := store.db.Where(cond).Updates(data).Error; err != nil {
+	if err := store.db.Where(cond).
+		Select("SeatNumber", "ShowID", "Status", "UserID").
+		Updates(data).Error; err != nil {
 		return common.ErrDB(err)
 	}
 	return nil
