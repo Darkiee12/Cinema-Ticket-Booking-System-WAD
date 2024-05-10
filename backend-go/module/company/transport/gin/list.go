@@ -22,7 +22,6 @@ import (
 // @Param cursor query string false "Cursor"
 // @Param owner_id query string false "Owner ID"
 // @Success 200 {object} common.successRes{data=[]companymodel.Company}
-// @Router /companies [get]
 func ListCompany(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()

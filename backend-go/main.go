@@ -17,9 +17,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -28,7 +28,7 @@ import (
 // @name Authorization
 func main() {
 	// Read the content of the db_env file
-	content, err := ioutil.ReadFile("local_db_env")
+	content, err := os.ReadFile("local_db_env")
 	if err != nil {
 		log.Fatalln(err)
 	}
