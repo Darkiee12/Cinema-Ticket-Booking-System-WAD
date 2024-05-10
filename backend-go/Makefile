@@ -5,3 +5,7 @@ swagger:
 build: swagger
 	GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -a -o app-linux
 	GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -a -o app-windows.exe
+deploy:
+	./deploy.sh
+shutdown:
+	docker-compose down
