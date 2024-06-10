@@ -1,0 +1,48 @@
+services:
+  postgresdb:
+    image: postgres:15.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cinema
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
+    networks:
+      - cinema_network
+
+  backend:
+    build:
+      context: ./backend-go
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - postgresdb
+    networks:
+      - cinema_network
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    working_dir: /home/bun/app
+    volumes:
+      - ./frontend:/home/bun/app
+      - /home/bun/app/node_modules
+    expose:
+      - "5173"
+    ports:
+      - "5173:5173"
+    restart: on-failure
+    depends_on:
+      - backend
+
+networks:
+  cinema_network:
+    driver: bridge

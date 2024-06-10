@@ -1,26 +1,55 @@
-import axios from "axios";
-import User from "../models/User";
-const ADD_USER_ENDPOINT = "http://localhost:8080/users/add";
-const GET_USER_ENDPOINT = "http://localhost:8080/users/get";
+import request from "../utils/request";
+import User, { Account } from "../models/user";
+import Pagination from "../utils/pagination";
+import { AxiosRequestConfig } from "axios";
 
-export default class UserService {
-  public static async getUsers(): Promise<User[]> {
-    try {
-      const response = await axios.get(GET_USER_ENDPOINT);
-      const users = response.data as User[];
-      return users;
-    } catch (error) {
-      // Handle errors here
-      throw error;
+const login = ({ email, password }: {email: string, password: string}): Promise<Pagination<Account>> => {
+  const options: AxiosRequestConfig = {
+    method: "POST",
+    url: `/login`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {
+      email,
+      password
     }
   }
-
-  public static async addUser(user: User): Promise<boolean> {
-    try {
-      await axios.post(ADD_USER_ENDPOINT, user);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
+  return request<Account>(options);
 }
+
+const getProfile = () => {
+  const token = localStorage.getItem('token');
+  const options: AxiosRequestConfig = {
+    method: "GET",
+    url: `/profile`,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `${token}`
+    }
+  }
+  return request<User>(options);
+}
+
+const register = ({email, name, password}: {email: string, name: string, password: string}) => {
+  const options: AxiosRequestConfig = {
+    method: "POST",
+    url: `/register`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {
+      email,
+      name,
+      password
+    }
+  }
+  return request<User>(options);
+}
+
+const UserService = {
+  login,
+  getProfile,
+  register
+};
+export default UserService;

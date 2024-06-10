@@ -7,7 +7,6 @@
 *.dll
 *.so
 *.dylib
-
 # Test binary, built with `go test -c`
 *.test
 
@@ -22,3 +21,12 @@ go.work
 .idea/
 backend-go/.idea/
 backup.dump
+
+# Environment variables file
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.conf 
+

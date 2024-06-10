@@ -1,25 +1,46 @@
-import axios from "axios";
-import Cinema from "../models/Cinema";
-const CINEMA_ENDPOINT = "http://localhost:8080/cinemas/add-cinema";
+import request from "../utils/request";
+import Cinema from "../models/cinema";
 
-export default class MovieService {
-  public static async getCinemas(): Promise<Cinema[]> {
-    try {
-      const response = await axios.get(CINEMA_ENDPOINT);
-      const movies = response.data as Cinema[];
-      return movies;
-    } catch (error) {
-      // Handle errors here
-      throw error;
-    }
+const getAll = (page?: number, limit?: number, cursor?: string, owner_id?: string) => {
+  const filter = Object.entries({ page, limit, cursor, owner_id })
+    .filter(([_, value]) => value !== undefined && value !== '')
+    .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)
+    .join('&');
+  const options = {
+    method: "GET",
+    url: `/cinemas?${filter}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
   }
-
-  public static async addCinema(cinema: Cinema): Promise<boolean> {
-    try {
-      await axios.post(CINEMA_ENDPOINT, cinema);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
+  return request<Cinema>(options);
 }
+
+const getByName = (name: string) => {
+  const options = {
+    method: "GET",
+    url: `/cinemas/name/${name}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  return request<Cinema>(options);
+}
+
+const getById = (id: string) => {
+  const options = {
+    method: "GET",
+    url: `/cinemas/${id}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  return request<Cinema>(options);
+}
+
+const CinemaService = {
+  getAll,
+  getByName,
+  getById
+};
+export default CinemaService;
