@@ -15,15 +15,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
-      - name: Clone git repository or pull updates
-        run: |
-          if [ -d "~/.git" ]; then
-            echo "Repository exists. Pulling latest changes...";
-            cd ~/ && git pull;
-          else
-            echo "Repository does not exist. Cloning...";
-            git clone https://github.com/Darkiee12/cinema-golang.git ~/;
-          fi
+      - name: Clone repository
+        uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+        with:
+          depth: 1
+          branch: "master"
+          owner: "Darkiee12"
+          repository: "cinema-golang"
 
       - name: Create .env file on droplet
         uses: appleboy/ssh-action@master
