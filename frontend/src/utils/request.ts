@@ -10,7 +10,7 @@ export interface Error{
 }
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_URL+"/v1"
+  baseURL: (import.meta.env.VITE_API_URL)+"/v1"
 });
 
 const request = function<T=any, D=string>(options: AxiosRequestConfig) {

@@ -1,5 +1,10 @@
-export default interface Pagination<T, D=string> {
+export default interface Pagination<T, D=any> {
   data: Array<T>;
   filter: D;
-  paging: string;
+  paging: {
+    page: number;
+    limit: number;
+    total: number;
+    next_cursor: string;
+  };
 }
