@@ -849,6 +849,11 @@ const docTemplate = `{
         },
         "/tickets": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List tickets",
                 "consumes": [
                     "application/json"

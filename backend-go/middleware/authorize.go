@@ -72,5 +72,45 @@ func RequireAuth(appCtx appctx.AppContext, authStore AuthenStore) func(ctx *gin.
 		c.Set(common.CurrentUser, user)
 		c.Next()
 	}
+}
 
+func NotRequireAuth(appCtx appctx.AppContext, authStore AuthenStore) func(ctx *gin.Context) {
+
+	tokenProvider := jwt.NewTokenJWTProvider(appCtx.GetSecretKey())
+
+	return func(c *gin.Context) {
+		token, err := extractTokenFromHeaderString(c.GetHeader("Authorization"))
+
+		if err != nil {
+			c.Next()
+			return
+		}
+
+		//db := appCtx.GetMyDBConnection()
+		//store := userstore.NewSQLStore(db)
+
+		payload, err := tokenProvider.Validate(token)
+		if err != nil {
+			c.Next()
+			return
+		}
+
+		//user, err := store.FindUser(c.Request.Context(), map[string]interface{}{"id": payload.UserId})
+		//if err != nil {
+		//	//c.AbortWithStatusJSON(http.StatusUnauthorized, err)
+		//	panic(err)
+		//}
+
+		user, err := authStore.FindUser(c.Request.Context(), map[string]interface{}{"id": payload.UserId})
+
+		if user.Status == 0 {
+			c.Next()
+			return
+		}
+
+		user.Mask(false)
+
+		c.Set(common.CurrentUser, user)
+		c.Next()
+	}
 }

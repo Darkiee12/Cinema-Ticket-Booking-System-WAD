@@ -795,6 +795,8 @@ paths:
                     $ref: '#/definitions/ticketmodel.Ticket'
                   type: array
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: List tickets
       tags:
       - tickets

@@ -25,6 +25,10 @@ var (
 	RecordNotFound = errors.New("record not found")
 )
 
+var (
+	RoleAdmin = "admin"
+)
+
 type Requester interface {
 	GetUserId() int
 	GetEmail() string

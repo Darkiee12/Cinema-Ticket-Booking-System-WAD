@@ -23,13 +23,13 @@ func GetMovieWithID(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//id, err := strconv.Atoi(c.Param("restaurant_id"))
 
-		imdb_id := c.Param("imdb_id")
+		imdbId := c.Param("imdb_id")
 
 		db := ctx.GetMainDBConnection()
 		storage := moviestore.NewSQLStore(db)
 		biz := moviebusiness.FindMovieStore(storage)
 
-		data, err := biz.FindMovie(c.Request.Context(), map[string]interface{}{"imdb_id": imdb_id})
+		data, err := biz.FindMovie(c.Request.Context(), map[string]interface{}{"imdb_id": imdbId})
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
