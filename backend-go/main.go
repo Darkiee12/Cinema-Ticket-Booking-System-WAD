@@ -128,7 +128,7 @@ func main() {
 	{
 		tickets := v1.Group("/tickets")
 		//GET /v1/tickets
-		tickets.GET("", ginticket.ListTickets(appCtx))
+		tickets.GET("", middleware.NotRequireAuth(appCtx, userStore), ginticket.ListTickets(appCtx))
 		//GET /v1/tickets/user
 		tickets.GET("/user", middleware.RequireAuth(appCtx, userStore), ginticket.GetTicketsByUser(appCtx))
 		//UPDATE /v1/tickets/

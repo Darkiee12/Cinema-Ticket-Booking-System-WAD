@@ -44,3 +44,9 @@ func CreateCinema(ctx appctx.AppContext) gin.HandlerFunc {
 		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data.FakeID.String()))
 	}
 }
+
+func Handler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "pong",
+	})
+}

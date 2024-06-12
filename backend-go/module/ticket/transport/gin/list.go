@@ -19,9 +19,16 @@ import (
 // @Produce  json
 // @Param showID query string false "Show ID"
 // @Success 200 {object} common.successRes{data=[]ticketmodel.Ticket}
+// @Security ApiKeyAuth
 // @Router /tickets [get]
 func ListTickets(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var isAdmin bool
+		if tmp, ok := c.Get(common.CurrentUser); ok {
+			requester := tmp.(common.Requester)
+			isAdmin = requester.GetRole() == common.RoleAdmin
+		}
+
 		db := ctx.GetMainDBConnection()
 
 		var filter ticketmodel.Filter
@@ -29,7 +36,7 @@ func ListTickets(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		filter.Validate()
+		filter.Validate(isAdmin)
 
 		store := ticketstore.NewSQLStore(db)
 		biz := ticketbusiness.NewListTicketsBusiness(store)
