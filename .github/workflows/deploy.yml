@@ -15,14 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
 
-      - name: Clone repository
-        uses: GuillaumeFalourd/clone-github-repo-action@v2.3
-        with:
-          depth: 1
-          branch: "master"
-          owner: "Darkiee12"
-          repository: "cinema-golang"
-
       - name: Create .env file on droplet
         uses: appleboy/ssh-action@master
         with:
@@ -37,15 +29,6 @@ jobs:
       - name: Clone git repository
         run: git clone
 
-      - name: Copy docker-compose.yml to droplet
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.DROPLET_IP }}
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: docker-compose.yml
-          target: /root/
-
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -53,7 +36,8 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~
+            cd ~/cinema-golang
+            git pull
             docker-compose down
             docker-compose up -d
             docker-compose logs
