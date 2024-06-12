@@ -8,9 +8,11 @@ const getAll = (page?: number, limit?: number, cursor?: string) => {
     .join('&');
   const options = {
     method: "GET",
-    url: `/movies?${filter}`,
+    url: `${filter ? `/movies?${filter}` : '/movies'}`,
     headers: {
+      "accept": "application/json",
       "Content-Type": "application/json",
+      
     },
   }
   return request<Movie>(options);

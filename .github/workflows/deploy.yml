@@ -7,6 +7,7 @@ env:
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+  API_URL: ${{ secrets.API_URL }}
 
 jobs:
   build:
@@ -26,6 +27,8 @@ jobs:
             echo "POSTGRES_USER=${{ secrets.POSTGRES_USER}}" > ~/.env
             echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> ~/.env
             echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> ~/.env
+            cd /frontend
+            echo "VITE_API_URL = ${{secrets.API_URL}}">> .env
 
       - name: Deploy
         uses: appleboy/ssh-action@master
