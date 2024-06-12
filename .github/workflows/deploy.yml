@@ -35,7 +35,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/cinema-golang
-            git pull
             docker compose down
+            git pull
             docker compose up -d
             docker compose logs

@@ -1,19 +1,19 @@
 services:
-  # postgresdb:
-  #   image: postgres:latest
-  #   environment:
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #     PGDATA: /var/lib/postgresql/data/pgdata
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #     # - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
-  #     - ./data:/var/lib/postgresql/data
-  #   networks:
-  #     - cinema_network
+  postgresdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - cinema_network
 
   backend:
     build:
