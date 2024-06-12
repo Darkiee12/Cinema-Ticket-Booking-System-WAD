@@ -36,9 +36,11 @@ func main() {
 	dsn := strings.ReplaceAll(string(content), "\n", " ")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	if err != nil {
-		log.Fatalln(err)
+	for err != nil {
+		log.Println(err)
+		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	}
+
 	db = db.Debug()
 
 	key := "my_secret"
