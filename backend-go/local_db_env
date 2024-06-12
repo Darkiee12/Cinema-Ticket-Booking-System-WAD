@@ -1,4 +1,4 @@
-host=postgresdb
+host=postgres
 user=postgres
 password=password
 dbname=cinema
