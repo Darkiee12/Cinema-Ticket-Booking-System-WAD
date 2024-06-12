@@ -1,6 +1,6 @@
 services:
   postgresdb:
-    image: postgres:latest
+    image: postgres:15.3
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -11,7 +11,7 @@ services:
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
       # - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql
-      - ./data:/var/lib/postgresql/data
+      - postgresql2:/var/lib/postgresql/data
     networks:
       - cinema_network
 
@@ -22,8 +22,8 @@ services:
     ports:
       - "8080:8080"
     restart: on-failure
-    # depends_on:
-    #   - postgresdb
+    depends_on:
+      - postgresdb
     networks:
       - cinema_network
 
@@ -47,3 +47,6 @@ services:
 networks:
   cinema_network:
     driver: bridge
+
+volumes:
+  postgresql2:
