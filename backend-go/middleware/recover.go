@@ -16,7 +16,6 @@ func Recover(ac appctx.AppContext) gin.HandlerFunc {
 					c.AbortWithStatusJSON(appErr.StatusCode, appErr)
 					panic(err)
 				}
-
 				appErr := common.ErrInternal(err.(error))
 				c.AbortWithStatusJSON(appErr.StatusCode, appErr)
 				panic(err)
