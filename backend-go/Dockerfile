@@ -2,9 +2,9 @@ FROM golang:1.21.6-alpine AS build
 
 WORKDIR /build
 COPY go.mod go.sum ./
-RUN go mod download && go mod verify
+RUN go mod download && go mod verify && go install github.com/swaggo/swag/cmd/swag@latest
 COPY . .
-
+RUN swag init
 # Builds the application as a staticly linked one, to allow it to run on alpine
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app-linux .
 
