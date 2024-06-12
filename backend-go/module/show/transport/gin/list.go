@@ -38,7 +38,7 @@ func ListShow(ctx appctx.AppContext) gin.HandlerFunc {
 		if err != nil {
 			panic(err)
 		}
-		for i:=0; i<len(result); i++ {
+		for i := 0; i < len(result); i++ {
 			result[i].Mask(false)
 		}
 
