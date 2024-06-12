@@ -6,8 +6,9 @@ import (
 	showbusiness "cinema/module/show/biz"
 	showmodel "cinema/module/show/model"
 	showstore "cinema/module/show/store"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // ListShow
@@ -36,6 +37,9 @@ func ListShow(ctx appctx.AppContext) gin.HandlerFunc {
 		result, err := biz.ListShows(c.Request.Context(), &filter)
 		if err != nil {
 			panic(err)
+		}
+		for i:=0; i<len(result); i++ {
+			result[i].Mask(false)
 		}
 
 		c.JSON(http.StatusOK, common.NewSuccessResponse(result, nil, filter))
