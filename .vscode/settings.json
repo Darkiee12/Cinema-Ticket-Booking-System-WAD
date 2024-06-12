@@ -17,5 +17,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[java]": {
     "editor.defaultFormatter": "redhat.java"
+  },
+  "[sql]": {
+    "editor.defaultFormatter": "mtxr.sqltools"
   }
 }

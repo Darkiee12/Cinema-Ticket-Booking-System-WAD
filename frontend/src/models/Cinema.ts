@@ -1,7 +1,13 @@
+import { Owner } from "./user";
+
 export default interface Cinema {
+  id: string;
   name: string;
-  auditoriums: number;
   address: string;
-  phoneNumber: number;
+  created_at: string;
   email: string;
+  capacity: number;
+  owner: Owner;
+  owner_id: Owner['id'];
+  status: string;
 }

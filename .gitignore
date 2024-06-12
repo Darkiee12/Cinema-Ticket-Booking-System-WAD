@@ -7,12 +7,12 @@
 *.dll
 *.so
 *.dylib
-
 # Test binary, built with `go test -c`
 *.test
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+*data
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
@@ -22,3 +22,12 @@ go.work
 .idea/
 backend-go/.idea/
 backup.dump
+
+# Environment variables file
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.conf 
+
