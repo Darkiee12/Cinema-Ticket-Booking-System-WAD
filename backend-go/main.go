@@ -20,7 +20,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -28,15 +27,15 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	// Read the content of the db_env file
-	content, err := os.ReadFile("local_db_env")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	// Replace newline characters with spaces
-	dsn := strings.ReplaceAll(string(content), "\n", " ")
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	postgresUser := os.Getenv("POSTGRES_USER")
+	postgresPassword := os.Getenv("POSTGRES_PASSWORD")
+	postgresDB := os.Getenv("POSTGRES_DB")
 
+	dsn := "host=postgres user=" + postgresUser +
+		" password=" + postgresPassword +
+		" dbname=" + postgresDB +
+		" port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	for err != nil {
 		log.Println(err)
 		// wait for 5 seconds before trying to connect to the database again

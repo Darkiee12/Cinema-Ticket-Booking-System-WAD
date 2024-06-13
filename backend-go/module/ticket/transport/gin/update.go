@@ -7,6 +7,7 @@ import (
 	ticketmodel "cinema/module/ticket/model"
 	ticketstore "cinema/module/ticket/store"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
@@ -31,7 +32,7 @@ func UpdateTicket(ctx appctx.AppContext) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
 			return
 		}
-
+		log.Println("Ticket data: ", data)
 		data[0].UserID = int64(requester.GetUserId())
 
 		store := ticketstore.NewSQLStore(db)
