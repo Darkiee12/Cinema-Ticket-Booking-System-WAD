@@ -1,41 +1,21 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/navbar'
 import Homepage from './pages/Homepage'
-import MoviePage from './pages/Movies'
-
-import img1 from './assets/oppenheimer.jpg'
-import img2 from './assets/spiderman.jpg'
-import img3 from './assets/avenger.jpg'
-import img4 from './assets/titannic.jpg'
-import img5 from './assets/kungfupanda.jpeg'
+import MoviePage from './pages/Movies';
 import MovieDetail from './pages/MovieDetail';
-import { ImageSlider } from './components/imageslider';
-
-const image = [img1, img2, img3, img4, img5]
-
+import CredentialPage from './pages/CredentialPage'
 function App() {
   return (
     <div className="w-full h-max bg-[#FDFCF0]">
       <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/movies" element={<MoviePage />} />
-          <Route path="/movies/:imdbId" element={<MovieDetail/>}/>
-        </Routes>
+      <Routes>
+        <Route path="/login" element={<CredentialPage />} />
+        <Route path="/movies" element={<MoviePage />} />
+        <Route path="/movies/:imdbId" element={<MovieDetail />} />
+        <Route path="/" element={<Homepage />} />
+      </Routes>
     </div>
   )
 }
-
-const Home = () => {
-  return (
-    <div className='max-w-[1040px] h-screen mx-auto bg-[#FDF7DC]'>
-      <div className='w-[1040px] h-[585px]'>
-        <ImageSlider imageUrls={image} />
-      </div>
-    </div>
-  )
-}
-
-
 export default App

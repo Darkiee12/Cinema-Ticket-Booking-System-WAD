@@ -10,7 +10,11 @@ export default interface User {
   role: string;
   updated_at: string;
 }
+export interface Credential{
+  email: string;
+  password: string;
 
+}
 export interface Account{
   created_at: string;
   expiry: number;

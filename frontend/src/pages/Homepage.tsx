@@ -4,7 +4,7 @@ import img2 from '../assets/spiderman.jpg';
 import img3 from '../assets/avenger.jpg';
 import img4 from '../assets/titannic.jpg';
 import img5 from '../assets/kungfupanda.jpeg';
-import Movie from '../models/Movie';
+import Movie from '../models/movie';
 import MovieService from '../services/MovieService';
 import { useEffect, useState } from 'react';
 import { MovieUnit } from './Movies';

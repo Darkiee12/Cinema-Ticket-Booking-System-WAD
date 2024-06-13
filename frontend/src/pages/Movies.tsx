@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import MovieService from '../services/MovieService'
 import Movie from '../models/movie'
 import { Link } from 'react-router-dom'
+import Button from '../components/button'
 
 export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
   return (
@@ -18,21 +19,8 @@ export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
         <p className="truncate text-xl font-bold">{movie.title}</p>
         <p>Genre: {movie.type}</p>
       </div>
-      <Link to={{pathname: `/movies/${movie.imdbID}`}} state={movie}
-        className="bg-[#03C04A] rounded-lg p-1 text-white font-bold hover:bg-[#028A3D] active:bg-[#026A2F] transform 
-                transition 
-                duration-150 
-                ease-in-out
-                hover:scale-105  /* Slightly enlarge on hover */
-                active:scale-95   /* Slightly shrink on click */
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#03C04A]
-                focus:ring-opacity-50
-            "
-        
-      >
-        Buy Ticket
+      <Link to={{pathname: `/movies/${movie.imdbID}`}} state={movie}>
+        <Button text="Buy ticket" hollow={false} />
       </Link>
     </div>
   )

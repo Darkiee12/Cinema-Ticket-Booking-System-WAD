@@ -1,19 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/CIneU.png";
+import Button from "./button";
 const NavBar = () => {
   return(
     <div className="h-[10%] w-full px-10 bg-[#151720] flex items-center justify-between text-white font-Montserrat">
       <div className="flex gap-x-5 items-center">
-        <div className="logo">
+        <Link className="logo" to="/">
           <img src={Logo} alt="CineU logo" className="w-[100px] h-[100px] rounded-[100px]" />
-        </div>
-        <button className="text-lg font-semibold"><Link to="/movies" >Movies</Link></button>
-        <button className="text-lg font-semibold">Cinemas</button>
-        <button className="text-lg font-semibold">About us</button>
+        </Link>
+        <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]"><Link to="/movies" >Movies</Link></button>
+        <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">Cinemas</button>
+        <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">About us</button>
       </div>
       <div className="flex gap-x-5">
-        <div className="border-2 rounded-[10px] border-[#03C04A] p-2 text-lg font-semibold">Sign in/Sign up</div>
-        <div className="rounded-[10px] bg-[#03C04A] p-2 text-lg font-semibold border-2 border-[#03C04A]">Buy ticket</div>
+        <Button text="Sign in/Sign up" hollow={true} onClick={() => window.location.href = "/login"} />
+        <Button text="Buy ticket" hollow={false} onClick={() => window.location.href = "/movies"} />
       </div>
     </div>
   )

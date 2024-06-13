@@ -1,9 +1,8 @@
 import request from "../utils/request";
 import User, { Account } from "../models/user";
-import Pagination from "../utils/pagination";
 import { AxiosRequestConfig } from "axios";
 
-const login = ({ email, password }: {email: string, password: string}): Promise<Pagination<Account>> => {
+const login = ({ email, password }: {email: string, password: string}) => {
   const options: AxiosRequestConfig = {
     method: "POST",
     url: `/login`,
@@ -15,7 +14,7 @@ const login = ({ email, password }: {email: string, password: string}): Promise<
       password
     }
   }
-  return request<Account>(options);
+  return request<{data: Account}>(options);
 }
 
 const getProfile = () => {
