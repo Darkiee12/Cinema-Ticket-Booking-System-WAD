@@ -6,6 +6,7 @@ import (
 	ticketbusiness "cinema/module/ticket/biz"
 	ticketmodel "cinema/module/ticket/model"
 	ticketstore "cinema/module/ticket/store"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -30,6 +31,11 @@ func UpdateTicket(ctx appctx.AppContext) gin.HandlerFunc {
 
 		if err := c.ShouldBind(&data); err != nil {
 			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
+			return
+		}
+
+		if len(data) == 0 {
+			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(errors.New("no ticket data")))
 			return
 		}
 

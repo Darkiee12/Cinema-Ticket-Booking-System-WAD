@@ -32,7 +32,11 @@ func main() {
 	postgresPassword := os.Getenv("POSTGRES_PASSWORD")
 	postgresDB := os.Getenv("POSTGRES_DB")
 
-	dsn := "host=" + postgresHost + " user=" + postgresUser + " password=" + postgresPassword + " dbname=" + postgresDB + " port=5432 sslmode=disable"
+	dsn := "host=" + postgresHost +
+		" user=" + postgresUser +
+		" password=" + postgresPassword +
+		" dbname=" + postgresDB +
+		" port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	for err != nil {
