@@ -6,13 +6,13 @@ import (
 	"context"
 )
 
-func (store *sqlStore) UpdateTicket(
+func (store *sqlStore) UpdateTickets(
 	_ context.Context,
 	cond map[string]interface{},
 	data *ticketmodel.TicketUpdate,
 ) error {
 	if err := store.db.Where(cond).
-		Select("SeatNumber", "ShowID", "Status", "UserID").
+		Select("Status", "UserID").
 		Updates(data).Error; err != nil {
 		return common.ErrDB(err)
 	}

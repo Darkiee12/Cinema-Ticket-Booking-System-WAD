@@ -17,14 +17,14 @@ import (
 // @ID update-ticket
 // @Accept  json
 // @Produce  json
-// @Param ticket body ticketmodel.TicketUpdate true "Ticket"
+// @Param ticket body []ticketmodel.TicketUpdate true "Ticket"
 // @Security ApiKeyAuth
 // @Success 200 {object} common.successRes{data=string}
 // @Router /tickets [put]
 func UpdateTicket(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := ctx.GetMainDBConnection()
-		var data ticketmodel.TicketUpdate
+		var data []ticketmodel.TicketUpdate
 		requester := c.MustGet(common.CurrentUser).(common.Requester)
 
 		if err := c.ShouldBind(&data); err != nil {
@@ -32,12 +32,12 @@ func UpdateTicket(ctx appctx.AppContext) gin.HandlerFunc {
 			return
 		}
 
-		data.UserID = int64(requester.GetUserId())
+		data[0].UserID = int64(requester.GetUserId())
 
 		store := ticketstore.NewSQLStore(db)
 		biz := ticketbusiness.NewUpdateTicketBiz(store)
 
-		if err := biz.SellTicketToCustomer(c.Request.Context(), &data); err != nil {
+		if err := biz.SellManyTicketsToCustomer(c.Request.Context(), data); err != nil {
 			panic(err)
 		}
 
