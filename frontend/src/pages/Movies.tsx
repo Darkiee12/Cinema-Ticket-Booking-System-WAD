@@ -3,7 +3,7 @@ import MovieService from "../services/MovieService";
 import { useNavigate } from 'react-router-dom';
 import Movie from "../models/movie";
 
-const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
+export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
   const navigate = useNavigate();
   return (
     <div className="">
