@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Movie from "../models/movie";
 import MovieService from "../services/MovieService";
 import { useNavigate } from 'react-router-dom';
+import Movie from "../models/movie";
 
 const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
   const navigate = useNavigate();
