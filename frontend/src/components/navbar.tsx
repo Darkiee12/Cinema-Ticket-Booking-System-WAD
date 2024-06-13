@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Logo from "../assets/CIneU.png";
 import Button from "./button";
 const NavBar = () => {
