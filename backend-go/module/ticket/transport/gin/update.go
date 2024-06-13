@@ -8,7 +8,6 @@ import (
 	ticketstore "cinema/module/ticket/store"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
@@ -40,7 +39,6 @@ func UpdateTicket(ctx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		data[0].UserID = int64(requester.GetUserId())
-		log.Println("Ticket data: ", data)
 
 		store := ticketstore.NewSQLStore(db)
 		biz := ticketbusiness.NewUpdateTicketBiz(store)

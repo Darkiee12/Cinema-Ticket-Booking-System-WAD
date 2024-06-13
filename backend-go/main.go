@@ -7,7 +7,9 @@ import (
 	ginauditorium "cinema/module/auditorium/transport/gin"
 	gincinema "cinema/module/cinema/transport/gin"
 	gincompany "cinema/module/company/transport/gin"
+	gingenre "cinema/module/genre/transport/gin"
 	ginmovie "cinema/module/movie/transport/gin"
+	ginmoviesgenres "cinema/module/movies_genres/transport/gin"
 	ginshow "cinema/module/show/transport/gin"
 	ginticket "cinema/module/ticket/transport/gin"
 	"cinema/module/user/transport/ginuser"
@@ -38,15 +40,21 @@ func main() {
 		" dbname=" + postgresDB +
 		" port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-
-	for err != nil {
-		log.Println(err)
-		// wait for 5 seconds before trying to connect to the database again
-		<-time.After(5 * time.Second)
-		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	{
+		i := 0
+		for err != nil {
+			i++
+			if i == 4 {
+				panic(err)
+			}
+			log.Println(err)
+			// wait for 5 seconds before trying to connect to the database again
+			<-time.After(5 * time.Second)
+			db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		}
 	}
 
-	db = db.Debug()
+	//db = db.Debug()
 
 	key := os.Getenv("SECRET_KEY")
 	appCtx := appctx.NewAppContext(db, key)
@@ -143,6 +151,14 @@ func main() {
 	}
 
 	{
+		genres := v1.Group("/genres")
+		//GET /v1/genres
+		genres.GET("", gingenre.ListGenres(appCtx))
+		//GET /v1/genres/:id/movies
+		genres.GET("/:id/movies", ginmoviesgenres.ListMoviesByGenres(appCtx))
+	}
+
+	{
 		users := v1
 		//GET /v1/profile
 		users.GET("/profile", middleware.RequireAuth(appCtx, userStore), ginuser.GetProfile(appCtx))
@@ -151,6 +167,7 @@ func main() {
 		//POST /v1/login
 		users.POST("/login", ginuser.Login(appCtx))
 	}
+
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)
 	}
