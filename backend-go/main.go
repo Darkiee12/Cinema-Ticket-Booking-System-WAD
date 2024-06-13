@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 // @securityDefinitions.apikey ApiKeyAuth
@@ -38,6 +39,8 @@ func main() {
 
 	for err != nil {
 		log.Println(err)
+		// wait for 5 seconds before trying to connect to the database again
+		<-time.After(5 * time.Second)
 		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	}
 
@@ -47,7 +50,7 @@ func main() {
 	appCtx := appctx.NewAppContext(db, key)
 
 	r := gin.Default()
-	r.Use(middleware.Recover(appCtx))
+	r.Use(middleware.Recover(appCtx), middleware.AllowCORS(appCtx))
 
 	docs.SwaggerInfo.BasePath = "/v1"
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
