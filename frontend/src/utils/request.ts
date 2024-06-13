@@ -13,8 +13,8 @@ const client = axios.create({
   baseURL: (import.meta.env.VITE_API_URL)+"/v1"
 });
 
-const request = function<T=any, D=string>(options: AxiosRequestConfig) {
-  const onSuccess = function(response: AxiosResponse<Pagination<T, D>>) {
+const request = function<T=any>(options: AxiosRequestConfig) {
+  const onSuccess = function(response: AxiosResponse<T>) {
     console.debug('Request Successful!', response);
     return response.data;
   }

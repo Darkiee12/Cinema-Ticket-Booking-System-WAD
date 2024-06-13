@@ -1,4 +1,5 @@
 import request from "../utils/request";
+import Pagination from "../utils/pagination";
 import Movie from "../models/movie";
 
 const getAll = (page?: number, limit?: number, cursor?: string) => {
@@ -15,7 +16,7 @@ const getAll = (page?: number, limit?: number, cursor?: string) => {
       
     },
   }
-  return request<Movie>(options);
+  return request<Pagination<Movie>>(options);
 }
 
 const getById = (id: string) => {
@@ -26,7 +27,7 @@ const getById = (id: string) => {
       "Content-Type": "application/json",
     },
   }
-  return request<Movie>(options);
+  return request<{data: Movie}>(options);
 }
 
 const MovieService = {

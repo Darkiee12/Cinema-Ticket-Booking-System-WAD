@@ -5,7 +5,7 @@ const NavBar = () => {
         <div className="logo">
           <img src="./src/assets/CIneU.png" alt="CineU logo" className="w-[100px] h-[100px] rounded-[100px]" />
         </div>
-        <div className="text-lg font-semibold">Movies</div>
+        <a className="text-lg font-semibold" href="/movies">Movies</a>
         <div className="text-lg font-semibold">Cinemas</div>
         <div className="text-lg font-semibold">About us</div>
       </div>

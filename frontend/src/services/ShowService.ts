@@ -14,7 +14,7 @@ const getAll = (imdbID?: string, date?: string) => {
       'Content-Type': 'application/json',
     },
   }
-  return request<Show, {date: string, imdbID: string}>(options)
+  return request<Show>(options)
 }
 
 const getById = (id: string) => {

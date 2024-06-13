@@ -1,35 +1,51 @@
-import { useState, useEffect } from "react";
-import MovieService from "../services/MovieService";
-import { useNavigate } from 'react-router-dom';
-import Movie from "../models/movie";
+import { useState, useEffect } from 'react'
+import MovieService from '../services/MovieService'
+import Movie from '../models/movie'
+import { Link } from 'react-router-dom'
 
 const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
-  const navigate = useNavigate();
   return (
     <div className="">
       <div className="w-full">
-        <img src={movie.poster} alt={movie.title} className="w-full min-h-[16rem]" />
+        <img
+          src={movie.poster}
+          alt={movie.title}
+          className="w-full min-h-[16rem]"
+        />
       </div>
       <div>
         <p>{movie.rated}</p>
         <p className="truncate text-xl font-bold">{movie.title}</p>
         <p>Genre: {movie.type}</p>
       </div>
-      <button className="bg-[#03C04A] rounded-lg p-1 text-white font-bold" onClick={() => navigate(`/movies/${movie.imdbID}`)}>
-        Buy ticket
-      </button>
+      <Link to={{pathname: `/movies/${movie.imdbID}`}} state={movie}
+        className="bg-[#03C04A] rounded-lg p-1 text-white font-bold hover:bg-[#028A3D] active:bg-[#026A2F] transform 
+                transition 
+                duration-150 
+                ease-in-out
+                hover:scale-105  /* Slightly enlarge on hover */
+                active:scale-95   /* Slightly shrink on click */
+                focus:outline-none
+                focus:ring-2
+                focus:ring-[#03C04A]
+                focus:ring-opacity-50
+            "
+        
+      >
+        Buy Ticket
+      </Link>
     </div>
   )
-};
+}
 
 const MovieList: React.FC<{ movies: Movie[] }> = ({ movies }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setTimeout(() => {
-      setLoading(false);
-    }, 2000); 
-  }, []);
+      setLoading(false)
+    }, 2000)
+  }, [])
 
   return (
     <div className="grid grid-cols-5 gap-4 p-5">
@@ -45,32 +61,29 @@ const MovieList: React.FC<{ movies: Movie[] }> = ({ movies }) => {
           ))}
         </>
       ) : (
-        movies.map((movie) => (
-          <MovieUnit key={movie.imdbID} movie={movie} />
-        ))
+        movies.map((movie) => <MovieUnit key={movie.imdbID} movie={movie} />)
       )}
-    </div>
-  );
-};
-
-const MoviePage = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
-  useEffect(() => {
-    MovieService
-      .getAll()
-      .then((res) => {
-        setMovies(res.data);
-      })
-  }, []);
-  return (
-    <div className="w-full px-10">
-      <div className="bg-[#FDF7DC]">
-        <p className="w-full text-center text-2xl font-bold">Currently premiere movies</p>
-        <MovieList movies={movies} />
-      </div>
-
     </div>
   )
 }
 
-export default MoviePage;
+const MoviePage = () => {
+  const [movies, setMovies] = useState<Movie[]>([])
+  useEffect(() => {
+    MovieService.getAll().then((res) => {
+      setMovies(res.data)
+    })
+  }, [])
+  return (
+    <div className="w-full px-10">
+      <div className="bg-[#FDF7DC]">
+        <p className="w-full text-center text-2xl font-bold">
+          Currently premiere movies
+        </p>
+        <MovieList movies={movies} />
+      </div>
+    </div>
+  )
+}
+
+export default MoviePage
