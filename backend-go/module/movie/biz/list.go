@@ -26,7 +26,7 @@ func (business *listMovieBusiness) ListMovies(
 	filter *moviemodel.Filter,
 	paging *common.Paging,
 ) ([]moviemodel.Movie, error) {
-	res, err := business.store.ListMoviesWithCondition(context, filter, paging)
+	res, err := business.store.ListMoviesWithCondition(context, filter, paging, "Genres")
 	if err != nil {
 		return nil, err
 	}

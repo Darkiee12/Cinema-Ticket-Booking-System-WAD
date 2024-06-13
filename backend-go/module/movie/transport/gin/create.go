@@ -5,7 +5,9 @@ import (
 	"cinema/component/appctx"
 	moviebusiness "cinema/module/movie/biz"
 	moviemodel "cinema/module/movie/model"
+	movierepository "cinema/module/movie/repository"
 	moviestore "cinema/module/movie/store"
+	moviesgenresstore "cinema/module/movies_genres/store"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -32,9 +34,11 @@ func CreateMovie(ctx appctx.AppContext) gin.HandlerFunc {
 		}
 
 		store := moviestore.NewSQLStore(db)
-		biz := moviebusiness.CreateMovieStore(store)
+		moviesGenresStore := moviesgenresstore.NewSQLStore(db)
+		repo := movierepository.NewCreateMovieRepo(store, moviesGenresStore)
+		biz := moviebusiness.CreateMovieRepo(repo)
 
-		if err := biz.Create(c.Request.Context(), &data); err != nil {
+		if err := biz.CreateMovie(c.Request.Context(), &data); err != nil {
 			panic(err)
 		}
 

@@ -22,7 +22,7 @@ type findMovieBiz struct {
 }
 
 func (biz *findMovieBiz) FindMovieById(ctx context.Context, imdbID string) (*moviemodel.Movie, error) {
-	data, err := biz.store.FindMovie(ctx, map[string]interface{}{"imdb_id": imdbID})
+	data, err := biz.store.FindMovie(ctx, map[string]interface{}{"imdb_id": imdbID}, "Genres")
 
 	if err != nil {
 		return nil, err

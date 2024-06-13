@@ -1,8 +1,7 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/navbar'
-import { ImageSlider } from './components/imageslider'
-
+import Homepage from './pages/Homepage'
 import MoviePage from './pages/Movies'
 
 import img1 from './assets/oppenheimer.jpg'
