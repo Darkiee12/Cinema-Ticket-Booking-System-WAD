@@ -27,11 +27,13 @@ import (
 // @in header
 // @name Authorization
 func main() {
+	postgresHost := os.Getenv("POSTGRES_HOST")
 	postgresUser := os.Getenv("POSTGRES_USER")
 	postgresPassword := os.Getenv("POSTGRES_PASSWORD")
 	postgresDB := os.Getenv("POSTGRES_DB")
 
-	dsn := "host=postgres user=" + postgresUser +
+	dsn := "host=" + postgresHost +
+		" user=" + postgresUser +
 		" password=" + postgresPassword +
 		" dbname=" + postgresDB +
 		" port=5432"
