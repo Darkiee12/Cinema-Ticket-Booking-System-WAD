@@ -22,6 +22,7 @@ go.work
 .idea/
 backend-go/.idea/
 backup.dump
+bun.lockb
 
 # Environment variables file
 .env
