@@ -38,8 +38,7 @@ jobs:
           script: |
             cd ~/cinema-golang
             git pull
-            docker compose down
-            docker system prune -a
             docker compose build
+            docker compose down
             docker compose up -d
             docker compose logs
