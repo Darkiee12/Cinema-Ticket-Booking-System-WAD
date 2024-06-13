@@ -32,7 +32,7 @@ const MovieList: React.FC<{ movies: Movie[] }> = ({ movies }) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-5 gap-4 p-5">
+    <div className="grid grid-cols-5 gap-4 p-5 pt-2">
       {loading ? (
         <>
           {[...Array(10)].map((_, index) => (
@@ -63,12 +63,9 @@ const MoviePage = () => {
       })
   }, []);
   return (
-    <div className="w-full px-10">
-      <div className="bg-[#FDF7DC]">
-        <p className="w-full text-center text-2xl font-bold">Currently premiere movies</p>
-        <MovieList movies={movies} />
-      </div>
-
+    <div className='max-w-[1040px] h-max mx-auto bg-[#FDF7DC]'>
+      <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Currently premiere movies</p>
+      <MovieList movies={movies} />
     </div>
   )
 }
