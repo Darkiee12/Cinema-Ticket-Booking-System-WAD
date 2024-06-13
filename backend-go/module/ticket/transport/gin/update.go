@@ -11,8 +11,8 @@ import (
 )
 
 // UpdateTicket
-// @Summary Let user buy a ticket
-// @Description Let user buy a ticket
+// @Summary Let user buy tickets
+// @Description Let user buy tickets
 // @Tags tickets
 // @ID update-ticket
 // @Accept  json
@@ -37,7 +37,7 @@ func UpdateTicket(ctx appctx.AppContext) gin.HandlerFunc {
 		store := ticketstore.NewSQLStore(db)
 		biz := ticketbusiness.NewUpdateTicketBiz(store)
 
-		if err := biz.SellManyTicketsToCustomer(c.Request.Context(), data); err != nil {
+		if err := biz.SellManyTicketsToCustomer(c.Request.Context(), &data); err != nil {
 			panic(err)
 		}
 
