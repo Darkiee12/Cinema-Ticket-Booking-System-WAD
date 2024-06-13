@@ -3,7 +3,7 @@ import MovieService from '../services/MovieService'
 import Movie from '../models/movie'
 import { Link } from 'react-router-dom'
 
-const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
+export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
   return (
     <div className="">
       <div className="w-full">

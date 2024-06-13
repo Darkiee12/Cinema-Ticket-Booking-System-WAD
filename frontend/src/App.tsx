@@ -10,6 +10,7 @@ import img3 from './assets/avenger.jpg'
 import img4 from './assets/titannic.jpg'
 import img5 from './assets/kungfupanda.jpeg'
 import MovieDetail from './pages/MovieDetail';
+import { ImageSlider } from './components/imageslider';
 
 const image = [img1, img2, img3, img4, img5]
 
@@ -17,14 +18,11 @@ function App() {
   return (
     <div className="w-full h-max bg-[#FDFCF0]">
       <NavBar />
-      <Router>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<MoviePage />} />
           <Route path="/movies/:imdbId" element={<MovieDetail/>}/>
         </Routes>
-      </Router>
-
     </div>
   )
 }

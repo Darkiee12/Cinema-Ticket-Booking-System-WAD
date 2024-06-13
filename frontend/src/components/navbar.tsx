@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import Logo from "../assets/CIneU.png";
 const NavBar = () => {
   return(
     <div className="h-[10%] w-full px-10 bg-[#151720] flex items-center justify-between text-white font-Montserrat">
       <div className="flex gap-x-5 items-center">
         <div className="logo">
-          <img src="./src/assets/CIneU.png" alt="CineU logo" className="w-[100px] h-[100px] rounded-[100px]" />
+          <img src={Logo} alt="CineU logo" className="w-[100px] h-[100px] rounded-[100px]" />
         </div>
         <button className="text-lg font-semibold"><Link to="/movies" >Movies</Link></button>
         <button className="text-lg font-semibold">Cinemas</button>
