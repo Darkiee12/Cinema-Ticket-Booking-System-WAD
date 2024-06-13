@@ -20,7 +20,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -28,13 +27,14 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	// Read the content of the db_env file
-	content, err := os.ReadFile("local_db_env")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	// Replace newline characters with spaces
-	dsn := strings.ReplaceAll(string(content), "\n", " ")
+	postgresUser := os.Getenv("POSTGRES_USER")
+	postgresPassword := os.Getenv("POSTGRES_PASSWORD")
+	postgresDB := os.Getenv("POSTGRES_DB")
+
+	dsn := "host=postgres user=" + postgresUser +
+		" password=" + postgresPassword +
+		" dbname=" + postgresDB +
+		" port=5432"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	for err != nil {
@@ -46,7 +46,7 @@ func main() {
 
 	db = db.Debug()
 
-	key := "my_secret"
+	key := os.Getenv("SECRET_KEY")
 	appCtx := appctx.NewAppContext(db, key)
 
 	r := gin.Default()

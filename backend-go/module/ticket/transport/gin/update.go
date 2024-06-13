@@ -32,8 +32,9 @@ func UpdateTicket(ctx appctx.AppContext) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
 			return
 		}
-		log.Println("Ticket data: ", data)
+
 		data[0].UserID = int64(requester.GetUserId())
+		log.Println("Ticket data: ", data)
 
 		store := ticketstore.NewSQLStore(db)
 		biz := ticketbusiness.NewUpdateTicketBiz(store)

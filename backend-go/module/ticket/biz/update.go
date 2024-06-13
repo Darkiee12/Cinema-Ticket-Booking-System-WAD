@@ -50,6 +50,9 @@ func (biz *updateTicketBiz) SellTicketToCustomer(ctx context.Context, data *tick
 
 func (biz *updateTicketBiz) SellManyTicketsToCustomer(ctx context.Context, datas *[]ticketmodel.TicketUpdate) error {
 	var ids []int
+	var res ticketmodel.TicketUpdate
+	res.UserID = (*datas)[0].UserID
+
 	for _, data := range *datas {
 		ticket, err := biz.store.FindTicket(ctx,
 			map[string]interface{}{
@@ -68,9 +71,8 @@ func (biz *updateTicketBiz) SellManyTicketsToCustomer(ctx context.Context, datas
 		}
 		ids = append(ids, ticket.ID)
 	}
-	var data *ticketmodel.TicketUpdate
-	data.UserID = (*datas)[0].UserID
-	data.Status = ticketmodel.TicketStatusSold
 
-	return biz.store.UpdateTickets(ctx, map[string]interface{}{"id": ids}, data)
+	res.Status = ticketmodel.TicketStatusSold
+
+	return biz.store.UpdateTickets(ctx, map[string]interface{}{"id": ids}, &res)
 }
