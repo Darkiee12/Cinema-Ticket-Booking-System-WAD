@@ -24,11 +24,9 @@ function App() {
       </div>
       
       
-      <Router>
-        <Routes>
+      <Routes>
           <Route path="/movies" element={<MoviePage />} />
-        </Routes>
-      </Router>
+      </Routes>
 
     </div>
   )
