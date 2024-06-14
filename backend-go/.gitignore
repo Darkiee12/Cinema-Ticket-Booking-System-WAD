@@ -2,3 +2,4 @@
 db_env
 app-linux
 .vscode
+local_db_env

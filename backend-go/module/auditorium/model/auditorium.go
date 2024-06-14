@@ -9,13 +9,7 @@ import (
 const EntityName = "Auditorium"
 const TableName = "auditoriums"
 
-type Auditorium struct {
-	common.SQLModel `json:",inline"`
-	Name            string         `json:"name" gorm:"column:name;"`
-	Seats           int            `json:"seats" gorm:"column:seats;"`
-	CinemaID        int            `json:"-" gorm:"column:cinema_id;"`
-	Cinema          *common.Cinema `json:"cinema" gorm:"preload:false;foreignKey:CinemaID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-}
+type Auditorium common.Auditorium
 
 func (Auditorium) TableName() string { return TableName }
 

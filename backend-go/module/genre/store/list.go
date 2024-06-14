@@ -2,7 +2,6 @@ package genrestore
 
 import (
 	"cinema/common"
-	cinemamodel "cinema/module/cinema/model"
 	genremodel "cinema/module/genre/model"
 	"context"
 )
@@ -14,7 +13,7 @@ func (store *sqlStore) ListGenres(
 ) ([]genremodel.Genre, error) {
 	var result []genremodel.Genre
 
-	db := store.db.Table(cinemamodel.TableName)
+	db := store.db.Table(genremodel.TableName)
 	for i := range moreKeys {
 		db = db.Preload(moreKeys[i])
 	}

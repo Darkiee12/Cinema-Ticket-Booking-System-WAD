@@ -11,7 +11,7 @@ import (
 )
 
 type CreateShowStore interface {
-	Create(context context.Context, data *showmodel.Show) error
+	Create(context context.Context, data *showmodel.ShowCreate) error
 	transactor.Transactor
 }
 
@@ -47,7 +47,7 @@ func NewCreateShowRepo(
 
 func (repo *createShowRepo) CreateShow(
 	ctx context.Context,
-	data *showmodel.Show,
+	data *showmodel.ShowCreate,
 ) error {
 	return repo.store.WithinTransaction(ctx, func(TxCtx context.Context) error {
 		if data.AuditoriumID == 0 {

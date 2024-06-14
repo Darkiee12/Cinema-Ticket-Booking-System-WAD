@@ -23,7 +23,7 @@ import (
 // @ID create-show
 // @Accept  json
 // @Produce  json
-// @Param show body showmodel.Show true "Show"
+// @Param show body showmodel.ShowCreate true "Show"
 // @Success 200 {object} common.successRes{data=string}
 // @Security ApiKeyAuth
 // @Router /shows [post]
@@ -33,7 +33,7 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 
 		db := ctx.GetMainDBConnection()
 
-		var data showmodel.Show
+		var data showmodel.ShowCreate
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(err)

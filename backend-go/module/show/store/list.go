@@ -28,7 +28,6 @@ func (store *sqlStore) ListShowsWithCondition(
 		}
 		if f.Date == nil && f.ImdbID == "" {
 			date := common.NowDate()
-			log.Println("Test: ", (&date).String())
 			db = db.Where("date = ?", (&date).String())
 		}
 	} else {
