@@ -17,7 +17,7 @@ export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
       <div>
         <p>{movie.rated}</p>
         <p className="truncate text-xl font-bold">{movie.title}</p>
-        <p>Genre: {movie.type}</p>
+        <p className="truncate text-sm">{movie.genres.map((genre) => {return genre.name}).join(", ")}</p>
       </div>
       <Link to={{pathname: `/movies/${movie.imdbID}`}} state={movie}>
         <Button text="Buy ticket" hollow={false} />
@@ -36,7 +36,7 @@ const MovieList: React.FC<{ movies: Movie[] }> = ({ movies }) => {
   }, [])
 
   return (
-    <div className="grid grid-cols-5 gap-4 p-5 pt-2">
+    <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 md:p-5 pt-2">
       {loading ? (
         <>
           {[...Array(10)].map((_, index) => (

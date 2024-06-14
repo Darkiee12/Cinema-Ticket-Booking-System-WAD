@@ -19,5 +19,11 @@ export default interface Movie {
   production: string
   tmdbID: number
   boxOffice: number
+  genres: Genre[]
   created_at: null
+}
+
+interface Genre{
+  id: number
+  name: string
 }

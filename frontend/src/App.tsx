@@ -5,6 +5,7 @@ import Homepage from './pages/Homepage'
 import MoviePage from './pages/Movies';
 import MovieDetail from './pages/MovieDetail';
 import CredentialPage from './pages/CredentialPage'
+import SeatSelectionPage from './pages/SeatSelectionPage';
 function App() {
   return (
     <div className="w-full h-max bg-[#FDFCF0]">
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<CredentialPage />} />
         <Route path="/movies" element={<MoviePage />} />
         <Route path="/movies/:imdbId" element={<MovieDetail />} />
+        <Route path="/show/:showId" element={<SeatSelectionPage />} />
         <Route path="/" element={<Homepage />} />
       </Routes>
     </div>

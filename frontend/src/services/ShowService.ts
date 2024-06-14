@@ -1,6 +1,7 @@
 import request from '../utils/request'
 import Show from '../models/show'
 import { AxiosRequestConfig } from 'axios'
+import Pagination from '../utils/pagination'
 
 const getAll = (imdbID?: string, date?: string) => {
   const filter = Object.entries({ imdbID, date })
@@ -14,7 +15,7 @@ const getAll = (imdbID?: string, date?: string) => {
       'Content-Type': 'application/json',
     },
   }
-  return request<Show>(options)
+  return request<Pagination<Show>>(options)
 }
 
 const getById = (id: string) => {
