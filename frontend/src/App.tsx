@@ -8,7 +8,7 @@ import CredentialPage from './pages/CredentialPage'
 import SeatSelectionPage from './pages/SeatSelectionPage';
 function App() {
   return (
-    <div className="w-full h-max bg-[#FDFCF0]">
+    <div className="w-full h-full bg-[#FDFCF0]">
       <NavBar />
       <Routes>
         <Route path="/login" element={<CredentialPage />} />

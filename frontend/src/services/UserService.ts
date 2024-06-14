@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import User, { Account } from "../models/user";
+import User, { Account, Register } from "../models/user";
 import { AxiosRequestConfig } from "axios";
 
 const login = ({ email, password }: {email: string, password: string}) => {
@@ -30,12 +30,12 @@ const getProfile = () => {
   return request<User>(options);
 }
 
-const register = ({email, name, password}: {email: string, name: string, password: string}) => {
+const register = ({email, name, password}: Register) => {
   const options: AxiosRequestConfig = {
     method: "POST",
     url: `/register`,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
     data: {
       email,

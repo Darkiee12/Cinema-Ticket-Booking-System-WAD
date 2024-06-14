@@ -1,4 +1,4 @@
-export default interface User {
+export interface User {
   id: string;
   name: string;
   gender: string;
@@ -13,8 +13,14 @@ export default interface User {
 export interface Credential{
   email: string;
   password: string;
-
 }
+
+export interface Register{
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface Account{
   created_at: string;
   expiry: number;
