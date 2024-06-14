@@ -13,7 +13,6 @@ func (store *sqlStore) ListMoviesWithCondition(
 	moreKeys ...string,
 ) ([]moviemodel.Movie, error) {
 	var result []moviemodel.Movie
-
 	db := store.db.Table(moviemodel.TableName)
 
 	//if f := filter; f != nil {

@@ -21,21 +21,17 @@ import (
 // @Router /movies/{imdb_id} [get]
 func GetMovieWithID(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//id, err := strconv.Atoi(c.Param("restaurant_id"))
-
 		imdbId := c.Param("imdb_id")
 
 		db := ctx.GetMainDBConnection()
 		storage := moviestore.NewSQLStore(db)
-		biz := moviebusiness.FindMovieStore(storage)
+		biz := moviebusiness.NewFindMovieBiz(storage)
 
-		data, err := biz.FindMovie(c.Request.Context(), map[string]interface{}{"imdb_id": imdbId})
-
+		data, err := biz.FindMovieById(c.Request.Context(), imdbId)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			panic(err)
 			return
 		}
-
 		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data))
 	}
 }

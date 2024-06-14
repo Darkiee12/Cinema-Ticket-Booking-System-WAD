@@ -11,10 +11,10 @@ import (
 func (store *sqlStore) FindMovie(
 	_ context.Context,
 	condition map[string]interface{},
-	moreKeys ...string) (*moviemodel.Movie, error) {
+	moreKeys ...string,
+) (*moviemodel.Movie, error) {
 	var data moviemodel.Movie
-
-	db := store.db
+	db := store.db.Table(moviemodel.TableName)
 	for i := range moreKeys {
 		db = db.Preload(moreKeys[i])
 	}
