@@ -112,6 +112,8 @@ func main() {
 			middleware.RequireAuth(appCtx, userStore),
 			middleware.CheckRole(appCtx, "admin", "cinema_owner"),
 			ginauditorium.CreateAuditorium(appCtx))
+		//GET /v1/auditoriums/:id
+		auditoriums.GET("/:id", ginauditorium.GetAuditoriumWithID(appCtx))
 	}
 
 	{
