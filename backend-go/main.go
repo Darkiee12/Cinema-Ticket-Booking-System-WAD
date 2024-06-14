@@ -61,7 +61,7 @@ func main() {
 		}
 	}
 
-	db = db.Debug()
+	//db = db.Debug()
 
 	key := os.Getenv("SECRET_KEY")
 	appCtx := appctx.NewAppContext(db, key)

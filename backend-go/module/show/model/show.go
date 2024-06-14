@@ -9,7 +9,7 @@ const EntityName = "Show"
 const TableName = "shows"
 
 type Show struct {
-	ID           int                `json:"id" gorm:"column:id;primary_key" swaggerignore:"true"`
+	ID           int                `json:"id" gorm:"column:id;primary_key"`
 	Date         *common.Date       `json:"date" gorm:"column:date" `
 	StartTime    *common.Time       `json:"startTime" gorm:"column:start_time"`
 	EndTime      *common.Time       `json:"endTime" gorm:"column:end_time"`
