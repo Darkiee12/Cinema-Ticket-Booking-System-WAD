@@ -22,7 +22,7 @@ type findAuditoriumBiz struct {
 }
 
 func (biz *findAuditoriumBiz) FindAuditoriumById(ctx context.Context, id int) (*auditoriummodel.Auditorium, error) {
-	data, err := biz.store.FindAuditorium(ctx, map[string]interface{}{"id": id}, "Cinema", "Owner")
+	data, err := biz.store.FindAuditorium(ctx, map[string]interface{}{"id": id}, "Cinema")
 
 	if err != nil {
 		return nil, err
