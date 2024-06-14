@@ -39,18 +39,11 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		uid, err := common.FromBase58(data.AuditoriumFakeID)
-
-		if err != nil {
-			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
-			return
-		}
-
 		// Check if the user has permission to create show
 		if requester.GetRole() != "admin" {
 			store := auditoriumstore.NewSQLStore(db)
 			biz := auditoriumbusiness.NewFindAuditoriumBiz(store)
-			auditorium, err := biz.FindAuditoriumById(c.Request.Context(), int(uid.GetLocalID()))
+			auditorium, err := biz.FindAuditoriumById(c.Request.Context(), int(data.Auditorium.FakeID.GetLocalID()))
 			if err != nil {
 				return
 			}
@@ -59,7 +52,7 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 			}
 		}
 
-		data.AuditoriumID = int64(uid.GetLocalID())
+		data.AuditoriumID = int64(data.Auditorium.FakeID.GetLocalID())
 
 		store := showstore.NewSQLStore(db)
 		ticketStore := ticketstore.NewSQLStore(db)
