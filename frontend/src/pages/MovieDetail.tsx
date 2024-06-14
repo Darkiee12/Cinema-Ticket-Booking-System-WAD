@@ -93,10 +93,6 @@ const MovieSection: React.FC<{ movie: Movie }> = ({ movie }) => {
         <p className="md:text-2xl text-[#03C04A] font-bold">
           {movie?.title}
         </p>
-        <p className="md:text-base text-[#03C04A] italic">
-          {movie.originalTitle}
-        </p>
-        <p>{movie.tagline}</p>
         <p>{movie?.plot}</p>
         <p>
           Rating:<b className="ml-1">{movie?.rated}</b>
@@ -210,9 +206,10 @@ const CinemaComponent: React.FC<{ cinema: CinemaAuditorium }> = ({
 }
 
 const ShowUnit: React.FC<{ show: Show }> = ({ show }) => {
+  const display = show.startTime.substring(0, 5)
   return (
     <Link to={"/show/" + show.id} state={{ show }} className="border-2 border-[#03C04A] rounded-lg p-2">
-      <b>{show.startTime}</b>
+      <b>{display}</b>
     </Link>
   )
 }
