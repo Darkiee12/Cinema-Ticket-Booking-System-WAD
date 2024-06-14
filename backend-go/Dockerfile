@@ -14,7 +14,6 @@ RUN update-ca-certificates
 
 WORKDIR /app/
 COPY --from=build /build/app-linux .
-ADD ./local_db_env /app/
 
 # ADD ./zoneinfo.zip /usr/lsocal/go/lib/time/
 
