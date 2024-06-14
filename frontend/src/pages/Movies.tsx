@@ -63,7 +63,7 @@ const MoviePage = () => {
     })
   }, [])
   return (
-    <div className='max-w-[1040px] h-max mx-auto bg-[#FDF7DC]'>
+    <div className='max-w-[1040px] h- mx-auto bg-[#FDF7DC]'>
       <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Currently premiere movies</p>
       <MovieList movies={movies} />
     </div>
