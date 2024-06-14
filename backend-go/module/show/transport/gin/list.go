@@ -18,7 +18,7 @@ import (
 // @ID list-shows
 // @Accept  json
 // @Produce  json
-// @Param imdbID query int false "Movie ID"
+// @Param imdbID query string false "IMDB ID"
 // @Param date query string false "Date"
 // @Success 200 {object} common.successRes{data=[]showmodel.Show}
 // @Router /shows [get]
