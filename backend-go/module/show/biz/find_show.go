@@ -22,7 +22,7 @@ type findShowBiz struct {
 }
 
 func (biz *findShowBiz) FindShowById(ctx context.Context, id int) (*showmodel.Show, error) {
-	data, err := biz.store.FindShow(ctx, map[string]interface{}{"id": id})
+	data, err := biz.store.FindShow(ctx, map[string]interface{}{"id": id}, "Auditorium", "Auditorium.Cinema")
 
 	if err != nil {
 		return nil, err
