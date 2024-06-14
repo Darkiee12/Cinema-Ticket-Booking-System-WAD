@@ -88,6 +88,62 @@ definitions:
       updated_at:
         type: string
     type: object
+  common.Genre:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  common.Movie:
+    properties:
+      awards:
+        type: string
+      boxOffice:
+        type: number
+      created_at:
+        type: string
+      dvd:
+        type: string
+      genres:
+        items:
+          $ref: '#/definitions/common.Genre'
+        type: array
+      imdbID:
+        type: string
+      imdbRating:
+        type: number
+      imdbVotes:
+        type: integer
+      metascore:
+        type: integer
+      originalTitle:
+        type: string
+      plot:
+        type: string
+      poster:
+        type: string
+      production:
+        type: string
+      rated:
+        type: string
+      released:
+        type: string
+      runtime:
+        type: integer
+      tagline:
+        type: string
+      title:
+        type: string
+      tmdbID:
+        type: integer
+      type:
+        type: string
+      website:
+        type: string
+      year:
+        type: integer
+    type: object
   common.SimpleUser:
     properties:
       created_at:
@@ -137,6 +193,13 @@ definitions:
       name:
         type: string
     type: object
+  genremodel.Genre:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   moviemodel.Movie:
     properties:
       awards:
@@ -147,6 +210,10 @@ definitions:
         type: string
       dvd:
         type: string
+      genres:
+        items:
+          $ref: '#/definitions/common.Genre'
+        type: array
       imdbID:
         type: string
       imdbRating:
@@ -182,10 +249,23 @@ definitions:
       year:
         type: integer
     type: object
+  moviesgenresmodel.MovieGenre:
+    properties:
+      genreID:
+        type: integer
+      imdbID:
+        type: string
+      movies:
+        items:
+          $ref: '#/definitions/common.Movie'
+        type: array
+    type: object
   showmodel.Show:
     properties:
       auditoriumID:
         type: string
+      cinema:
+        $ref: '#/definitions/common.Cinema'
       date:
         type: string
       endTime:
@@ -511,6 +591,58 @@ paths:
       summary: Get a cinema by its name
       tags:
       - cinemas
+  /genres:
+    get:
+      consumes:
+      - application/json
+      description: List genres
+      operationId: list-genres
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/genremodel.Genre'
+                  type: array
+              type: object
+      summary: List genres
+      tags:
+      - genres
+  /genres/:genre_id/movies:
+    get:
+      consumes:
+      - application/json
+      description: List movies by genres
+      operationId: list-movies-by-genres
+      parameters:
+      - description: Genre ID
+        in: path
+        name: genre_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/common.successRes'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/moviesgenresmodel.MovieGenre'
+                  type: array
+              type: object
+      summary: List movies by genres
+      tags:
+      - movies_genres
   /login:
     post:
       consumes:
@@ -803,7 +935,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: Let user buy a ticket
+      description: Let user buy tickets
       operationId: update-ticket
       parameters:
       - description: Ticket
@@ -811,7 +943,9 @@ paths:
         name: ticket
         required: true
         schema:
-          $ref: '#/definitions/ticketmodel.TicketUpdate'
+          items:
+            $ref: '#/definitions/ticketmodel.TicketUpdate'
+          type: array
       produces:
       - application/json
       responses:
@@ -826,7 +960,7 @@ paths:
               type: object
       security:
       - ApiKeyAuth: []
-      summary: Let user buy a ticket
+      summary: Let user buy tickets
       tags:
       - tickets
   /tickets/user:

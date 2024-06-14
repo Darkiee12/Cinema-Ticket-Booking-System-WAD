@@ -23,7 +23,7 @@ func (business *listShowsBusiness) ListShows(
 	context context.Context,
 	filter *showmodel.Filter,
 ) ([]showmodel.Show, error) {
-	res, err := business.store.ListShowsWithCondition(context, filter)
+	res, err := business.store.ListShowsWithCondition(context, filter, "Auditorium", "Auditorium.Cinema")
 	if err != nil {
 		return nil, err
 	}

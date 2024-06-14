@@ -410,6 +410,93 @@ const docTemplate = `{
                 }
             }
         },
+        "/genres": {
+            "get": {
+                "description": "List genres",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "genres"
+                ],
+                "summary": "List genres",
+                "operationId": "list-genres",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/genremodel.Genre"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/genres/:genre_id/movies": {
+            "get": {
+                "description": "List movies by genres",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "movies_genres"
+                ],
+                "summary": "List movies by genres",
+                "operationId": "list-movies-by-genres",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Genre ID",
+                        "name": "genre_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/moviesgenresmodel.MovieGenre"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Login",
@@ -904,7 +991,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Let user buy a ticket",
+                "description": "Let user buy tickets",
                 "consumes": [
                     "application/json"
                 ],
@@ -914,7 +1001,7 @@ const docTemplate = `{
                 "tags": [
                     "tickets"
                 ],
-                "summary": "Let user buy a ticket",
+                "summary": "Let user buy tickets",
                 "operationId": "update-ticket",
                 "parameters": [
                     {
@@ -923,7 +1010,10 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ticketmodel.TicketUpdate"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ticketmodel.TicketUpdate"
+                            }
                         }
                     }
                 ],
@@ -1131,6 +1221,91 @@ const docTemplate = `{
                 }
             }
         },
+        "common.Genre": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.Movie": {
+            "type": "object",
+            "properties": {
+                "awards": {
+                    "type": "string"
+                },
+                "boxOffice": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "dvd": {
+                    "type": "string"
+                },
+                "genres": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.Genre"
+                    }
+                },
+                "imdbID": {
+                    "type": "string"
+                },
+                "imdbRating": {
+                    "type": "number"
+                },
+                "imdbVotes": {
+                    "type": "integer"
+                },
+                "metascore": {
+                    "type": "integer"
+                },
+                "originalTitle": {
+                    "type": "string"
+                },
+                "plot": {
+                    "type": "string"
+                },
+                "poster": {
+                    "type": "string"
+                },
+                "production": {
+                    "type": "string"
+                },
+                "rated": {
+                    "type": "string"
+                },
+                "released": {
+                    "type": "string"
+                },
+                "runtime": {
+                    "type": "integer"
+                },
+                "tagline": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "tmdbID": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
         "common.SimpleUser": {
             "type": "object",
             "properties": {
@@ -1205,6 +1380,17 @@ const docTemplate = `{
                 }
             }
         },
+        "genremodel.Genre": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "moviemodel.Movie": {
             "type": "object",
             "properties": {
@@ -1219,6 +1405,12 @@ const docTemplate = `{
                 },
                 "dvd": {
                     "type": "string"
+                },
+                "genres": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.Genre"
+                    }
                 },
                 "imdbID": {
                     "type": "string"
@@ -1273,11 +1465,31 @@ const docTemplate = `{
                 }
             }
         },
+        "moviesgenresmodel.MovieGenre": {
+            "type": "object",
+            "properties": {
+                "genreID": {
+                    "type": "integer"
+                },
+                "imdbID": {
+                    "type": "string"
+                },
+                "movies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.Movie"
+                    }
+                }
+            }
+        },
         "showmodel.Show": {
             "type": "object",
             "properties": {
                 "auditoriumID": {
                     "type": "string"
+                },
+                "cinema": {
+                    "$ref": "#/definitions/common.Cinema"
                 },
                 "date": {
                     "type": "string"

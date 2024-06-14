@@ -1,6 +1,0 @@
-host=postgres
-user=postgres
-password=password
-dbname=cinema
-port=5432
-sslmode=disable
