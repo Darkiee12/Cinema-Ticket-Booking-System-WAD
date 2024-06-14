@@ -3,11 +3,14 @@ import { Credential, Register as RegisterAccount } from "../models/user";
 import UserService from "../services/UserService";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import Button from "../components/button";
+import { Navigate, useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const signIn = useSignIn();
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }
@@ -16,6 +19,10 @@ const Login = () => {
     setPassword(e.target.value);
   }
 
+  const handleLoginSuccess = () => {
+    alert("Login success");
+    navigate(-1);
+  }
   const handleLogin = () => {
     if (!emailRegex.test(email)) {
       alert("Invalid email")
@@ -25,6 +32,7 @@ const Login = () => {
       email,
       password
     }
+
     UserService
       .login(credentials)
       .then((response) => {
@@ -37,7 +45,10 @@ const Login = () => {
             expiry: response.data.expiry
           }
         })
+        console.log(response.data);
+        handleLoginSuccess();
       }).catch((error) => {
+        alert("Login failed");
         console.log(error);
       });
   }
@@ -55,15 +66,6 @@ const Login = () => {
       </div>
     </form>
   )
-}
-
-const SignIn = () => {
-  return(
-    <div>
-
-    </div>
-  )
-
 }
 
 const Register = () => {
@@ -154,6 +156,10 @@ const Register = () => {
     .then ((response) => {
       console.log(response.data);
       alert("Register success");
+      setEmail("");
+      setName("");
+      setPassword("");
+      setMatchPassword("");
     }).catch((error) => {
       console.log(error);
     });
@@ -186,7 +192,6 @@ const CredentialPage = () => {
     <div className="flex flex-col justify-center max-w-[1040px] h-screen mx-auto bg-[#FDF7DC]">
         <Login />
         <p className="text-black text-xl font-medium font-Montserrat text-center pt-2">Or if you do not have an account</p>
-        <SignIn />
         <Register />
     </div>
   )

@@ -16,8 +16,8 @@ export interface Credential{
 }
 
 export interface Register{
-  name: string;
   email: string;
+  name: string;
   password: string;
 }
 

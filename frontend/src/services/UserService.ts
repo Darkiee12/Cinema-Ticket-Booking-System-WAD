@@ -1,8 +1,8 @@
 import request from "../utils/request";
-import User, { Account, Register } from "../models/user";
+import User, { Account, Register, Credential } from "../models/user";
 import { AxiosRequestConfig } from "axios";
 
-const login = ({ email, password }: {email: string, password: string}) => {
+const login = ({ email, password }: Credential) => {
   const options: AxiosRequestConfig = {
     method: "POST",
     url: `/login`,
@@ -21,10 +21,10 @@ const getProfile = () => {
   const token = localStorage.getItem('token');
   const options: AxiosRequestConfig = {
     method: "GET",
-    url: `/profile`,
+    url: '/profile',
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": `${token}`
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}`
     }
   }
   return request<User>(options);
