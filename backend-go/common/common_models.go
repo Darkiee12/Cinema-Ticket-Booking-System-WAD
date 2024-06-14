@@ -20,7 +20,7 @@ func (c *Auditorium) Mask(isAdminOrOwner bool) {
 }
 
 type Movie struct {
-	ImdbID        string     `gorm:"column:imdb_id" json:"imdbID"`
+	ImdbID        string     `gorm:"column:imdb_id;primary_key" json:"imdbID"`
 	Awards        string     `gorm:"column:awards" json:"awards"`
 	Dvd           string     `gorm:"column:dvd" json:"dvd"`
 	ImdbRating    float64    `gorm:"column:imdb_rating" json:"imdbRating"`
@@ -41,7 +41,7 @@ type Movie struct {
 	TmdbID        int        `gorm:"column:tmdb_id" json:"tmdbID"`
 	BoxOffice     float64    `gorm:"column:box_office" json:"boxOffice"`
 	CreatedAt     *time.Time `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	Genres        []*Genre   `gorm:"many2many:movies_genres;" json:"genres"`
+	Genres        []*Genre   `gorm:"many2many:movies_genres;joinForeignKey:ImdbID;joinReferences:GenreID" json:"genres"`
 }
 
 func (Movie) TableName() string { return "movies" }

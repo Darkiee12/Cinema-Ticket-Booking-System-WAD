@@ -45,6 +45,7 @@ func main() {
 	//	log.Fatalln(err)
 	//}
 	//dsn := strings.ReplaceAll(string(content), "\n", " ")
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	{
 		i := 0
@@ -60,7 +61,7 @@ func main() {
 		}
 	}
 
-	//db = db.Debug()
+	db = db.Debug()
 
 	key := os.Getenv("SECRET_KEY")
 	appCtx := appctx.NewAppContext(db, key)
