@@ -206,9 +206,10 @@ const CinemaComponent: React.FC<{ cinema: CinemaAuditorium }> = ({
 }
 
 const ShowUnit: React.FC<{ show: Show }> = ({ show }) => {
+  const display = show.startTime.substring(0, 5)
   return (
     <Link to={"/show/" + show.id} state={{ show }} className="border-2 border-[#03C04A] rounded-lg p-2">
-      <b>{show.startTime}</b>
+      <b>{display}</b>
     </Link>
   )
 }
