@@ -8,7 +8,7 @@ import (
 type CreateShowRepo interface {
 	CreateShow(
 		ctx context.Context,
-		data *showmodel.Show,
+		data *showmodel.ShowCreate,
 	) error
 }
 
@@ -20,7 +20,7 @@ func NewCreateShowBusiness(repo CreateShowRepo) *createShowRepo {
 	return &createShowRepo{repo: repo}
 }
 
-func (biz *createShowRepo) CreateShow(ctx context.Context, data *showmodel.Show) error {
+func (biz *createShowRepo) CreateShow(ctx context.Context, data *showmodel.ShowCreate) error {
 	if err := biz.repo.CreateShow(ctx, data); err != nil {
 		return err
 	}

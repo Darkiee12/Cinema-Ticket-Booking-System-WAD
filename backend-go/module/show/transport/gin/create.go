@@ -23,7 +23,7 @@ import (
 // @ID create-show
 // @Accept  json
 // @Produce  json
-// @Param show body showmodel.Show true "Show"
+// @Param show body showmodel.ShowCreate true "Show"
 // @Success 200 {object} common.successRes{data=string}
 // @Security ApiKeyAuth
 // @Router /shows [post]
@@ -33,17 +33,24 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 
 		db := ctx.GetMainDBConnection()
 
-		var data showmodel.Show
+		var data showmodel.ShowCreate
 
 		if err := c.ShouldBind(&data); err != nil {
 			panic(err)
+		}
+
+		uid, err := common.FromBase58(data.AuditoriumFakeID)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
+			return
 		}
 
 		// Check if the user has permission to create show
 		if requester.GetRole() != "admin" {
 			store := auditoriumstore.NewSQLStore(db)
 			biz := auditoriumbusiness.NewFindAuditoriumBiz(store)
-			auditorium, err := biz.FindAuditoriumById(c.Request.Context(), int(data.Auditorium.FakeID.GetLocalID()))
+			auditorium, err := biz.FindAuditoriumById(c.Request.Context(), int(uid.GetLocalID()))
 			if err != nil {
 				return
 			}
@@ -52,7 +59,7 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 			}
 		}
 
-		data.AuditoriumID = int64(data.Auditorium.FakeID.GetLocalID())
+		data.AuditoriumID = int64(uid.GetLocalID())
 
 		store := showstore.NewSQLStore(db)
 		ticketStore := ticketstore.NewSQLStore(db)

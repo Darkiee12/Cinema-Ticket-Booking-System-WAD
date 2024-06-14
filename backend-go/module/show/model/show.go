@@ -28,6 +28,18 @@ func (s *Show) Mask(isAdminOrOwner bool) {
 	}
 }
 
+type ShowCreate struct {
+	ID               int          `json:"id" gorm:"column:id;primary_key" swaggerignore:"true"`
+	Date             *common.Date `json:"date" gorm:"column:date" `
+	StartTime        *common.Time `json:"startTime" gorm:"column:start_time"`
+	EndTime          *common.Time `json:"endTime" gorm:"column:end_time"`
+	AuditoriumID     int64        `json:"-" gorm:"column:auditorium_id"`
+	AuditoriumFakeID string       `json:"auditoriumID" gorm:"preload:false;foreignKey:AuditoriumID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	ImdbID           string       `json:"imdbID" gorm:"column:imdb_id"`
+}
+
+func (ShowCreate) TableName() string { return TableName }
+
 type ShowUpdate struct {
 	Date         *common.Date `gorm:"column:date" json:"date"`
 	EndTime      *common.Time `gorm:"column:end_time" json:"endTime"`
