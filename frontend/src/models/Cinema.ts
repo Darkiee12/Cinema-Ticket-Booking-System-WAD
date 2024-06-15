@@ -1,4 +1,4 @@
-import { Owner } from "./user";
+import { Owner } from "./User";
 
 export default interface Cinema {
   id: string;

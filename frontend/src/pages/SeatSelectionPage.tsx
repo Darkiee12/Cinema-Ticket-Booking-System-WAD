@@ -13,48 +13,31 @@ const SeatSelectionPage = () => {
   const isAuthenticated = useIsAuthenticated()
   const [show, setShow] = useState<Show>();
   const [selectedSeat, setSelectedSeat] = useState<number[]>([]);
+  const [info, setInfo] = useState<string>();
   useEffect(() => {
-    if (location.state && (location.state as Show).auditorium) {
-      console.log("Show from prev page: ",location.state)
-      const cache = location.state as Show;
-      setShow(cache);
-    } else {
-      const id = location.pathname.split('/').pop();
-      if (id) {
-        ShowService.getById(id)
-          .then((show) => {
-            console.log("Show from API: ",show)
-            setShow(show);
-          })
-          .catch((error) => {
-            console.error('Error fetching show by ID:', error);
-          });
-      } else {
-        window.location.href = '/'; 
-      }
+    const id = location.pathname.split("/").pop();
+    if(id){
+      ShowService.getById(id)
+      .then((res) => {
+        setShow(res.data);
+      })
+    } else{
+      setInfo("Show not found")
     }
-  }, []);
-   if (!isAuthenticated){
-    setTimeout(() => {
-      window.location.href = "/login"
-    }, 2000);
-    return(
-      <div className="w-full text-center">You need to login to view this page</div>
-    )
-  } else
+  }, [])
   return (
-    <div className="w-full px-10">
+    <div className="w-full px-2 lg:px-10 min-w-[40rem] overflow-x-scroll">
       <div className="w-full bg-[#FDF7DC]">
         <p className="w-full text-center py-5 font-bold text-2xl">Seat selection</p>
         <div className="w-full px-20">
-          <div className="w-full border-2 border-solid rounded-lg border-black h-screen">
-            <div className="px-48 py-5 w-full">
-              <div className="border-2 border-solid border-black text-center font-bold mb-10">Screen</div>
-              {show && <Seats show={show} />}
+          <div className="w-full border-2 border-solid rounded-lg border-black">
+            <div className="px-5 py-1 w-full mt-5">
+              <div className="border-2 border-solid border-black text-center text-2xl font-bold mb-10 py-5">Screen</div>
+              {show ? 
+              <Seats show={show} />
+              : (<div></div>)}
             </div>
-
           </div>
-
         </div>
       </div>
     </div>
@@ -62,20 +45,37 @@ const SeatSelectionPage = () => {
 };
 const Seats: React.FC<{ show: Show }> = ({ show }) => {
   const [numSeats, setNumSeats] = useState<number>(0);
+  const [booked, setBooked] = useState<number[]>([]);
+
   useEffect(() => {
-    AuditoriumService
-      .getById(show.auditorium.id)
+    console.log("Retrieving auditorium with id: ", show.auditorium.id);
+    AuditoriumService.getById(show.auditorium.id)
       .then((res) => {
-        setNumSeats(res.seats)
+        setNumSeats(res.data.seats);
       })
-  })
+    TicketService.getByShowId(show.id)
+      .then((res) => {
+        setBooked(res.data.map((ticket: Ticket) => ticket.seat_number));
+      })
+
+      
+  }, [])
+
   return (
-    <div className="w-full flex flex-wrap">
-      {Array.from({ length: numSeats }).map((_, index) => {
-        return (
-          <div key={index} className="inline-block m-1 w-8 h-8 border-2 border-solid border-black">{index + 1}</div>
-        )
-      })}
+    <div className="w-full grid grid-cols-10 gap-2">
+      {Array.from({ length: numSeats }).map((_, index) => (
+        <div key={index} className="w-full inline-block border-2 border-solid border-black p-2 text-center">
+          {index + 1<10 ? `0${index + 1}` : index + 1}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const SeatUnit: React.FC<{ seatNumber: number, booked: boolean }> = ({ seatNumber, booked }) => {
+  return(
+    <div className="">
+
     </div>
   )
 }

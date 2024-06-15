@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import User, { Account, Register, Credential } from "../models/user";
+import User, { Account, Register, Credential } from "../models/User";
 import { AxiosRequestConfig } from "axios";
 
 const login = ({ email, password }: Credential) => {
@@ -17,17 +17,16 @@ const login = ({ email, password }: Credential) => {
   return request<{data: Account}>(options);
 }
 
-const getProfile = () => {
-  const token = localStorage.getItem('token');
+const getProfile = (token?: string) => {
   const options: AxiosRequestConfig = {
     method: "GET",
     url: '/profile',
     headers: {
       "Accept": "application/json",
-      "Authorization": `Bearer ${token}`
+      "Authorization": `Bearer ${token || getCookie("_auth")}`
     }
   }
-  return request<User>(options);
+  return request<{data: User}>(options);
 }
 
 const register = ({email, name, password}: Register) => {
@@ -43,7 +42,7 @@ const register = ({email, name, password}: Register) => {
       password
     }
   }
-  return request<User>(options);
+  return request<string>(options);
 }
 
 const UserService = {
@@ -52,3 +51,14 @@ const UserService = {
   register
 };
 export default UserService;
+
+function getCookie(name: string): string | undefined {
+  const cookies = document.cookie.split(';');
+  for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
+      if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+      }
+  }
+  return undefined;
+}
