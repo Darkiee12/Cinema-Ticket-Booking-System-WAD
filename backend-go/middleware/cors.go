@@ -6,8 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AllowCORS(ac appctx.AppContext) gin.HandlerFunc {
+func AllowCORS(_ appctx.AppContext) gin.HandlerFunc {
 	cfg := cors.DefaultConfig()
 	cfg.AllowAllOrigins = true
+	cfg.AllowCredentials = true
 	return cors.New(cfg)
 }

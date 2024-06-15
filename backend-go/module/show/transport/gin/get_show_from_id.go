@@ -38,7 +38,7 @@ func GetShowWithID(ctx appctx.AppContext) gin.HandlerFunc {
 		if err != nil {
 			panic(err)
 		}
-
+		data.Mask(false)
 		c.JSON(http.StatusOK, common.SimpleNewSuccessResponse(data))
 	}
 }

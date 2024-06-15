@@ -7,8 +7,8 @@ env:
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-  SECRET_KEY: ${{secrets.SECRET_KEY}}
-  API_URL: ${{secrets.API_URL}}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  API_URL: ${{ secrets.API_URL }}
 
 jobs:
   build:
@@ -29,8 +29,7 @@ jobs:
             echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
             echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
             echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-            echo "VITE_API_URL=${{secrets.API_URL}}" >> .env
-            eval export $(cat ~/.env)
+            echo "VITE_API_URL=${{ secrets.API_URL }}" >> .env
 
       - name: Deploy
         uses: appleboy/ssh-action@master
