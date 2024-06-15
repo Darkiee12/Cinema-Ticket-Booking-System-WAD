@@ -2,7 +2,6 @@ package userbiz
 
 import (
 	"cinema/common"
-	"cinema/component/appctx"
 	"cinema/component/tokenprovider"
 	"cinema/module/user/usermodel"
 	"context"
@@ -26,7 +25,7 @@ type loginBusiness struct {
 	hasher        Hasher
 }
 
-func NewLoginBusiness(appCtx appctx.AppContext,
+func NewLoginBusiness(
 	userStore LoginStorage,
 	//tokenConfig TokenConfig,
 	expiry int,

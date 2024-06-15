@@ -42,6 +42,17 @@ func (User) TableName() string {
 	return TableName
 }
 
+type UserUpdate struct {
+	DateOfBirth *time.Time `json:"date_of_birth" gorm:"column:date_of_birth;"`
+	Gender      string     `json:"gender" gorm:"gender"`
+	Name        string     `json:"name" gorm:"column:name;"`
+	Phone       string     `json:"phone" gorm:"column:phone_number;"`
+}
+
+func (UserUpdate) TableName() string {
+	return TableName
+}
+
 var (
 	ErrEmailOrPasswordInvalid = common.NewCustomError(
 		errors.New("email or password invalid"),

@@ -171,6 +171,8 @@ func main() {
 		users := v1
 		//GET /v1/profile
 		users.GET("/profile", middleware.RequireAuth(appCtx, userStore), ginuser.GetProfile(appCtx))
+		//PUT /v1/profile
+		users.PUT("/profile", middleware.RequireAuth(appCtx, userStore), ginuser.UpdateUser(appCtx))
 		//POST /v1/register
 		users.POST("/register", ginuser.Register(appCtx))
 		//POST /v1/login
