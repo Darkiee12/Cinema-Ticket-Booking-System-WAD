@@ -8,6 +8,10 @@ const NavBar = () => {
   const [userName, setUserName] = useState("");
   const [token, setToken] = useState("");
 
+  const getToken = () => {
+    setToken(localStorage.getItem("token")!);
+  };
+
   useEffect(() => {
     UserService
     .getProfile()
@@ -17,10 +21,8 @@ const NavBar = () => {
     }).catch((error) => {
       console.log(error);
     });
-    setToken(localStorage.getItem("token") || "");
-    console.log("Token: "+token);
-  }, []);  
-
+    getToken();
+  }, [token]);  
   return(
     <div className="h-[10%] w-full px-10 bg-[#151720] flex items-center justify-between text-white font-Montserrat">
       <div className="flex gap-x-5 items-center">
@@ -33,6 +35,10 @@ const NavBar = () => {
       </div>
       <div className="flex gap-x-5">
         {userName && <Button text={`Hello, ${userName}`} hollow={true} onClick={() => window.location.href = "/profile"} /> }
+        {userName && <Button text="Sign out" hollow={true} onClick={() => {
+          localStorage.setItem("token", ""); 
+          getToken();
+          }} />}
         {!userName && <Button text="Sign in/Sign up" hollow={true} onClick={() => window.location.href = "/login"} />}
         <Button text="Buy ticket" hollow={false} onClick={() => window.location.href = "/movies"} />
       </div>
