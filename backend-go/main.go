@@ -67,7 +67,7 @@ func main() {
 	appCtx := appctx.NewAppContext(db, key)
 
 	r := gin.Default()
-	r.Use(middleware.Recover(appCtx), middleware.AllowCORS(appCtx))
+	r.Use(middleware.Recover(appCtx), middleware.CORSMiddleware(appCtx))
 
 	docs.SwaggerInfo.BasePath = "/v1"
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

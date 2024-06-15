@@ -52,13 +52,7 @@ const Seats: React.FC<{ show: Show }> = ({ show }) => {
     AuditoriumService.getById(show.auditorium.id)
       .then((res) => {
         setNumSeats(res.data.seats);
-      })
-    TicketService.getByShowId(show.id)
-      .then((res) => {
-        setBooked(res.data.map((ticket: Ticket) => ticket.seat_number));
-      })
-
-      
+      })     
   }, [])
 
   return (
@@ -72,11 +66,4 @@ const Seats: React.FC<{ show: Show }> = ({ show }) => {
   );
 };
 
-const SeatUnit: React.FC<{ seatNumber: number, booked: boolean }> = ({ seatNumber, booked }) => {
-  return(
-    <div className="">
-
-    </div>
-  )
-}
 export default SeatSelectionPage;

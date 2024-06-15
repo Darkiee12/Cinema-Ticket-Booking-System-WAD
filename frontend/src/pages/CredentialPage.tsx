@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Credential, Register as RegisterAccount } from "../models/user";
+import { Credential, Register as RegisterAccount } from "../models/User";
 import UserService from "../services/UserService";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import Button from "../components/button";
