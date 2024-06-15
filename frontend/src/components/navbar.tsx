@@ -10,21 +10,13 @@ const NavBar = () => {
   const [userName, setUserName] = useState<string>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const isAuthenticated = useIsAuthenticated()
-  const auth = useAuthUser();
-  const navigate = useNavigate();
-  
+  const auth = useAuthUser(); 
  
   useEffect(() => {
     if(isAuthenticated){
       setUserName((auth as any).name);
-    } else{
-      navigate("/login")
-    }
-  }, []);
-  
-
-  
-
+    } 
+  }, [isAuthenticated]);
   return (
     <div className="h-[10%] w-full px-10 bg-[#151720] flex items-center justify-between text-white font-Montserrat">
       <div className="flex gap-x-5 items-center">

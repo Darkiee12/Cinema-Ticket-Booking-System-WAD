@@ -52,16 +52,6 @@ const MovieDetail = () => {
   const handleDateChange = (date: Date) => {
     setSelectedDate(date)
   }
-  if (!isAuthenticated) {
-    setTimeout(() => {
-      window.location.href = '/login'
-    }, 2000)
-    return (
-      <div className="w-full text-center">
-        You need to login to view this page
-      </div>
-    )
-  } else
     return (
       <div className="w-full px-10">
         <div className="w-full bg-[#FDF7DC] pt-5">

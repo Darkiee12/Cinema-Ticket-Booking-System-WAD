@@ -3,10 +3,12 @@ import { Credential, Register as RegisterAccount } from "../models/User";
 import UserService from "../services/UserService";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import Button from "../components/button";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [info, setInfo] = useState<string>("");
+  const navigate = useNavigate();
   const signIn = useSignIn();
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -21,7 +23,7 @@ const Login = () => {
   const handleLoginSuccess = () => {
     setInfo("Login success. Redirecting to homepage...");
     setTimeout(() => {
-      window.location.href = "/";
+      navigate(-1);
     }, 2000);
   }
   const handleLogin = async () => {
@@ -98,7 +100,6 @@ const Register = () => {
 
   useEffect(() => {
     const result = emailRegex.test(email);
-    console.log(result);
     setValidEmail(result);
   }, [email]);
 
