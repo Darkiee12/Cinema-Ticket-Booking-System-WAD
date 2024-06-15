@@ -23,7 +23,7 @@ const Login = () => {
   const handleLoginSuccess = () => {
     setInfo("Login success. Redirecting to homepage...");
     setTimeout(() => {
-      navigate(-1);
+      window.location.href = "/";
     }, 2000);
   }
   const handleLogin = async () => {
