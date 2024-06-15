@@ -30,7 +30,7 @@ jobs:
             echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
             echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
             echo "VITE_API_URL=${{secrets.API_URL}}" >> .env
-            eval export $(cat ~/.env)
+            eval export $(cat ./.env)
 
       - name: Deploy
         uses: appleboy/ssh-action@master
