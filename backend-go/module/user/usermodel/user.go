@@ -18,7 +18,7 @@ type User struct {
 	Name            *string      `json:"name,omitempty" gorm:"column:name;"`
 	Role            string       `json:"role,omitempty" gorm:"column:tier;"`
 	Salt            string       `json:"-" gorm:"column:salt;"`
-	Phone           *string      `json:"phone,omitempty" gorm:"column:phone_number;"`
+	Phone           *int8        `json:"phone,omitempty" gorm:"column:phone_number;"`
 }
 
 func (u *User) GetUserId() int {
@@ -45,7 +45,7 @@ type UserUpdate struct {
 	DateOfBirth *common.Date `json:"date_of_birth,omitempty" gorm:"column:date_of_birth;"`
 	Gender      *string      `json:"gender,omitempty" gorm:"gender"`
 	Name        *string      `json:"name,omitempty" gorm:"column:name;"`
-	Phone       *string      `json:"phone,omitempty" gorm:"column:phone_number;"`
+	Phone       *int8        `json:"phone,omitempty" gorm:"column:phone_number;"`
 }
 
 func (UserUpdate) TableName() string {
