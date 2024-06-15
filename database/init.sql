@@ -1,4 +1,3 @@
-CREATE DATABASE IF NOT EXISTS cinema;
 -- Sequence and defined type for auditorium_seats
 CREATE SEQUENCE IF NOT EXISTS auditorium_seats_id_seq;
 -- Table Definition for auditorium_seats
@@ -2002,20 +2001,28 @@ VALUES ('2024-06-20', '19:51', '21:41', 39, 'tt29493007'),
     ('2024-06-20', '21:57', '23:47', 24, 'tt29493007'),
     ('2024-06-20', '08:46', '10:36', 30, 'tt29493007');
 DO $$
-DECLARE show RECORD;
-capacity int;
-BEGIN -- Loop through each show
-FOR show IN
+DECLARE show_record RECORD;
+seat_number INTEGER;
+BEGIN -- Cursor to fetch shows along with auditorium capacities
+FOR show_record IN
 SELECT s.id AS show_id,
-    s.auditorium_id
-FROM public.shows s LOOP -- Get the capacity of the auditorium for this show
-SELECT seats INTO capacity
-FROM auditoriums
-WHERE auditorium_id = show.auditorium_id;
--- Insert tickets for each seat in the auditorium
-FOR seat_number IN 1..capacity LOOP
-INSERT INTO public.tickets (seat_number, show_id)
-VALUES (seat_number, show.show_id);
+    a.id AS auditorium_id,
+    a.seats
+FROM public.shows s
+    JOIN public.auditoriums a ON s.auditorium_id = a.id LOOP -- Loop to insert tickets for each show
+    FOR seat_number IN 1..show_record.seats LOOP
+INSERT INTO public.tickets(
+        "seat_number",
+        "show_id",
+        "created_at",
+        "updated_at"
+    )
+VALUES (
+        seat_number,
+        show_record.show_id,
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    );
 END LOOP;
 END LOOP;
 END $$;
