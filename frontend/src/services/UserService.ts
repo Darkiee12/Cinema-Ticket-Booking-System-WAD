@@ -23,8 +23,8 @@ const getProfile = () => {
     method: "GET",
     url: `/profile`,
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": `${token}`
+      "Accept": "application/json'",
+      "Authorization": `Bearer ${token}`
     }
   }
   return request<User>(options);
