@@ -1,7 +1,26 @@
 import {Link} from "react-router-dom";
 import Logo from "../assets/CIneU.png";
 import Button from "./button";
+import { useEffect, useState } from "react";
+import UserService from "../services/UserService";
 const NavBar = () => {
+  
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    UserService
+    .getProfile()
+    .then((response) => {
+      console.log(response.data);
+      setUserName(response.data.name);
+    }).catch((error) => {
+      console.log(error);
+    });
+    const token = localStorage.getItem('token'); 
+    if (token) console.log("Token exists");
+    else console.log("Token does not exist");
+  }, []);  
+
   return(
     <div className="h-[10%] w-full px-10 bg-[#151720] flex items-center justify-between text-white font-Montserrat">
       <div className="flex gap-x-5 items-center">
@@ -13,7 +32,8 @@ const NavBar = () => {
         <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">About us</button>
       </div>
       <div className="flex gap-x-5">
-        <Button text="Sign in/Sign up" hollow={true} onClick={() => window.location.href = "/login"} />
+        {userName && <Button text={`Hello, ${userName}`} hollow={true} onClick={() => window.location.href = "/profile"} /> }
+        {!userName && <Button text="Sign in/Sign up" hollow={true} onClick={() => window.location.href = "/login"} />}
         <Button text="Buy ticket" hollow={false} onClick={() => window.location.href = "/movies"} />
       </div>
     </div>

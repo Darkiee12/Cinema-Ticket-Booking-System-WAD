@@ -53,7 +53,7 @@ const Homepage = () => {
     }
 
     return (
-        <div className='max-w-[1040px] h-max mx-auto bg-[#FDF7DC]'>
+        <div className='max-w-[1040px] h-full mx-auto bg-[#FDF7DC]'>
             <div className='w-[1040px] h-[585px]'>
                 <ImageSlider imageUrls={image}/>
             </div>
