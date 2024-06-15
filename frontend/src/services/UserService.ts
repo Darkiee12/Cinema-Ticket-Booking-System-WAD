@@ -45,10 +45,29 @@ const register = ({email, name, password}: Register) => {
   return request<string>(options);
 }
 
+const update = ({date_of_birth, gender, name, phone}: {date_of_birth:string, gender:string, name:string, phone:string}) => {
+  const options: AxiosRequestConfig = {
+    method: "PUT",
+    url: '/profile',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${getCookie("_auth")}`
+    },
+    data: {
+      date_of_birth,
+      gender,
+      name,
+      phone
+    } 
+  }
+  return request<{data: User}>(options);
+}
+
 const UserService = {
   login,
   getProfile,
-  register
+  register,
+  update
 };
 export default UserService;
 
