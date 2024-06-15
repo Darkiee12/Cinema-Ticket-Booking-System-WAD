@@ -45,6 +45,7 @@ const Login = () => {
             expiry: response.data.expiry
           }
         })
+        localStorage.setItem("token", response.data.token);
         console.log(response.data);
         handleLoginSuccess();
       }).catch((error) => {
