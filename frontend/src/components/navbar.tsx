@@ -6,6 +6,7 @@ import UserService from "../services/UserService";
 const NavBar = () => {
   
   const [userName, setUserName] = useState("");
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     UserService
@@ -16,9 +17,8 @@ const NavBar = () => {
     }).catch((error) => {
       console.log(error);
     });
-    const token = localStorage.getItem('token'); 
-    if (token) console.log("Token exists");
-    else console.log("Token does not exist");
+    setToken(localStorage.getItem("token") || "");
+    console.log("Token: "+token);
   }, []);  
 
   return(
