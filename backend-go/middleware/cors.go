@@ -3,6 +3,7 @@ package middleware
 import (
 	"cinema/component/appctx"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func CORSMiddleware(_ appctx.AppContext) gin.HandlerFunc {
@@ -13,6 +14,11 @@ func CORSMiddleware(_ appctx.AppContext) gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Max")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		// Handle OPTIONS method
+		if c.Request.Method == http.MethodOptions {
+			c.AbortWithStatus(http.StatusOK)
+			return
+		}
 		c.Next()
 	}
 }
