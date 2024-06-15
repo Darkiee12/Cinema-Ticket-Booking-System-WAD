@@ -1,6 +1,7 @@
 import request from "../utils/request";
 import Ticket from "../models/ticket";
 import Pagination from "../utils/pagination";
+import { getCookie } from "./UserService";
 
 const getByShowId = (showId: string) => {
   const options = {
@@ -32,16 +33,15 @@ const put = ({seat_number, show_id}: {seat_number: number, show_id: number}) => 
 }
 
 const getByUser = () => {
-  const token = localStorage.getItem("token");
   const options = {
     method: "GET",
     url: `/tickets/user`,
     headers: {
-      "Accept": "application/json",
-      "Authorization": `${token}`
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${getCookie("_auth")}`
     },
   };
-  return request<Ticket>(options);
+  return request(options);
 }
 
 const TicketService = {

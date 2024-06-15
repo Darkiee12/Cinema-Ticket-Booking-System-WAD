@@ -18,7 +18,7 @@ const getAll = (imdbID?: string, date?: string) => {
   return request<Pagination<Show>>(options)
 }
 
-const getById = (id: string) => {
+const getById = (id: number) => {
   const options: AxiosRequestConfig = {
     method: 'GET',
     url: `/shows/${id}`,

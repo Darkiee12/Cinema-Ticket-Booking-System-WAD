@@ -60,7 +60,18 @@ const update = ({date_of_birth, gender, name, phone}: {date_of_birth:string, gen
       phone
     } 
   }
-  return request<{data: User}>(options);
+  return request<{data: boolean, filter:any, paging:any}>(options);
+}
+
+export function getCookie(name: string): string | undefined {
+  const cookies = document.cookie.split(';');
+  for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
+      if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+      }
+  }
+  return undefined;
 }
 
 const UserService = {
@@ -71,13 +82,3 @@ const UserService = {
 };
 export default UserService;
 
-function getCookie(name: string): string | undefined {
-  const cookies = document.cookie.split(';');
-  for (let cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
-      if (cookieName === name) {
-          return decodeURIComponent(cookieValue);
-      }
-  }
-  return undefined;
-}

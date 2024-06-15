@@ -24,7 +24,7 @@ const Login = () => {
   const handleLoginSuccess = () => {
     setInfo("Login success. Redirecting to homepage...");
     setTimeout(() => {
-      navigate(-1);
+      window.location.href = "/";
     }, 2000);
   }
   const handleLogin = async () => {
@@ -37,6 +37,7 @@ const Login = () => {
       const credentials: Credential = { email, password };
       const response = await UserService.login(credentials);
       const userProfile = (await UserService.getProfile(response.data.token));
+      localStorage.setItem("token", response.data.token);
 
       // Update authentication state
       signIn({
