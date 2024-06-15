@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS cinema;
 -- Sequence and defined type for auditorium_seats
 CREATE SEQUENCE IF NOT EXISTS auditorium_seats_id_seq;
 -- Table Definition for auditorium_seats
