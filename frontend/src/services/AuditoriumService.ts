@@ -9,12 +9,12 @@ const getById = (id: string, page?: number, limit?: number, cursor?: string) => 
     .join('&');
   const options: AxiosRequestConfig = {
     method: "GET",
-    url: `/cinemas/${id}/auditoriums?${filter}`,
+    url: `/auditoriums/${id}${filter}`,
     headers: {
       "Content-Type": "application/json",
     },
   }
-  return request<Auditorium>(options);
+  return request<{data:Auditorium}>(options);
 }
 
 const getByName = (name: string, page?: number, limit?: number, cursor?: string) => {

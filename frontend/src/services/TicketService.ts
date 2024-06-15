@@ -1,5 +1,6 @@
 import request from "../utils/request";
 import Ticket from "../models/ticket";
+import Pagination from "../utils/pagination";
 
 const getByShowId = (showId: string) => {
   const options = {
@@ -9,7 +10,7 @@ const getByShowId = (showId: string) => {
       "Accept": "application/json"
     },
   };
-  return request<Ticket>(options);
+  return request<Pagination<Ticket>>(options);
 };
 
 const put = ({seat_number, show_id}: {seat_number: number, show_id: number}) => {

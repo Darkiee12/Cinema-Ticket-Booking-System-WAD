@@ -6,11 +6,13 @@ import Show, {
   CinemaAuditorium,
   MovieShow,
 } from '../models/show'
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import MovieService from '../services/MovieService'
 import ShowService from '../services/ShowService'
 
 const MovieDetail = () => {
   const location: Location<Movie> = useLocation()
+  const isAuthenticated = useIsAuthenticated()
   const [movie, setMovie] = useState<Movie>()
   const [shows, setShows] = useState<Show[]>()
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
@@ -50,36 +52,36 @@ const MovieDetail = () => {
   const handleDateChange = (date: Date) => {
     setSelectedDate(date)
   }
-  return (
-    <div className="w-full px-10">
-      <div className="w-full bg-[#FDF7DC] pt-5">
-        <div className='w-full'>
-          <MovieSection movie={movie!} />
+    return (
+      <div className="w-full px-10">
+        <div className="w-full bg-[#FDF7DC] pt-5">
+          <div className="w-full">
+            <MovieSection movie={movie!} />
+          </div>
+          <div className="w-full mt-5">
+            <DatePicker onDateChange={handleDateChange} />
+          </div>
+          <div className="w-full px-5">
+            {!shows ? (
+              <div>Loading....</div>
+            ) : (
+              <div>
+                {shows.length === 0 ? (
+                  <div className="w-full text-center italic pt-2">
+                    No shows are available on this date
+                  </div>
+                ) : (
+                  <div className="">
+                    <ShowComponent shows={shows!} selectedDate={selectedDate} />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="w-full py-5 text-center italic">The end</div>
         </div>
-        <div className="w-full mt-5">
-          <DatePicker onDateChange={handleDateChange} />
-        </div>
-        <div className="w-full px-5">
-          {!shows ? (
-            <div>Loading....</div>
-          ) : (
-            <div>
-              {shows.length === 0 ? (
-                <div className="w-full text-center italic pt-2">
-                  No shows are available on this date
-                </div>
-              ) : (
-                <div className="">
-                  <ShowComponent shows={shows!} selectedDate={selectedDate} />
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-        <div className="w-full py-5 text-center italic">The end</div>
       </div>
-    </div>
-  )
+    )
 }
 
 const MovieSection: React.FC<{ movie: Movie }> = ({ movie }) => {
@@ -90,25 +92,21 @@ const MovieSection: React.FC<{ movie: Movie }> = ({ movie }) => {
         <img src={movie?.poster} className="w-full" />
       </div>
       <div className="md: w-[80%] px-5 items-center md:text-base text-xs">
-        <p className="md:text-2xl text-[#03C04A] font-bold">
-          {movie?.title}
-        </p>
+        <p className="md:text-2xl text-[#03C04A] font-bold">{movie?.title}</p>
         <p>{movie?.plot}</p>
         <p>
           Rating:<b className="ml-1">{movie?.rated}</b>
         </p>
         <p>
-          Director:<b className="ml-1">{ }</b>
+          Director:<b className="ml-1">{}</b>
         </p>
         <p>Actor:</p>
         <p>
           Genre:
           <b className="ml-1">
             {movie?.genres
-              .map((genre) => {
-                return genre.name
-              })
-              .join(', ')}
+              ? movie.genres.map((genre) => genre.name).join(', ')
+              : ''}
           </b>
         </p>
         <p>
@@ -125,7 +123,7 @@ const MovieSection: React.FC<{ movie: Movie }> = ({ movie }) => {
           Duration: <b className="ml-1">{movie?.runtime} minutes.</b>
         </p>
         <p>
-          Language: <b className="ml-1">{ }</b>
+          Language: <b className="ml-1">{}</b>
         </p>
       </div>
     </div>
@@ -151,10 +149,11 @@ const DatePicker: React.FC<{ onDateChange: (date: Date) => void }> = ({
         <button
           key={date.toDateString()}
           aria-label={`Select date ${date.toLocaleDateString()}`}
-          className={`border-2 px-5 py-2 text-lg font-semibold rounded-[10px]  ${date.toDateString() === selectedDate.toDateString()
+          className={`border-2 px-5 py-2 text-lg font-semibold rounded-[10px]  ${
+            date.toDateString() === selectedDate.toDateString()
               ? 'bg-green-500 text-white'
               : 'border-[#03C04A] hover:bg-green-300'
-            }`}
+          }`}
           onClick={() => handleDateClick(date)}
         >
           <p>
@@ -208,7 +207,11 @@ const CinemaComponent: React.FC<{ cinema: CinemaAuditorium }> = ({
 const ShowUnit: React.FC<{ show: Show }> = ({ show }) => {
   const display = show.startTime.substring(0, 5)
   return (
-    <Link to={"/show/" + show.id} state={{ show }} className="border-2 border-[#03C04A] rounded-lg p-2">
+    <Link
+      to={'/show/' + show.id}
+      state={{ show }}
+      className="border-2 border-[#03C04A] rounded-lg p-2"
+    >
       <b>{display}</b>
     </Link>
   )

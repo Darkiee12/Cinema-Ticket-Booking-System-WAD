@@ -26,7 +26,7 @@ const getById = (id: string) => {
       'Content-Type': 'application/json',
     },
   }
-  return request<Show>(options)
+  return request<{data: Show}>(options)
 }
 
 const ShowService = {
