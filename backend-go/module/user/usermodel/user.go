@@ -42,10 +42,10 @@ func (User) TableName() string {
 }
 
 type UserUpdate struct {
-	DateOfBirth *common.Date `json:"date_of_birth" gorm:"column:date_of_birth;"`
-	Gender      string       `json:"gender" gorm:"gender"`
-	Name        string       `json:"name" gorm:"column:name;"`
-	Phone       string       `json:"phone" gorm:"column:phone_number;"`
+	DateOfBirth *common.Date `json:"date_of_birth,omitempty" gorm:"column:date_of_birth;"`
+	Gender      *string      `json:"gender,omitempty" gorm:"gender"`
+	Name        *string      `json:"name,omitempty" gorm:"column:name;"`
+	Phone       *string      `json:"phone,omitempty" gorm:"column:phone_number;"`
 }
 
 func (UserUpdate) TableName() string {
