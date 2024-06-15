@@ -38,9 +38,9 @@ const UserInfo = () => {
     }
     return(
         <div>
-            <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Profile</p>
             {!Update && (
-                <div className="max-w-[1000px] h-max border-2 border-black mx-auto rounded-[10px]">
+                <div className="max-w-[1000px] h-max border-2 border-black mx-auto rounded-[10px] mt-2">
+                    <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Profile</p>
                     <p className="text-black text-xl font-medium font-Montserrat text-left p-2">Username: {name}</p>
                     <p className="text-black text-xl font-medium font-Montserrat text-left p-2">Email: {email}</p>
                     <p className="text-black text-xl font-medium font-Montserrat text-left p-2">Phone number: {phone}</p>
@@ -52,7 +52,8 @@ const UserInfo = () => {
                 </div>
             )}
             {Update && (
-                <form className="max-w-[1000px] h-max border-2 border-black mx-auto rounded-[10px] flex flex-col justify-center">
+                <form className="max-w-[1000px] h-max mt-2 border-2 border-black mx-auto rounded-[10px] flex flex-col justify-center">
+                    <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Profile</p>
                     <div className="p-2">
                         <p className="text-black text-lg font-medium font-Montserrat text-left">Username</p>
                         <input className="w-2/3 border-2 px-5 py-2 rounded-[10px] border-black bg-[#FDF7DC] focus:border-green-400 focus:outline-none" type="text" placeholder="New name" onChange={(e)=>setName(e.target.value)} />
