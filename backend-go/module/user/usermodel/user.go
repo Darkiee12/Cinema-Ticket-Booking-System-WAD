@@ -14,11 +14,11 @@ type User struct {
 	DateOfBirth     *common.Date `json:"date_of_birth" gorm:"column:date_of_birth;"`
 	Email           string       `json:"email" gorm:"column:email;"`
 	Password        string       `json:"-" gorm:"column:password;"`
-	Gender          string       `json:"gender" gorm:"gender"`
-	Name            string       `json:"name" gorm:"column:name;"`
-	Role            string       `json:"role" gorm:"column:tier;"`
+	Gender          *string      `json:"gender,omitempty" gorm:"gender"`
+	Name            *string      `json:"name,omitempty" gorm:"column:name;"`
+	Role            string       `json:"role,omitempty" gorm:"column:tier;"`
 	Salt            string       `json:"-" gorm:"column:salt;"`
-	Phone           string       `json:"phone" gorm:"column:phone_number;"`
+	Phone           *string      `json:"phone,omitempty" gorm:"column:phone_number;"`
 }
 
 func (u *User) GetUserId() int {
