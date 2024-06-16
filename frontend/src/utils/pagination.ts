@@ -1,4 +1,4 @@
-export default interface Pagination<T, D=any> {
+export default interface Pagination<T, D = any> {
   data: Array<T>;
   filter: D;
   paging: {

@@ -1,20 +1,22 @@
-import Auditorium from "./auditorium"
-import Cinema from "./cinema"
+import Auditorium from './auditorium';
+import Cinema from './cinema';
+import Movie from './movie';
 
 export default interface Show {
   id: string;
-  auditorium: Auditorium
-  date: string
-  endTime: string
-  imdbID: string
-  startTime: string
+  auditorium: Auditorium;
+  date: string;
+  endTime: string;
+  imdbID: string;
+  startTime: string;
+  movie: Movie;
 }
 
-export interface AuditoriumShow extends Auditorium{
-  shows: Show[]
+export interface AuditoriumShow extends Auditorium {
+  shows: Show[];
 }
-export interface CinemaAuditorium extends Cinema{
-  auditoriums: AuditoriumShow[]
+export interface CinemaAuditorium extends Cinema {
+  auditoriums: AuditoriumShow[];
 }
 export class MovieShow {
   private cinemas: Map<string, CinemaAuditorium> = new Map();
@@ -29,17 +31,19 @@ export class MovieShow {
       if (!cinemaAuditorium) {
         cinemaAuditorium = {
           ...show.auditorium.cinema,
-          auditoriums: []
+          auditoriums: [],
         };
         this.cinemas.set(cinemaId, cinemaAuditorium);
       }
 
       // Find or create AuditoriumShow
-      let auditoriumShow = cinemaAuditorium.auditoriums.find(aud => aud.id === auditoriumId);
+      let auditoriumShow = cinemaAuditorium.auditoriums.find(
+        (aud) => aud.id === auditoriumId,
+      );
       if (!auditoriumShow) {
         auditoriumShow = {
           ...show.auditorium,
-          shows: []
+          shows: [],
         };
         cinemaAuditorium.auditoriums.push(auditoriumShow);
       }
@@ -50,14 +54,20 @@ export class MovieShow {
   }
 
   getCinemas(date?: string): CinemaAuditorium[] {
-    if(date){
-      return [...this.cinemas.values()].map(cinema => {
-        cinema.auditoriums = cinema.auditoriums.map(auditorium => {
-          auditorium.shows = auditorium.shows.filter(show => show.date === date);
-          return auditorium;
-        }).filter(auditorium => auditorium.shows.length > 0);
-        return cinema;
-      }).filter(cinema => cinema.auditoriums.length > 0);
+    if (date) {
+      return [...this.cinemas.values()]
+        .map((cinema) => {
+          cinema.auditoriums = cinema.auditoriums
+            .map((auditorium) => {
+              auditorium.shows = auditorium.shows.filter(
+                (show) => show.date === date,
+              );
+              return auditorium;
+            })
+            .filter((auditorium) => auditorium.shows.length > 0);
+          return cinema;
+        })
+        .filter((cinema) => cinema.auditoriums.length > 0);
     }
     return [...this.cinemas.values()];
   }

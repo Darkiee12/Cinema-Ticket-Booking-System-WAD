@@ -1,11 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App.tsx'
-import './index.css'
+import App from './App.tsx';
+import './index.css';
 
 import createStore from 'react-auth-kit/createStore';
-import AuthProvider from 'react-auth-kit'
+import AuthProvider from 'react-auth-kit';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -22,4 +22,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </Router>
     </AuthProvider>
   </React.StrictMode>,
-)
+);

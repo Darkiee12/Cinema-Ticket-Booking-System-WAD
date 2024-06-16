@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
-import MovieService from '../services/MovieService'
-import Movie from '../models/movie'
-import { Link } from 'react-router-dom'
-import Button from '../components/button'
+import { useState, useEffect } from 'react';
+import MovieService from '../services/MovieService';
+import Movie from '../models/movie';
+import { Link } from 'react-router-dom';
+import Button from '../components/button';
 
 export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
   return (
@@ -17,23 +17,29 @@ export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
       <div>
         <p>{movie.rated}</p>
         <p className="truncate text-xl font-bold">{movie.title}</p>
-        <p className="truncate text-sm">{movie.genres.map((genre) => {return genre.name}).join(", ")}</p>
+        <p className="truncate text-sm">
+          {movie.genres
+            .map((genre) => {
+              return genre.name;
+            })
+            .join(', ')}
+        </p>
       </div>
-      <Link to={{pathname: `/movies/${movie.imdbID}`}} state={movie}>
+      <Link to={{ pathname: `/movies/${movie.imdbID}` }} state={movie}>
         <Button text="Buy ticket" hollow={false} />
       </Link>
     </div>
-  )
-}
+  );
+};
 
 const MovieList: React.FC<{ movies: Movie[] }> = ({ movies }) => {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   return (
     <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 md:p-5 pt-2">
@@ -52,22 +58,24 @@ const MovieList: React.FC<{ movies: Movie[] }> = ({ movies }) => {
         movies.map((movie) => <MovieUnit key={movie.imdbID} movie={movie} />)
       )}
     </div>
-  )
-}
+  );
+};
 
 const MoviePage = () => {
-  const [movies, setMovies] = useState<Movie[]>([])
+  const [movies, setMovies] = useState<Movie[]>([]);
   useEffect(() => {
     MovieService.getAll().then((res) => {
-      setMovies(res.data)
-    })
-  }, [])
+      setMovies(res.data);
+    });
+  }, []);
   return (
-    <div className='max-w-[1040px] h- mx-auto bg-[#FDF7DC]'>
-      <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Currently premiere movies</p>
+    <div className="max-w-[1040px] h- mx-auto bg-[#FDF7DC]">
+      <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">
+        Currently premiere movies
+      </p>
       <MovieList movies={movies} />
     </div>
-  )
-}
+  );
+};
 
-export default MoviePage
+export default MoviePage;

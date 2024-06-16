@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ButtonProps {
@@ -7,7 +6,11 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ hollow = false, text = '', onClick }) => {
+const Button: React.FC<ButtonProps> = ({
+  hollow = false,
+  text = '',
+  onClick,
+}) => {
   return (
     <button
       className={`rounded-lg p-1 text-white font-bold border-2 border-[#03C04A] focus:outline-none focus:ring-2 focus:ring-${hollow ? 'transparent' : '#03C04A'} py-2 px-5 focus:ring-opacity-50
