@@ -23,12 +23,6 @@ import (
 // @Router /tickets [get]
 func ListTickets(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var isAdmin bool
-		if tmp, ok := c.Get(common.CurrentUser); ok {
-			requester := tmp.(common.Requester)
-			isAdmin = requester.GetRole() == common.RoleAdmin
-		}
-
 		db := ctx.GetMainDBConnection()
 
 		var filter ticketmodel.Filter
@@ -36,7 +30,7 @@ func ListTickets(ctx appctx.AppContext) gin.HandlerFunc {
 			panic(common.ErrInvalidRequest(err))
 		}
 
-		filter.Validate(isAdmin)
+		filter.Validate()
 
 		store := ticketstore.NewSQLStore(db)
 		biz := ticketbusiness.NewListTicketsBusiness(store)

@@ -6,11 +6,8 @@ type Filter struct {
 	Status []int `json:"status,omitempty" form:"status"`
 }
 
-func (f *Filter) Validate(isAdmin bool) {
+func (f *Filter) Validate() {
 	if f.ShowID <= 0 {
 		f.ShowID = 1
-	}
-	if (f.Status == nil || len(f.Status) == 0) && !isAdmin {
-		f.Status = []int{1}
 	}
 }
