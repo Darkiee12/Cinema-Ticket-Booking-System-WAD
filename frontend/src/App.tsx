@@ -1,6 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import NavBar from './components/navbar';
+import NavBar, { NavBarMobile } from './components/navbar';
 import Homepage from './pages/Homepage';
 import MoviePage from './pages/Movies';
 import MovieDetail from './pages/MovieDetail';
@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import { useState } from 'react';
 import Cinemas from './pages/Cinemas';
 import CinemaDetail from './pages/CinemaDetail';
+import {BrowserView, MobileView} from 'react-device-detect';
 function App() {
   const [username, setUsername] = useState<string>('');
   const handleUsernameUpdate = (newUsername: string) => {
@@ -17,7 +18,12 @@ function App() {
   };
   return (
     <div className="w-full h-full bg-[#FDFCF0]">
-      <NavBar username={username} />
+      <BrowserView>
+        <NavBar username={username} />
+      </BrowserView>
+      <MobileView>
+        <NavBarMobile username={username}/>
+      </MobileView>
       <Routes>
         <Route path="/login" element={<CredentialPage />} />
         <Route path="/movies" element={<MoviePage />} />

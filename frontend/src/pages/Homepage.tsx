@@ -29,7 +29,7 @@ const Homepage = () => {
 
   const currentMovies = () => {
     return (
-      <div className="grid grid-cols-5 gap-4 p-5 pt-2">
+      <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 md:p-5 pt-2">
         {movie
           .filter((movie) => new Date(movie.released) <= today)
           .slice(0, 10)
@@ -55,8 +55,10 @@ const Homepage = () => {
 
   return (
     <div className="max-w-[1040px] h-full mx-auto bg-[#FDF7DC]">
-      <div className="w-[1040px] h-[585px]">
-        <ImageSlider imageUrls={image} />
+      <div className="w-full h-full flex justify-center items-center">
+        <div className="w-full h-full md:w-[1040px] md:h-[585px]">
+          <ImageSlider imageUrls={image} />
+        </div>
       </div>
       <div>
         <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">

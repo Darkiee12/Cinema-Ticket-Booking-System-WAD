@@ -18,9 +18,9 @@ const CinemaUnit: React.FC<{ cinema: Cinema }> = ({cinema}) => {
             />
           </div> */}
           <div>
-            <p className="truncate text-xl font-bold">{cinema.name}</p>
+            <p className="truncate text-xl font-bold text-center py-1">{cinema.name}</p>
           </div>
-          <Link to={{ pathname: `/cinemas/${cinema.id}` }} state={cinema}>
+          <Link to={{ pathname: `/cinemas/${cinema.id}` }} state={cinema} className="flex justify-center items-center">
             <Button text="Detail" hollow={false} />
           </Link>
         </div>
