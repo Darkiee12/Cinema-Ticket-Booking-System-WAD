@@ -2,7 +2,7 @@ export default interface User {
   id: string
   status: number
   created_at: Date
-  date_of_birth: Date
+  date_of_birth: string
   email: string
   gender: string
   name: string

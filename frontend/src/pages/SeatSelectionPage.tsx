@@ -18,7 +18,7 @@ const SeatSelectionPage = () => {
   useEffect(() => {
     const id = location.pathname.split("/").pop();
     if (id) {
-      ShowService.getById(id)
+      ShowService.getById(parseInt(id))
         .then((res) => {
           setShow(res.data);
         })

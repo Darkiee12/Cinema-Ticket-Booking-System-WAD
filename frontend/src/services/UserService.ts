@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import User, { Account, Register, Credential } from "../models/User";
+import User, { Account, Register, Credential } from "../models/user";
 import { AxiosRequestConfig } from "axios";
 
 const login = ({ email, password }: Credential) => {
@@ -63,7 +63,7 @@ const update = ({date_of_birth, gender, name, phone}: {date_of_birth:string, gen
   return request<{data: boolean, filter:any, paging:any}>(options);
 }
 
-export function getCookie(name: string): string | undefined {
+function getCookie(name: string): string | undefined {
   const cookies = document.cookie.split(';');
   for (let cookie of cookies) {
       const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());

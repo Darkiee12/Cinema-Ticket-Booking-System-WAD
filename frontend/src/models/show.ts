@@ -1,5 +1,6 @@
 import Auditorium from "./auditorium"
 import Cinema from "./cinema"
+import Movie from "./movie";
 
 export default interface Show {
   id: string;
@@ -8,6 +9,7 @@ export default interface Show {
   endTime: string
   imdbID: string
   startTime: string
+  movie: Movie
 }
 
 export interface AuditoriumShow extends Auditorium{

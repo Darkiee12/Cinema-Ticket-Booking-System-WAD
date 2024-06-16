@@ -1,7 +1,6 @@
 import request from "../utils/request";
-import Ticket, { bookingTicket } from "../models/ticket";
+import Ticket from "../models/ticket";
 import Pagination from "../utils/pagination";
-import { getCookie } from "./UserService";
 
 const getByShowId = (showId: string) => {
   const options = {
@@ -15,13 +14,14 @@ const getByShowId = (showId: string) => {
 };
 
 const put = (seats: Array<{ seat_number: number, show_id: number }>) => {
+  const token = localStorage.getItem("token");
   const options = {
     method: "PUT",
-    url: "/tickets",
+    url: `/tickets`,
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Authorization": `Bearer ${getCookie("_auth")}`
+      "Authorization": `Bearer ${token}`
     },
     data: seats
   }
@@ -29,15 +29,16 @@ const put = (seats: Array<{ seat_number: number, show_id: number }>) => {
 }
 
 const getByUser = () => {
+  const token = localStorage.getItem("token");
   const options = {
     method: "GET",
     url: `/tickets/user`,
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${getCookie("_auth")}`
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}`
     },
   };
-  return request(options);
+  return request<Pagination<Ticket>>(options);
 }
 
 const TicketService = {
