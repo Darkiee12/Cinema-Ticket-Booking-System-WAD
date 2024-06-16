@@ -53,6 +53,7 @@ type SimpleMovie struct {
 	Runtime       int    `gorm:"column:runtime" json:"runtime"`
 	Title         string `gorm:"column:title" json:"title"`
 	Year          int    `gorm:"column:year" json:"year"`
+	Poster        string `gorm:"column:poster" json:"poster"`
 }
 
 func (SimpleMovie) TableName() string { return "movies" }
