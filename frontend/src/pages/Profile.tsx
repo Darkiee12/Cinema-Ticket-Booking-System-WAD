@@ -1,17 +1,21 @@
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+
 import { useEffect, useState } from "react";
+
 import Button from "../components/button";
+
 import UserService from "../services/UserService";
 import TicketService from "../services/TicketService";
+
 import Ticket from "../models/ticket";
-import ShowService from "../services/ShowService";
 import Show from "../models/show";
 import Movie from "../models/movie";
-import MovieService from "../services/MovieService";
 
 const UserInfo = () => {
 
     const user = useAuthUser();
+
     const name = (user as any).name;
     const email = (user as any).email;
     const phone = (user as any).phone;
@@ -46,6 +50,7 @@ const UserInfo = () => {
         })
         console.log(updateInfo);
     }
+    
     return(
         <div>
             <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Profile</p>
@@ -104,24 +109,27 @@ const UserTicket = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [shows, setShows] = useState<Show[]>([]);
     const [movies, setMovies] = useState<Movie[]>([]);
-    const [startTime, setStartTime] = useState<Date[]>();
-    const [endTime, setEndTime] = useState<Date[]>();
+    const [startTime, setStartTime] = useState<Date[]>([]);
+    const [endTime, setEndTime] = useState<Date[]>([]);
 
     const fetchTickets = async () => {
         const resTicket = await TicketService.getByUser();
         const setData = async ()=>{
             setTickets(resTicket.data);
             setShows(resTicket.data.map((ticket:any) => ticket.show));
-            setMovies(shows.map((show:any) => show.movie));
-            setStartTime(shows.map((show:any) => new Date(show.startTime)));
-            setEndTime(shows.map((show:any) => new Date(show.endTime)));
+            resTicket.data.map((ticket:any) => {
+                setMovies((movies) => [...movies, ticket.show.movie])
+                setStartTime((startTime) => [...startTime, new Date(ticket.show.startTime)]);
+                setEndTime((endTime) => [...endTime, new Date(ticket.show.startTime)]);
+            })
+            
         }
-        setData();
+        await setData();
     }
     useEffect(() => {
         fetchTickets();
     }, []);
-    // movies.map((movie, index) => {console.log(movie)});
+
     return(
         <div>
             <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Ticket</p>
@@ -129,13 +137,13 @@ const UserTicket = () => {
                 {
                     tickets.map((ticket, index) => (
                         <div className="flex p-2" key={index}>
-                            {/* <div>
+                            <div>
                                 <img src={movies[index].poster} alt={movies[index].title} className="w-32 h-48" />
                             </div>    
                             <div>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{movies[index].title}</p>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{movies[index].rated}</p>
-                            </div> */}
+                            </div>
                             <div>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{shows[index].auditorium.cinema.name}</p>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{shows[index].auditorium.name}</p>
@@ -154,12 +162,23 @@ const UserTicket = () => {
 }
 
 const Profile = () => {
-    return (
+    const isAuthenticated = useIsAuthenticated();
+    
+    if (!isAuthenticated) {
+        setTimeout(() => {
+          window.location.href = '/login'
+        }, 2000)
+        return (
+          <div className="w-full text-center">
+            You need to login to view this page
+          </div>
+        )
+    } 
+    else return (
         <div className='max-w-[1040px] h-full mx-auto bg-[#FDF7DC]'>
             <UserInfo />
             <UserTicket />
         </div>
     );
 }
-
 export default Profile;
