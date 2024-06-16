@@ -3,6 +3,7 @@ package usermodel
 import (
 	"cinema/common"
 	"errors"
+	"regexp"
 )
 
 const (
@@ -18,7 +19,7 @@ type User struct {
 	Name            *string      `json:"name,omitempty" gorm:"column:name;"`
 	Role            string       `json:"role,omitempty" gorm:"column:tier;"`
 	Salt            string       `json:"-" gorm:"column:salt;"`
-	Phone           *int8        `json:"phone,omitempty" gorm:"column:phone_number;"`
+	Phone           *string      `json:"phone,omitempty" gorm:"column:phone_number;"`
 }
 
 func (u *User) GetUserId() int {
@@ -45,11 +46,23 @@ type UserUpdate struct {
 	DateOfBirth *common.Date `json:"date_of_birth,omitempty" gorm:"column:date_of_birth;"`
 	Gender      *string      `json:"gender,omitempty" gorm:"gender"`
 	Name        *string      `json:"name,omitempty" gorm:"column:name;"`
-	Phone       *int8        `json:"phone,omitempty" gorm:"column:phone_number;"`
+	Phone       *string      `json:"phone,omitempty" gorm:"column:phone_number;"`
 }
 
 func (UserUpdate) TableName() string {
 	return TableName
+}
+
+func (u *UserUpdate) Validate() error {
+	if u.Phone != nil && len(*u.Phone) > 0 {
+		phoneRegex := `^\d{10}$`
+		re := regexp.MustCompile(phoneRegex)
+
+		if !re.MatchString(*u.Phone) {
+			return ErrPhoneInvalid
+		}
+	}
+	return nil
 }
 
 var (
@@ -63,5 +76,11 @@ var (
 		errors.New("email has already existed"),
 		"email has already existed",
 		"ErrEmailExisted",
+	)
+
+	ErrPhoneInvalid = common.NewCustomError(
+		errors.New("phone number invalid"),
+		"phone number invalid",
+		"ErrPhoneInvalid",
 	)
 )
