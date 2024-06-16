@@ -22,7 +22,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -41,11 +40,11 @@ func main() {
 		" dbname=" + postgresDB +
 		" port=5432 sslmode=disable"
 
-	content, err := os.ReadFile("local_db_env")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	dsn = strings.ReplaceAll(string(content), "\n", " ")
+	//content, err := os.ReadFile("local_db_env")
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+	// dsn = strings.ReplaceAll(string(content), "\n", " ")
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	{
