@@ -18,7 +18,7 @@ const getAll = (
       'Content-Type': 'application/json',
     },
   };
-  return request<Cinema>(options);
+  return request(options);
 };
 
 const getByName = (name: string) => {
@@ -40,7 +40,7 @@ const getById = (id: string) => {
       'Content-Type': 'application/json',
     },
   };
-  return request<Cinema>(options);
+  return request(options);
 };
 
 const CinemaService = {

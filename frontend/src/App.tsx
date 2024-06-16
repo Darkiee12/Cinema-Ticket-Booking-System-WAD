@@ -8,6 +8,8 @@ import CredentialPage from './pages/CredentialPage';
 import SeatSelectionPage from './pages/SeatSelectionPage';
 import Profile from './pages/Profile';
 import { useState } from 'react';
+import Cinemas from './pages/Cinemas';
+import CinemaDetail from './pages/CinemaDetail';
 function App() {
   const [username, setUsername] = useState<string>('');
   const handleUsernameUpdate = (newUsername: string) => {
@@ -25,6 +27,8 @@ function App() {
           path="/profile"
           element={<Profile onUsernameUpdate={handleUsernameUpdate} />}
         />
+        <Route path="/cinemas" element={<Cinemas />} />
+        <Route path="/cinemas/:cinemaId" element={<CinemaDetail />} />
         <Route path="/" element={<Homepage />} />
       </Routes>
     </div>
