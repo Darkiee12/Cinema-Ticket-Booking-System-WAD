@@ -46,6 +46,17 @@ type Movie struct {
 
 func (Movie) TableName() string { return "movies" }
 
+type SimpleMovie struct {
+	ImdbID        string `gorm:"column:imdb_id;primary_key" json:"imdbID"`
+	OriginalTitle string `gorm:"column:original_title" json:"originalTitle"`
+	Plot          string `gorm:"column:plot" json:"plot"`
+	Runtime       int    `gorm:"column:runtime" json:"runtime"`
+	Title         string `gorm:"column:title" json:"title"`
+	Year          int    `gorm:"column:year" json:"year"`
+}
+
+func (SimpleMovie) TableName() string { return "movies" }
+
 type Cinema struct {
 	SQLModel    `json:",inline"`
 	OwnerID     int         `json:"-" gorm:"column:owner_id;"`
@@ -93,3 +104,18 @@ func (SimpleUser) TableName() string {
 func (u *SimpleUser) Mask(isAdmin bool) {
 	u.GenUID(DbTypeUser)
 }
+
+type Show struct {
+	ID           int          `json:"id" gorm:"column:id;primary_key"`
+	Date         *Date        `json:"date" gorm:"column:date" `
+	StartTime    *Time        `json:"startTime" gorm:"column:start_time"`
+	EndTime      *Time        `json:"endTime" gorm:"column:end_time"`
+	AuditoriumID int64        `json:"-" gorm:"column:auditorium_id"`
+	Auditorium   *Auditorium  `json:"auditorium,omitempty" gorm:"preload:false;foreignKey:AuditoriumID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	ImdbID       string       `json:"imdbID" gorm:"column:imdb_id"`
+	Movie        *SimpleMovie `json:"movie,omitempty" gorm:"preload:false;foreignKey:ImdbID;references:ImdbID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	CreatedAt    *time.Time   `json:"-" gorm:"column:created_at"`
+	UpdatedAt    *time.Time   `json:"-" gorm:"column:updated_at"`
+}
+
+func (Show) TableName() string { return "shows" }

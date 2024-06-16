@@ -28,7 +28,7 @@ func GetTicketsByUser(ctx appctx.AppContext) gin.HandlerFunc {
 
 		storage := ticketstore.NewSQLStore(db)
 		biz := ticketbusiness.NewListTicketsBusiness(storage)
-		tickets, err := biz.ListTickets(c.Request.Context(), &ticketmodel.Filter{UserID: requester.GetUserId()})
+		tickets, err := biz.ListTicketsByUser(c.Request.Context(), &ticketmodel.Filter{UserID: requester.GetUserId()})
 		if err != nil {
 			return
 		}

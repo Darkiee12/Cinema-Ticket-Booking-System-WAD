@@ -2,23 +2,12 @@ package showmodel
 
 import (
 	"cinema/common"
-	"time"
 )
 
 const EntityName = "Show"
 const TableName = "shows"
 
-type Show struct {
-	ID           int                `json:"id" gorm:"column:id;primary_key"`
-	Date         *common.Date       `json:"date" gorm:"column:date" `
-	StartTime    *common.Time       `json:"startTime" gorm:"column:start_time"`
-	EndTime      *common.Time       `json:"endTime" gorm:"column:end_time"`
-	AuditoriumID int64              `json:"-" gorm:"column:auditorium_id"`
-	Auditorium   *common.Auditorium `json:"auditorium" gorm:"preload:false;foreignKey:AuditoriumID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	ImdbID       string             `json:"imdbID" gorm:"column:imdb_id"`
-	CreatedAt    *time.Time         `json:"-" gorm:"column:created_at"`
-	UpdatedAt    *time.Time         `json:"-" gorm:"column:updated_at"`
-}
+type Show common.Show
 
 func (Show) TableName() string { return TableName }
 
