@@ -108,26 +108,6 @@ const UserTicket = () => {
     const [endTime, setEndTime] = useState<Date[]>();
 
     const fetchTickets = async () => {
-        // try {
-        //     const resTicket = await TicketService.getByUser();
-        //     console.log(resTicket.data);
-        //     setTickets(resTicket.data);
-
-        //     const resShows = await Promise.all(
-        //         tickets.map(async (ticket) => {
-        //             return await ShowService.getById(ticket.show_id);  
-        //     }))
-        //     setShows(resShows.map((res) => res.data));
-
-        //     const resMovies = await Promise.all(
-        //         shows.map(async (show) => {
-        //             return await MovieService.getById(show.imdbID);
-        //     }))
-        //     setMovies(resMovies.map((res) => res.data));
-
-        // } catch (error) {
-        //     console.log(error);
-        // }
         const resTicket = await TicketService.getByUser();
         const setData = async ()=>{
             setTickets(resTicket.data);
@@ -175,7 +155,7 @@ const UserTicket = () => {
 
 const Profile = () => {
     return (
-        <div className='max-w-[1040px] h-screen mx-auto bg-[#FDF7DC]'>
+        <div className='max-w-[1040px] h-full mx-auto bg-[#FDF7DC]'>
             <UserInfo />
             <UserTicket />
         </div>

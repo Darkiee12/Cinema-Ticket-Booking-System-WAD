@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import Ticket from "../models/ticket";
+import Ticket, { bookingTicket } from "../models/ticket";
 import Pagination from "../utils/pagination";
 import { getCookie } from "./UserService";
 
@@ -14,21 +14,17 @@ const getByShowId = (showId: string) => {
   return request<Pagination<Ticket>>(options);
 };
 
-const put = ({seat_number, show_id}: {seat_number: number, show_id: number}) => {
-  const token = localStorage.getItem("token");
+const put = (seats: Array<{ seat_number: number, show_id: number }>) => {
   const options = {
     method: "PUT",
-    url: `/tickets`,
+    url: "/tickets",
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Authorization": `${token}`
+      "Authorization": `Bearer ${getCookie("_auth")}`
     },
-    data: {
-      seat_number,
-      show_id,
-    },
-  };
+    data: seats
+  }
   return request(options);
 }
 
