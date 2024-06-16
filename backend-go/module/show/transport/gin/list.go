@@ -20,6 +20,7 @@ import (
 // @Produce  json
 // @Param imdbID query string false "IMDB ID"
 // @Param date query string false "Date"
+// @Param startTime query string false "Start time"
 // @Success 200 {object} common.successRes{data=[]showmodel.Show}
 // @Router /shows [get]
 func ListShow(ctx appctx.AppContext) gin.HandlerFunc {

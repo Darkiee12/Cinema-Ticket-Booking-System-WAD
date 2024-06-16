@@ -23,7 +23,7 @@ type ShowCreate struct {
 	StartTime        *common.Time `json:"startTime" gorm:"column:start_time"`
 	EndTime          *common.Time `json:"endTime" gorm:"column:end_time"`
 	AuditoriumID     int64        `json:"-" gorm:"column:auditorium_id"`
-	AuditoriumFakeID string       `json:"auditoriumID" gorm:"preload:false;foreignKey:AuditoriumID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	AuditoriumFakeID string       `json:"auditoriumID" gorm:"-"`
 	ImdbID           string       `json:"imdbID" gorm:"column:imdb_id"`
 }
 

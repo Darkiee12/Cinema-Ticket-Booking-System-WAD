@@ -67,6 +67,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/auditoriums/{id}": {
+            "get": {
+                "description": "Returns a single auditorium",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auditoriums"
+                ],
+                "summary": "Get a auditorium by its ID",
+                "operationId": "get-auditorium-by-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Auditorium ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/auditoriummodel.Auditorium"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/cinemas": {
             "get": {
                 "description": "Returns a list of cinemas",
@@ -737,6 +782,55 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update user profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update user profile",
+                "parameters": [
+                    {
+                        "description": "User data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/usermodel.UserUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/common.successRes"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
             }
         },
         "/register": {
@@ -803,7 +897,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Movie ID",
+                        "description": "IMDB ID",
                         "name": "imdbID",
                         "in": "query"
                     },
@@ -811,6 +905,12 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Date",
                         "name": "date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Start time",
+                        "name": "startTime",
                         "in": "query"
                     }
                 ],
@@ -863,7 +963,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/showmodel.Show"
+                            "$ref": "#/definitions/showmodel.ShowCreate"
                         }
                     }
                 ],
@@ -1089,7 +1189,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "cinema": {
-                    "$ref": "#/definitions/common.Cinema"
+                    "$ref": "#/definitions/common.SimpleCinema"
                 },
                 "created_at": {
                     "type": "string"
@@ -1149,9 +1249,6 @@ const docTemplate = `{
                 "owner": {
                     "$ref": "#/definitions/common.SimpleUser"
                 },
-                "owner_id": {
-                    "type": "integer"
-                },
                 "phone_number": {
                     "type": "string"
                 },
@@ -1183,19 +1280,13 @@ const docTemplate = `{
                 }
             }
         },
-        "common.Cinema": {
+        "common.Auditorium": {
             "type": "object",
             "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "capacity": {
-                    "type": "integer"
+                "cinema": {
+                    "$ref": "#/definitions/common.SimpleCinema"
                 },
                 "created_at": {
-                    "type": "string"
-                },
-                "email": {
                     "type": "string"
                 },
                 "id": {
@@ -1204,14 +1295,8 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "owner": {
-                    "$ref": "#/definitions/common.SimpleUser"
-                },
-                "owner_id": {
+                "seats": {
                     "type": "integer"
-                },
-                "phone_number": {
-                    "type": "string"
                 },
                 "status": {
                     "type": "integer"
@@ -1299,6 +1384,81 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "website": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "common.Show": {
+            "type": "object",
+            "properties": {
+                "auditorium": {
+                    "$ref": "#/definitions/common.Auditorium"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "imdbID": {
+                    "type": "string"
+                },
+                "movie": {
+                    "$ref": "#/definitions/common.SimpleMovie"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.SimpleCinema": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "common.SimpleMovie": {
+            "type": "object",
+            "properties": {
+                "imdbID": {
+                    "type": "string"
+                },
+                "imdbRating": {
+                    "type": "number"
+                },
+                "originalTitle": {
+                    "type": "string"
+                },
+                "plot": {
+                    "type": "string"
+                },
+                "poster": {
+                    "type": "string"
+                },
+                "runtime": {
+                    "type": "integer"
+                },
+                "title": {
                     "type": "string"
                 },
                 "year": {
@@ -1485,11 +1645,34 @@ const docTemplate = `{
         "showmodel.Show": {
             "type": "object",
             "properties": {
-                "auditoriumID": {
+                "auditorium": {
+                    "$ref": "#/definitions/common.Auditorium"
+                },
+                "date": {
                     "type": "string"
                 },
-                "cinema": {
-                    "$ref": "#/definitions/common.Cinema"
+                "endTime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "imdbID": {
+                    "type": "string"
+                },
+                "movie": {
+                    "$ref": "#/definitions/common.SimpleMovie"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "showmodel.ShowCreate": {
+            "type": "object",
+            "properties": {
+                "auditoriumID": {
+                    "type": "string"
                 },
                 "date": {
                     "type": "string"
@@ -1517,6 +1700,9 @@ const docTemplate = `{
                 "seat_number": {
                     "type": "integer"
                 },
+                "show": {
+                    "$ref": "#/definitions/common.Show"
+                },
                 "show_id": {
                     "type": "integer"
                 },
@@ -1528,9 +1714,6 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
-                },
-                "user": {
-                    "$ref": "#/definitions/common.SimpleUser"
                 }
             }
         },
@@ -1615,6 +1798,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "usermodel.UserUpdate": {
+            "type": "object",
+            "properties": {
+                "date_of_birth": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 }
             }

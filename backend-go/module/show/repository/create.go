@@ -15,6 +15,9 @@ type CreateShowStore interface {
 	transactor.Transactor
 }
 
+type CountShowStore interface {
+	Count(ctx context.Context, condition map[string]interface{}) (int64, error)
+}
 type ListAuditoriumSeatsStore interface {
 	ListSeatsWithCondition(
 		ctx context.Context,
@@ -31,17 +34,20 @@ type createShowRepo struct {
 	store                    CreateShowStore
 	createTicketStoreStore   CreateTicketStore
 	listAuditoriumSeatsStore ListAuditoriumSeatsStore
+	countShowStore           CountShowStore
 }
 
 func NewCreateShowRepo(
 	store CreateShowStore,
 	ticketStore CreateTicketStore,
 	auditoriumSeatsStore ListAuditoriumSeatsStore,
+	countShowStore CountShowStore,
 ) *createShowRepo {
 	return &createShowRepo{
 		store:                    store,
 		createTicketStoreStore:   ticketStore,
 		listAuditoriumSeatsStore: auditoriumSeatsStore,
+		countShowStore:           countShowStore,
 	}
 }
 
@@ -50,6 +56,19 @@ func (repo *createShowRepo) CreateShow(
 	data *showmodel.ShowCreate,
 ) error {
 	return repo.store.WithinTransaction(ctx, func(TxCtx context.Context) error {
+		condition := map[string]interface{}{
+			"date":          data.Date,
+			"start_time":    data.StartTime,
+			"auditorium_id": data.AuditoriumID,
+			"end_time":      data.EndTime,
+		}
+		count, err := repo.countShowStore.Count(TxCtx, condition)
+		if err != nil {
+			return common.ErrDB(err)
+		}
+		if count > 0 {
+			return errors.New("there is an another show at this time")
+		}
 		if data.AuditoriumID == 0 {
 			return errors.New("auditorium id is required")
 		}

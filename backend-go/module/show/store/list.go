@@ -4,7 +4,6 @@ import (
 	"cinema/common"
 	showmodel "cinema/module/show/model"
 	"context"
-	"log"
 	"strings"
 )
 
@@ -14,14 +13,15 @@ func (store *sqlStore) ListShowsWithCondition(
 	moreKeys ...string,
 ) ([]showmodel.Show, error) {
 	var result []showmodel.Show
-
 	db := store.db.Table(showmodel.TableName)
-
 	if f := filter; f != nil {
 		f.ImdbID = strings.TrimSpace(f.ImdbID)
 
 		if f.Date != nil {
 			db = db.Where("date = ?", f.Date)
+			if f.StartTime != nil {
+				db = db.Where("start_time >= ?", f.StartTime)
+			}
 		}
 		if f.ImdbID != "" {
 			db = db.Where("imdb_id = ?", f.ImdbID)
@@ -29,10 +29,12 @@ func (store *sqlStore) ListShowsWithCondition(
 		if f.Date == nil && f.ImdbID == "" {
 			date := common.NowDate()
 			db = db.Where("date = ?", (&date).String())
+			if f.StartTime != nil {
+				db = db.Where("start_time >= ?", f.StartTime)
+			}
 		}
 	} else {
 		date := common.NowDate()
-		log.Println("Test: ", (&date).String())
 		db = db.Where("date = ?", (&date).String())
 	}
 
@@ -41,11 +43,10 @@ func (store *sqlStore) ListShowsWithCondition(
 	}
 
 	if err := db.
-		Find(&result).
 		Order("start_time ASC").
+		Find(&result).
 		Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
-
 	return result, nil
 }

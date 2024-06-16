@@ -25,6 +25,9 @@ func (store *sqlStore) ListTicketsWithCondition(
 		if f.UserID > 0 {
 			db = db.Where("user_id = ?", f.UserID)
 		}
+		if len(filter.OmitFields) > 0 {
+			db.Omit(filter.OmitFields...)
+		}
 	}
 
 	for i := range moreKeys {

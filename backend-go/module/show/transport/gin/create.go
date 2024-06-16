@@ -62,10 +62,11 @@ func CreateShow(ctx appctx.AppContext) gin.HandlerFunc {
 		data.AuditoriumID = int64(uid.GetLocalID())
 
 		store := showstore.NewSQLStore(db)
+		CountShowStore := showstore.NewSQLStore(db)
 		ticketStore := ticketstore.NewSQLStore(db)
 		seatsStore := auditoriumseatsstore.NewSQLStore(db)
 
-		repo := showrepository.NewCreateShowRepo(store, ticketStore, seatsStore)
+		repo := showrepository.NewCreateShowRepo(store, ticketStore, seatsStore, CountShowStore)
 		biz := showbusiness.NewCreateShowBusiness(repo)
 
 		if err := biz.CreateShow(c.Request.Context(), &data); err != nil {

@@ -1,9 +1,10 @@
 package ticketmodel
 
 type Filter struct {
-	UserID int   `json:"user_id,omitempty"`
-	ShowID int   `json:"show_id,omitempty" form:"showID"`
-	Status []int `json:"status,omitempty" form:"status"`
+	UserID     int   `json:"user_id,omitempty"`
+	ShowID     int   `json:"show_id,omitempty" form:"showID"`
+	Status     []int `json:"status,omitempty" form:"status"`
+	OmitFields []string
 }
 
 func (f *Filter) Validate() {
