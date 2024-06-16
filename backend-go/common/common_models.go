@@ -47,13 +47,14 @@ type Movie struct {
 func (Movie) TableName() string { return "movies" }
 
 type SimpleMovie struct {
-	ImdbID        string `gorm:"column:imdb_id;primary_key" json:"imdbID"`
-	OriginalTitle string `gorm:"column:original_title" json:"originalTitle"`
-	Plot          string `gorm:"column:plot" json:"plot"`
-	Runtime       int    `gorm:"column:runtime" json:"runtime"`
-	Title         string `gorm:"column:title" json:"title"`
-	Year          int    `gorm:"column:year" json:"year"`
-	Poster        string `gorm:"column:poster" json:"poster"`
+	ImdbID        string  `gorm:"column:imdb_id;primary_key" json:"imdbID"`
+	OriginalTitle string  `gorm:"column:original_title" json:"originalTitle"`
+	Plot          string  `gorm:"column:plot" json:"plot"`
+	Runtime       int     `gorm:"column:runtime" json:"runtime"`
+	Title         string  `gorm:"column:title" json:"title"`
+	Year          int     `gorm:"column:year" json:"year"`
+	Poster        string  `gorm:"column:poster" json:"poster"`
+	ImdbRating    float64 `gorm:"column:imdb_rating" json:"imdbRating"`
 }
 
 func (SimpleMovie) TableName() string { return "movies" }
