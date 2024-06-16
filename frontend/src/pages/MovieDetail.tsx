@@ -9,6 +9,7 @@ import Show, {
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import MovieService from '../services/MovieService'
 import ShowService from '../services/ShowService'
+import Button from '../components/button'
 
 const MovieDetail = () => {
   const location: Location<Movie> = useLocation()
@@ -210,7 +211,7 @@ const ShowUnit: React.FC<{ show: Show }> = ({ show }) => {
     <Link
       to={'/show/' + show.id}
       state={{ show }}
-      className="border-2 border-[#03C04A] rounded-lg p-2"
+      className="border-2 border-[#03C04A] rounded-lg p-2 hover:bg-[#03C04A] hover:text-white"
     >
       <b>{display}</b>
     </Link>

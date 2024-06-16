@@ -37,6 +37,7 @@ const Login = () => {
       const credentials: Credential = { email, password };
       const response = await UserService.login(credentials);
       const userProfile = (await UserService.getProfile(response.data.token));
+      localStorage.setItem("token", response.data.token);
 
       // Update authentication state
       signIn({

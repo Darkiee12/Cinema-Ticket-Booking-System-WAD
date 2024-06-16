@@ -9,4 +9,8 @@ export default interface Ticket {
   timestamp: string
   updated_at: string
   user: User
-}
+};
+export interface bookingTicket {
+  seat_number: number
+  show_id: number
+};
