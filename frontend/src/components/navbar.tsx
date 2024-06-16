@@ -31,12 +31,12 @@ const NavBar: React.FC<{ username: string }> = ({ username }) => {
             className="w-[100px] h-[100px] rounded-[100px]"
           />
         </Link>
-        <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">
-          <Link to="/movies">Movies</Link>
-        </button>
-        <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">
-          Cinemas
-        </button>
+        <Link to="/movies"> 
+          <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">Movies</button>
+        </Link>
+        <Link to="/cinemas"> 
+          <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">Cinemas</button>
+        </Link>
         <button className="text-lg font-semibold transition-all duration-[0.3s] ease-[ease-in-out] hover:text-[#03C04A]">
           About us
         </button>

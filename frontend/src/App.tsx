@@ -7,7 +7,9 @@ import MovieDetail from './pages/MovieDetail';
 import CredentialPage from './pages/CredentialPage';
 import SeatSelectionPage from './pages/SeatSelectionPage';
 import Profile from './pages/Profile';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Cinemas from './pages/Cinemas';
+import CinemaDetail from './pages/CinemaDetail';
 import {BrowserView, MobileView} from 'react-device-detect';
 function App() {
   const [username, setUsername] = useState<string>('');
@@ -31,6 +33,8 @@ function App() {
           path="/profile"
           element={<Profile onUsernameUpdate={handleUsernameUpdate} />}
         />
+        <Route path="/cinemas" element={<Cinemas />} />
+        <Route path="/cinemas/:cinemaId" element={<CinemaDetail />} />
         <Route path="/" element={<Homepage />} />
       </Routes>
     </div>

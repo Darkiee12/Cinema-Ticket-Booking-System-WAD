@@ -10,4 +10,5 @@ export default interface Cinema {
   owner: Owner;
   owner_id: Owner['id'];
   status: string;
+  phone_number: string;
 }
