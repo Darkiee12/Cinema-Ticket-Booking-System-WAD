@@ -29,3 +29,15 @@ func (business *listTicketsBusiness) ListTickets(
 	}
 	return res, nil
 }
+
+func (business *listTicketsBusiness) ListTicketsByUser(
+	context context.Context,
+	filter *ticketmodel.Filter,
+) ([]ticketmodel.Ticket, error) {
+	res, err := business.store.ListTicketsWithCondition(context, filter,
+		"Show", "Show.Movie", "Show.Auditorium", "Show.Auditorium.Cinema")
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}

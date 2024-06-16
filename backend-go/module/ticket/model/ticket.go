@@ -14,8 +14,9 @@ type Ticket struct {
 	SeatNumber      int                `gorm:"column:seat_number" json:"seat_number"`
 	Timestamp       time.Time          `gorm:"column:timestamp" json:"timestamp"`
 	ShowID          int64              `gorm:"column:show_id" json:"show_id"`
+	Show            *common.Show       `gorm:"preload:false;foreignKey:ShowID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"show,omitempty"`
 	UserID          int64              `gorm:"column:user_id" json:"-"`
-	User            *common.SimpleUser `gorm:"preload:false;foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"user"`
+	User            *common.SimpleUser `gorm:"preload:false;foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"user,omitempty"`
 }
 
 func (Ticket) TableName() string { return TableName }

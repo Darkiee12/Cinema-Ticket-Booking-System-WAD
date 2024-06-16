@@ -104,46 +104,61 @@ const UserTicket = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [shows, setShows] = useState<Show[]>([]);
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [startTime, setStartTime] = useState<Date[]>();
+    const [endTime, setEndTime] = useState<Date[]>();
 
     const fetchTickets = async () => {
-        try {
-            const resTicket = await TicketService.getByUser();
-            console.log(resTicket.data);
+        // try {
+        //     const resTicket = await TicketService.getByUser();
+        //     console.log(resTicket.data);
+        //     setTickets(resTicket.data);
+
+        //     const resShows = await Promise.all(
+        //         tickets.map(async (ticket) => {
+        //             return await ShowService.getById(ticket.show_id);  
+        //     }))
+        //     setShows(resShows.map((res) => res.data));
+
+        //     const resMovies = await Promise.all(
+        //         shows.map(async (show) => {
+        //             return await MovieService.getById(show.imdbID);
+        //     }))
+        //     setMovies(resMovies.map((res) => res.data));
+
+        // } catch (error) {
+        //     console.log(error);
+        // }
+        const resTicket = await TicketService.getByUser();
+        const setData = async ()=>{
             setTickets(resTicket.data);
-
-            const resShows = await Promise.all(
-                tickets.map(async (ticket) => {
-                    return await ShowService.getById(ticket.show_id);  
-            }))
-            setShows(resShows.map((res) => res.data));
-
-            const resMovies = await Promise.all(
-                shows.map(async (show) => {
-                    return await MovieService.getById(show.imdbID);
-            }))
-            setMovies(resMovies.map((res) => res.data));
-
-        } catch (error) {
-            console.log(error);
+            setShows(resTicket.data.map((ticket:any) => ticket.show));
+            setMovies(shows.map((show:any) => show.movie));
+            setStartTime(shows.map((show:any) => new Date(show.startTime)));
+            setEndTime(shows.map((show:any) => new Date(show.endTime)));
         }
-    } 
+        setData();
+    }
     useEffect(() => {
         fetchTickets();
     }, []);
-
+    // movies.map((movie, index) => {console.log(movie)});
     return(
         <div>
             <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">Ticket</p>
             <div className="max-w-[1000px] h-max border-2 border-black mx-auto rounded-[10px]">
                 {
                     tickets.map((ticket, index) => (
-                        <div>
+                        <div className="flex p-2" key={index}>
+                            {/* <div>
+                                <img src={movies[index].poster} alt={movies[index].title} className="w-32 h-48" />
+                            </div>    
                             <div>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{movies[index].title}</p>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{movies[index].rated}</p>
-                            </div>
+                            </div> */}
                             <div>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{shows[index].auditorium.cinema.name}</p>
+                                <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{shows[index].auditorium.name}</p>
                                 <p className="text-black text-xl font-medium font-Montserrat text-left p-2">{shows[index].date+" "+shows[index].startTime+"-"+shows[index].endTime}</p> 
                             </div>
                             <div>
@@ -160,7 +175,7 @@ const UserTicket = () => {
 
 const Profile = () => {
     return (
-        <div className='max-w-[1040px] h-full mx-auto bg-[#FDF7DC]'>
+        <div className='max-w-[1040px] h-screen mx-auto bg-[#FDF7DC]'>
             <UserInfo />
             <UserTicket />
         </div>
