@@ -4,6 +4,7 @@ import UserService from "../services/UserService";
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import Button from "../components/button";
 import { useNavigate } from "react-router-dom";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +24,7 @@ const Login = () => {
   const handleLoginSuccess = () => {
     setInfo("Login success. Redirecting to homepage...");
     setTimeout(() => {
-      navigate(-1);
+      window.location.href = "/";
     }, 2000);
   }
   const handleLogin = async () => {
@@ -45,7 +46,10 @@ const Login = () => {
         userState: {
           name: userProfile.data.name,
           email: userProfile.data.email,
-          expiry: response.data.expiry
+          expiry: response.data.expiry,
+          date_of_birth: userProfile.data.date_of_birth,
+          gender: userProfile.data.gender,
+          phone: userProfile.data.phone,
         }
       });
 
