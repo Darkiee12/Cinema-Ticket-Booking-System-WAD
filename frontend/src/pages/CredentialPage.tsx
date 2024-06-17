@@ -91,7 +91,7 @@ const Login = () => {
           />
         </div>
         <div className="w-full flex justify-center items-center py-2">
-          <Button text="Sign in" hollow={false} onClick={handleLogin} />
+          <Button hollow={false} onClick={handleLogin}>Sign in</Button>
         </div>
       </form>
     </div>
@@ -241,7 +241,7 @@ const Register = () => {
           />
         </div>
         <div className="w-full flex justify-center items-center py-2">
-          <Button text="Register" hollow={false} onClick={handleRegister} />
+          <Button hollow={false} onClick={handleRegister}>Register</Button>
         </div>
       </form>
     </div>

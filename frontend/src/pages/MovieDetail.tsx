@@ -47,7 +47,7 @@ const MovieDetail = () => {
     setSelectedDate(date);
   };
   return (
-    <div className="w-full px-10">
+    <div className="w-full md:px-10">
       <div className="w-full bg-[#FDF7DC] pt-5">
         <div className="w-full">
           <MovieSection movie={movie!} />
@@ -81,11 +81,11 @@ const MovieDetail = () => {
 const MovieSection: React.FC<{ movie: Movie }> = ({ movie }) => {
   const release = new Date(movie?.released!);
   return (
-    <div className="flex">
-      <div className="md: w-[20%] pl-5">
-        <img src={movie?.poster} className="w-full" />
+    <div className="flex h-full">
+      <div className="w-[30%] md:w-[20%] pl-2 lg:pl-5 flex items-center justify-center">
+        <img src={movie?.poster} className="w-full h-full" />
       </div>
-      <div className="md: w-[80%] px-5 items-center md:text-base text-xs">
+      <div className="w-[70%] md:w-[80%] px-5 items-center md:text-base text-xs max-h-[15rem] overflow-y-scroll lg:overflow-y-visible">
         <p className="md:text-2xl text-[#03C04A] font-bold">{movie?.title}</p>
         <p>{movie?.plot}</p>
         <p>
@@ -143,7 +143,7 @@ const DatePicker: React.FC<{ onDateChange: (date: Date) => void }> = ({
         <button
           key={date.toDateString()}
           aria-label={`Select date ${date.toLocaleDateString()}`}
-          className={`border-2 px-5 py-2 text-lg font-semibold rounded-[10px]  ${
+          className={`border-2 px-2 py-1 md:px-5 md:py-2 text-base md:text-lg font-semibold rounded-[10px]  ${
             date.toDateString() === selectedDate.toDateString()
               ? 'bg-green-500 text-white'
               : 'border-[#03C04A] hover:bg-green-300'

@@ -1,12 +1,31 @@
 import Show from '../models/show';
 import Ticket, { bookingTicket } from '../models/ticket';
 import TicketService from '../services/TicketService';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ShowService from '../services/ShowService';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import Button from '../components/button';
+import MovieService from '../services/MovieService';
+import Movie from '../models/movie';
+import CustomDate from '../utils/date';
+interface SeatContextType {
+  booked: number[];
+  setBooked: React.Dispatch<React.SetStateAction<number[]>>;
+}
+const SeatContext = createContext<SeatContextType | undefined>(undefined);
 
+const SeatProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [booked, setBooked] = useState<number[]>([]);
+
+  return (
+    <SeatContext.Provider value={{ booked, setBooked }}>
+      {children}
+    </SeatContext.Provider>
+  );
+};
 const SeatSelectionPage = () => {
   const location = useLocation();
   const isAuthenticated = useIsAuthenticated();
@@ -33,54 +52,48 @@ const SeatSelectionPage = () => {
     );
   } else
     return (
-      <div className="w-full px-2 lg:px-10 min-w-[40rem] overflow-x-scroll">
-        <div className="w-full bg-[#FDF7DC]">
-          <p className="w-full text-center py-5 font-bold text-2xl font-Montserrat">
-            Seat selection
-          </p>
-          <div className="w-full px-20">
-            <div className="w-full border-2 border-solid rounded-lg border-black">
-              <div className="px-5 py-1 w-full mt-5">
-                <div className="border-2 border-solid border-[#03C04A] text-center text-2xl font-bold mb-10 py-5 bg-[#03C04A] text-white font-Montserrat">
-                  Screen
+      <SeatProvider>
+        <div className="w-full px-2 lg:px-10 overflow-x-scroll">
+          <div className="w-full bg-[#FDF7DC]">
+            <p className="w-full text-center py-5 font-bold text-2xl font-Montserrat">
+              Seat selection
+            </p>
+            <div className="w-full lg:px-20">
+              <div className="w-full border-2 border-solid rounded-lg border-black">
+                <div className="px-5 py-1 w-full mt-5">
+                  <div className="border-2 border-solid border-[#03C04A] text-center text-2xl font-bold mb-10 py-5 bg-[#03C04A] text-white font-Montserrat">
+                    Screen
+                  </div>
+                  <div className="">
+                    {show ? <Seats show={show} /> : <div></div>}
+                  </div>
                 </div>
-                {show ? <Seats show={show} /> : <div></div>}
               </div>
+            </div>
+            <div className="w-full mt-2 md:mt-5">
+              {show && <ShowComponent show={show} />}
             </div>
           </div>
         </div>
-      </div>
+      </SeatProvider>
     );
+};
+const useSeatContext = () => {
+  const context = useContext(SeatContext);
+  if (!context) {
+    throw new Error('useSeatContext must be used within a SeatProvider');
+  }
+  return context;
 };
 const Seats: React.FC<{ show: Show }> = ({ show }) => {
   const [numSeats, setNumSeats] = useState<
     Array<{ position: number; selected: boolean }>
   >([]);
-  const [booked, setBooked] = useState<number[]>([]);
+  const { booked, setBooked } = useSeatContext();
 
   const handleSelectSeat = (seat: number, isSelected: boolean) => {
     if (isSelected) setBooked([...booked, seat].sort((a, b) => a - b));
     else setBooked(booked.filter((item) => item !== seat));
-  };
-
-  const handleBooked = () => {
-    const bookingData: bookingTicket[] = [];
-    booked.forEach((seat) => {
-      bookingData.push({
-        seat_number: seat,
-        show_id: parseInt(show.id),
-      });
-    });
-
-    console.log(bookingData);
-    TicketService.put(bookingData)
-      .then((res) => {
-        console.log('Booking successful' + res);
-        window.location.href = '/profile';
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   useEffect(() => {
@@ -96,7 +109,7 @@ const Seats: React.FC<{ show: Show }> = ({ show }) => {
   }, [show.id]);
 
   return (
-    <div>
+    <div className="overflow-x-auto">
       <div className="w-full grid grid-cols-10 gap-4">
         {numSeats &&
           numSeats.map((seat) =>
@@ -114,26 +127,13 @@ const Seats: React.FC<{ show: Show }> = ({ show }) => {
             ),
           )}
       </div>
-      <div className="w-full flex justify-center mt-2">
-        <p className="font-semibold text-2xl font-Montserrat">
-          Booked:{' '}
-          {booked.map((seat, index) => (
-            <span key={index} className="mx-">
-              {seat}{' '}
-            </span>
-          ))}
-        </p>
-      </div>
-      <div className="w-full flex justify-center mt-2">
-        <Button text="Book" hollow={false} onClick={() => handleBooked()} />
-      </div>
     </div>
   );
 };
 
 const NotAvailableSeatUnit: React.FC<{ position: number }> = ({ position }) => {
   return (
-    <div className="w-3/4 inline-block border-2 border-solid border-black text-white p-2 text-center bg-red-500">
+    <div className="w-[150%] lg:w-full inline-block border-2 border-solid border-black text-white p-2 text-center bg-red-500">
       {position < 10 ? `0${position}` : position}
     </div>
   );
@@ -150,7 +150,7 @@ const AvailableSeatUnit: React.FC<{
     <div>
       {selected ? (
         <button
-          className="w-3/4 inline-block border-2 border-solid border-black p-2 text-center bg-[#03C04A] text-white"
+          className="w-[150%] lg:w-full inline-block border-2 border-solid border-black p-2 text-center bg-[#03C04A] text-white"
           type="button"
           onClick={() => {
             setSelected(false), updateSelection(position, false);
@@ -160,7 +160,7 @@ const AvailableSeatUnit: React.FC<{
         </button>
       ) : (
         <button
-          className="w-3/4 inline-block border-2 border-solid border-black p-2 text-center hover:bg-[#03C04A] hover:text-white hover:border-white"
+          className="w-[150%] lg:w-full inline-block border-2 border-solid border-black p-2 text-center hover:bg-[#03C04A] hover:text-white hover:border-white"
           type="button"
           onClick={() => {
             setSelected(true), updateSelection(position, true);
@@ -170,6 +170,86 @@ const AvailableSeatUnit: React.FC<{
         </button>
       )}
     </div>
+  );
+};
+
+const ShowComponent: React.FC<{ show: Show }> = ({ show }) => {
+  const [movie, setMovie] = useState<Movie>();
+  const [price, setPrice] = useState<number>(0);
+  const navigate = useNavigate();
+  const { booked } = useSeatContext();
+  useEffect(() => {
+    MovieService.getById(show.imdbID).then((res) => {
+      setMovie(res.data);
+    });
+  }, []);
+  useEffect(() => {
+    setPrice(50_000 * booked.length);
+  }, [booked]);
+  const handleBooked = () => {
+    const bookingData: bookingTicket[] = [];
+    booked.forEach((seat) => {
+      bookingData.push({
+        seat_number: seat,
+        show_id: parseInt(show.id),
+      });
+    });
+
+    console.log(bookingData);
+    TicketService.put(bookingData)
+      .then((res) => {
+        console.log(res);
+        const state = {
+          movie: movie,
+          show: show,
+          booked: booked,
+          price: price
+        }
+        navigate("/thankyou", {state: state})
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  return (
+    movie && (
+      <div className="w-full flex px-2 lg:px-20 py-3">
+        <div className="w-1/4">
+          <img src={movie.poster} alt={movie.poster} className="w-full" />
+        </div>
+        <div className="w-3/4">
+          <div className="w-full flex">
+            <div className="w-1/3 px-2 py-5">
+              <p className="text-xl font-bold">{movie.title}</p>
+              <p>{movie.rated}</p>
+              <p>{movie.runtime} minutes</p>
+            </div>
+            <div className="w-1/3 px-2 py-5">
+              <p className="text-xl font-bold">{show.auditorium.cinema.name}</p>
+              <p>{show.auditorium.name}</p>
+              <p>{CustomDate.format(show.date)}</p>
+              <p>
+                {show.startTime.substring(0, 5)} ~{' '}
+                {show.endTime.substring(0, 5)}
+              </p>
+            </div>
+            <div className="w-1/3 px-2 py-5">
+            <div className='max-h-20 overflow-y-auto'>
+            <p><span className='text-xl font-bold mr-1  w-full'>Seats:</span>{booked.join(", ")}</p>
+            </div>
+              
+              <p><span className='text-xl font-bold mr-1 overflow-x-auto w-full'>Price:</span>{price.toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+              })}</p>
+            </div>
+          </div>
+          <div className="w-full flex justify-center mt-2">
+            <Button hollow={false} onClick={() => handleBooked()}>Book</Button>
+          </div>
+        </div>
+      </div>
+    )
   );
 };
 

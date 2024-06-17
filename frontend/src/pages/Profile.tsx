@@ -8,6 +8,8 @@ import Show from '../models/show';
 import Movie from '../models/movie';
 import User from '../models/user';
 import CustomDate from '../utils/date';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const UserInfo: React.FC<{ onUsernameUpdate: (username: string) => void }> = ({
   onUsernameUpdate,
 }) => {
@@ -27,14 +29,13 @@ const UserInfo: React.FC<{ onUsernameUpdate: (username: string) => void }> = ({
 
       {user &&
         (!Update ? (
-          <div className="max-w-[1000px] h-max border-2 border-black mx-auto rounded-[10px]">
+          <div className="max-w-[1000px] h-max border-2lack mx-auto rounded-[10px]">
             <UserDetail user={user} />
             <div className="w-full flex justify-center pb-2">
               <Button
-                text="Update"
                 hollow={false}
                 onClick={() => setUpdate(true)}
-              />
+              >Update</Button>
             </div>
           </div>
         ) : (
@@ -51,25 +52,66 @@ const UserInfo: React.FC<{ onUsernameUpdate: (username: string) => void }> = ({
 };
 
 const UserDetail: React.FC<{ user: User }> = ({ user }) => {
+  const [hiddenPhone, setHiddenPhone] = useState<boolean>(true);
+  const [hiddenEmail, setHiddenEmail] = useState<boolean>(true);
   const dob = CustomDate.format(user.date_of_birth);
   return (
-    <>
-      <p className="text-black text-xl font-medium font-Montserrat text-left p-2">
-        Username: {user.name}
-      </p>
-      <p className="text-black text-xl font-medium font-Montserrat text-left p-2">
-        Email: {user.email}
-      </p>
-      <p className="text-black text-xl font-medium font-Montserrat text-left p-2">
-        Phone number: {user.phone}
-      </p>
-      <p className="text-black text-xl font-medium font-Montserrat text-left p-2">
-        Date of birth: {dob}
-      </p>
-      <p className="text-black text-xl font-medium font-Montserrat text-left p-2">
-        Gender: {user.gender}
-      </p>
-    </>
+    <div className="w-full overflow-x-auto">
+      <table className="table-auto w-full border-collapse">
+        <tbody>
+          <tr>
+            <td className="p-2">Username:</td>
+            <td className="p-2">{user.name}</td>
+            <td className="p-2"></td>
+          </tr>
+          <tr>
+            <td className="p-2">Email:</td>
+            <td className="p-2">
+              {hiddenEmail
+                ? "*".repeat((user.email.split('@')[0]).length)+"@"+user.email.split('@')[1]
+                : user.email}
+            </td>
+            <td className="p-2">
+              <button
+                onClick={() => {
+                  setHiddenEmail(!hiddenEmail);
+                }}
+              >
+                {hiddenEmail ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </button>
+            </td>
+            <td className="p-2"></td>
+          </tr>
+          <tr>
+            <td className="p-2">Phone number:</td>
+            <td className="p-2">
+              {hiddenPhone
+                ? '*'.repeat(user.phone.length - 4) + user.phone.slice(-4)
+                : user.phone}
+            </td>
+            <td className="p-2">
+              <button
+                onClick={() => {
+                  setHiddenPhone(!hiddenPhone);
+                }}
+              >
+                {hiddenPhone ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td className="p-2">Date of birth:</td>
+            <td className="p-2">{dob}</td>
+            <td className="p-2"></td>
+          </tr>
+          <tr>
+            <td className="p-2">Gender:</td>
+            <td className="p-2">{user.gender}</td>
+            <td className="p-2"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
 
@@ -103,7 +145,7 @@ const UpdateInfo: React.FC<{
     console.log(updateInfo);
   };
   return (
-    <form className="max-w-[1000px] h-max border-2 border-black mx-auto rounded-[10px] flex flex-col justify-center">
+    <form className="max-w-[1000px] h-max border-2lack mx-auto rounded-[10px] flex flex-col justify-center">
       {alert && (
         <p className={`w-full text-center ${alert.color}`}>{alert.text}</p>
       )}
@@ -112,7 +154,7 @@ const UpdateInfo: React.FC<{
           Username
         </p>
         <input
-          className="w-2/3 border-2 px-5 py-2 rounded-[10px] border-black bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
+          className="w-2/3 border-2 px-5 py-2 rounded-[10px]lack bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
           type="text"
           placeholder={`Your current username is ${user.name}`}
           onChange={(e) => setNewName(e.target.value)}
@@ -123,7 +165,7 @@ const UpdateInfo: React.FC<{
           Phone
         </p>
         <input
-          className="w-2/3 border-2 px-5 py-2 rounded-[10px] border-black bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
+          className="w-2/3 border-2 px-5 py-2 rounded-[10px]lack bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
           type="text"
           placeholder="New phone"
           onChange={(e) => setNewPhone(e.target.value)}
@@ -134,7 +176,7 @@ const UpdateInfo: React.FC<{
           Date of birth (yyyy-mm-dd)
         </p>
         <input
-          className="w-2/3 border-2 px-5 py-2 rounded-[10px] border-black bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
+          className="w-2/3 border-2 px-5 py-2 rounded-[10px]lack bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
           type="date"
           placeholder="New date of birth"
           onChange={(e) => setNewDob(e.target.value)}
@@ -145,7 +187,7 @@ const UpdateInfo: React.FC<{
           Gender
         </p>
         <select
-          className="w-2/3 border-2 px-5 py-2 rounded-[10px] border-black bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
+          className="w-2/3 border-2 px-5 py-2 rounded-[10px]lack bg-[#FDF7DC] focus:border-green-400 focus:outline-none"
           onChange={(e) => setNewGender(e.target.value)}
         >
           <option value="None">None</option>
@@ -156,14 +198,13 @@ const UpdateInfo: React.FC<{
       </div>
       <div className="w-full flex justify-center pb-2">
         <div className="px-2">
-          <Button text="Save" hollow={false} onClick={() => handleUpdate()} />
+          <Button hollow={false} onClick={() => handleUpdate()}>Save</Button>
         </div>
         <div>
           <Button
-            text="Cancel"
             hollow={false}
             onClick={() => setUpdate(false)}
-          />
+          >Cancel</Button>
         </div>
       </div>
     </form>
@@ -213,9 +254,9 @@ const UserTicket = () => {
   return (
     <div>
       <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">
-        Ticket
+        Tickets
       </p>
-      <div className="max-w-[1000px] h-max border-2 border-black mx-auto rounded-[10px]">
+      <div className="max-w-[1000px] h-max border-2lack mx-auto rounded-[10px]">
         {tickets.map((ticket, index) => (
           <div className="flex p-2" key={index}>
             <div>
@@ -253,7 +294,10 @@ const UserTicket = () => {
                 Seat: {ticket.seat_number}
               </p>
               <p className="text-black text-xl font-medium font-Montserrat text-left p-2">
-                Total: 50000VND
+                Total: {(50_000).toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+              })}
               </p>
             </div>
           </div>
