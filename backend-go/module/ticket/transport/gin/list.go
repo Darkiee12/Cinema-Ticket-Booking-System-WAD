@@ -19,7 +19,6 @@ import (
 // @Produce  json
 // @Param showID query string false "Show ID"
 // @Success 200 {object} common.successRes{data=[]ticketmodel.Ticket}
-// @Security ApiKeyAuth
 // @Router /tickets [get]
 func ListTickets(ctx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
