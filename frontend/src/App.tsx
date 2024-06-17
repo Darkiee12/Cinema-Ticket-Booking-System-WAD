@@ -11,6 +11,7 @@ import { useState } from 'react';
 import Cinemas from './pages/Cinemas';
 import CinemaDetail from './pages/CinemaDetail';
 import {BrowserView, MobileView} from 'react-device-detect';
+import PostTicketBookingPage from './pages/PostTicketBookingPage';
 function App() {
   const [username, setUsername] = useState<string>('');
   const handleUsernameUpdate = (newUsername: string) => {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/cinemas" element={<Cinemas />} />
         <Route path="/cinemas/:cinemaId" element={<CinemaDetail />} />
         <Route path="/" element={<Homepage />} />
+        <Route path="/thankyou" element={<PostTicketBookingPage />} />
       </Routes>
     </div>
   );

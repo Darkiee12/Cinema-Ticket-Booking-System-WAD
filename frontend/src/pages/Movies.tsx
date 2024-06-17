@@ -25,8 +25,8 @@ export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
             .join(', ')}
         </p>
       </div>
-      <Link to={{ pathname: `/movies/${movie.imdbID}` }} state={movie}>
-        <Button text="Buy ticket" hollow={false} />
+      <Link to={{ pathname: `/movies/${movie.imdbID}` }} state={movie} className='w-full flex justify-center items-center'>
+        <Button hollow={false}>Buy ticket</Button>
       </Link>
     </div>
   );
@@ -69,7 +69,7 @@ const MoviePage = () => {
     });
   }, []);
   return (
-    <div className="max-w-[1040px] h- mx-auto bg-[#FDF7DC]">
+    <div className="max-w-[1040px] mx-auto bg-[#FDF7DC]">
       <p className="w-full text-center text-black text-[25px] font-semibold font-Montserrat pt-2">
         Currently premiere movies
       </p>

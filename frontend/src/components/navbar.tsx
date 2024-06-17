@@ -17,6 +17,7 @@ const NavBar: React.FC<{ username: string }> = ({ username }) => {
     if (username !== userName) setUserName(username);
   }, [username]);
   useEffect(() => {
+    isAuthenticated &&
     UserService.getProfile().then((res) => {
       setUserName(res.data.name);
     });
@@ -45,10 +46,11 @@ const NavBar: React.FC<{ username: string }> = ({ username }) => {
         {isAuthenticated && userName ? (
           <div>
             <Button
-              text={`${userName}`}
               hollow={true}
               onClick={() => setShowModal(!showModal)}
-            />
+            >
+              {userName}
+            </Button>
             {showModal && (
               <div className="z-50 absolute">
                 <UserMenu />
@@ -57,16 +59,18 @@ const NavBar: React.FC<{ username: string }> = ({ username }) => {
           </div>
         ) : (
           <Button
-            text="Sign in/Sign up"
             hollow={true}
             onClick={() => (window.location.href = '/login')}
-          />
+          >
+            Sign in/Sign up
+          </Button>
         )}
         <Button
-          text="Buy ticket"
           hollow={false}
           onClick={() => (window.location.href = '/movies')}
-        />
+        >
+          Buy ticket
+        </Button>
       </div>
     </div>
   );
@@ -228,11 +232,10 @@ const UserMenu = () => {
   };
   const Menu = [
     <Button
-      text="Profile"
       hollow={true}
       onClick={() => (window.location.href = '/profile')}
-    />,
-    <Button text="Sign out" hollow={true} onClick={handleSignOut} />,
+    >Profile</Button>,
+    <Button hollow={true} onClick={handleSignOut}>Sign out</Button>,
   ];
 
   return (
