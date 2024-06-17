@@ -110,7 +110,7 @@ const Seats: React.FC<{ show: Show }> = ({ show }) => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="w-full grid grid-cols-10 gap-4">
+      <div className="w-full grid grid-cols-10 gap-x-4 gap-y-2">
         {numSeats &&
           numSeats.map((seat) =>
             seat.selected ? (
@@ -133,7 +133,7 @@ const Seats: React.FC<{ show: Show }> = ({ show }) => {
 
 const NotAvailableSeatUnit: React.FC<{ position: number }> = ({ position }) => {
   return (
-    <div className="w-[150%] lg:w-full inline-block border-2 border-solid border-black text-white p-2 text-center bg-red-500">
+    <div className="w-full min-w-10 inline-block border-2 border-solid border-black text-white text-center bg-red-500">
       {position < 10 ? `0${position}` : position}
     </div>
   );
@@ -150,7 +150,7 @@ const AvailableSeatUnit: React.FC<{
     <div>
       {selected ? (
         <button
-          className="w-[150%] lg:w-full inline-block border-2 border-solid border-black p-2 text-center bg-[#03C04A] text-white"
+          className="w-full min-w-10 inline-block border-2 border-solid border-black p-2 text-center bg-[#03C04A] text-white"
           type="button"
           onClick={() => {
             setSelected(false), updateSelection(position, false);
@@ -160,7 +160,7 @@ const AvailableSeatUnit: React.FC<{
         </button>
       ) : (
         <button
-          className="w-[150%] lg:w-full inline-block border-2 border-solid border-black p-2 text-center hover:bg-[#03C04A] hover:text-white hover:border-white"
+          className="w-full min-w-10 inline-block border-2 border-solid border-black p-2 text-center hover:bg-[#03C04A] hover:text-white hover:border-white"
           type="button"
           onClick={() => {
             setSelected(true), updateSelection(position, true);
@@ -215,16 +215,30 @@ const ShowComponent: React.FC<{ show: Show }> = ({ show }) => {
     movie && (
       <div className="w-full flex px-2 lg:px-20 py-3">
         <div className="w-1/4">
-          <img src={movie.poster} alt={movie.poster} className="w-full" />
+          <img src={movie.poster} alt={movie.poster} className="w-full lg:px-10 aspect-auto" />
         </div>
         <div className="w-3/4">
-          <div className="w-full flex">
-            <div className="w-1/3 px-2 py-5">
+          <div className="w-full px-2 flex flex-wrap justify-between gap-y-2">
+            <div className='flex justify-center items-center'>
+              <div className='w-10 h-10 bg-red-500'></div>
+              <p className='pl-2'>Unavailable seats</p>
+            </div>
+            <div className='flex justify-center items-center'>
+              <div className='w-10 h-10 bg-[#03C04A]'></div>
+              <p className='pl-2'>Selecting seats</p>
+            </div>
+            <div className='flex justify-center items-center'>
+              <div className='w-10 h-10 border-2 border-black'></div>
+              <p className='pl-2'>Available seats</p>
+            </div>
+          </div>
+          <div className="w-full flex flex-wrap justify-between">
+            <div className="max-w-[33.33%] px-2 py-5">
               <p className="text-xl font-bold">{movie.title}</p>
               <p>{movie.rated}</p>
               <p>{movie.runtime} minutes</p>
             </div>
-            <div className="w-1/3 px-2 py-5">
+            <div className="px-2 py-5">
               <p className="text-xl font-bold">{show.auditorium.cinema.name}</p>
               <p>{show.auditorium.name}</p>
               <p>{CustomDate.format(show.date)}</p>
@@ -233,7 +247,7 @@ const ShowComponent: React.FC<{ show: Show }> = ({ show }) => {
                 {show.endTime.substring(0, 5)}
               </p>
             </div>
-            <div className="w-1/3 px-2 py-5">
+            <div className="px-2 py-5">
             <div className='max-h-20 overflow-y-auto'>
             <p><span className='text-xl font-bold mr-1  w-full'>Seats:</span>{booked.join(", ")}</p>
             </div>

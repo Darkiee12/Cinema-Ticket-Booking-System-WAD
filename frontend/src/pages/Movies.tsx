@@ -11,7 +11,7 @@ export const MovieUnit: React.FC<{ movie: Movie }> = ({ movie }) => {
         <img
           src={movie.poster}
           alt={movie.title}
-          className="w-full min-h-[16rem]"
+          className="w-full aspect-auto"
         />
       </div>
       <div>

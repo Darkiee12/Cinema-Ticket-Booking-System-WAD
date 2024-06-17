@@ -44,7 +44,7 @@ const NavBar: React.FC<{ username: string }> = ({ username }) => {
       </div>
       <div className="flex gap-x-5">
         {isAuthenticated && userName ? (
-          <div>
+          <div className='max-w-50 truncate'>
             <Button
               hollow={true}
               onClick={() => setShowModal(!showModal)}

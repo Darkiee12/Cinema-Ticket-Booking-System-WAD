@@ -15,7 +15,8 @@ const client = axios.create({
 
 const request = function <T = any>(options: AxiosRequestConfig) {
   const onSuccess = function (response: AxiosResponse<T>) {
-    console.debug('Request Successful!', response);
+    console.debug('Request Successfully!');
+    // console.debug('Request Successful!', response);
     return response.data;
   };
 
@@ -24,7 +25,7 @@ const request = function <T = any>(options: AxiosRequestConfig) {
 
     if (error.response) {
       console.error('Status:', error.response.status);
-      console.error('Data:', error.response.data);
+      // console.error('Data:', error.response.data);
       console.error('Headers:', error.response.headers);
     } else {
       console.error('Error Message:', error.message);

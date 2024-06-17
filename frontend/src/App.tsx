@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import NavBar, { NavBarMobile } from './components/navbar';
 import Homepage from './pages/Homepage';
 import MoviePage from './pages/Movies';
@@ -36,8 +36,8 @@ function App() {
         />
         <Route path="/cinemas" element={<Cinemas />} />
         <Route path="/cinemas/:cinemaId" element={<CinemaDetail />} />
-        <Route path="/" element={<Homepage />} />
         <Route path="/thankyou" element={<PostTicketBookingPage />} />
+        <Route path="/" element={<Homepage />} />
       </Routes>
     </div>
   );

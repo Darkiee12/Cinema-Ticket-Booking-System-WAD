@@ -62,7 +62,6 @@ const Cinemas = () => {
       CinemaService
       .getAll()
       .then((res) => {
-        console.log(res.data);
         setCinemas(res.data);
       });
     }, []);
