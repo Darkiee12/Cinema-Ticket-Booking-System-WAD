@@ -61,7 +61,7 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - ./volumes/redis:/bitnami/redis/data
+      - redis:/bitnami/redis/data
     networks:
         - cinema_network
 
@@ -108,6 +108,7 @@ volumes:
   netdataconfig:
   netdatalib:
   netdatacache:
+  redis:
 
 networks:
   cinema_network:

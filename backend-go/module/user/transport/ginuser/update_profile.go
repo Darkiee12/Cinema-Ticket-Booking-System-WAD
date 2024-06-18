@@ -6,6 +6,7 @@ import (
 	userbiz "cinema/module/user/business"
 	"cinema/module/user/usermodel"
 	"cinema/module/user/userstore"
+	"cinema/plugin/caching/sdkredis"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -31,7 +32,8 @@ func UpdateUser(ctx appctx.AppContext) gin.HandlerFunc {
 
 		db := ctx.GetMainDBConnection()
 		store := userstore.NewSQLStore(db)
-		biz := userbiz.NewUpdateUserBiz(store)
+		cacheStore := sdkredis.NewRedisCache(ctx)
+		biz := userbiz.NewUpdateUserBiz(store, cacheStore)
 		if err := biz.UpdateProfileById(c.Request.Context(), user.GetUserId(), &data); err != nil {
 			panic(err)
 		}

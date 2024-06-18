@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CheckRole(appCtx appctx.AppContext, allowRoles ...string) func(ctx *gin.Context) {
+func CheckRole(_ appctx.AppContext, allowRoles ...string) func(ctx *gin.Context) {
 	return func(c *gin.Context) {
 		requester := c.MustGet(common.CurrentUser).(common.Requester)
 		for _, role := range allowRoles {
