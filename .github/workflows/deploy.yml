@@ -40,4 +40,7 @@ jobs:
           script: |
             cd ~/cinema-golang
             git pull
-            docker compose up -d --build
+            docker compose build
+            docker compose down
+            docker compose up -d
+            docker compose logs
