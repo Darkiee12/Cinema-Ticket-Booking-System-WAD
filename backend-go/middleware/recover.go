@@ -6,12 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Recover(ac appctx.AppContext) gin.HandlerFunc {
+func Recover(_ appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
 				c.Header("Content-Type", "application/json")
-
 				if appErr, ok := err.(*common.AppError); ok {
 					c.AbortWithStatusJSON(appErr.StatusCode, appErr)
 					panic(err)
@@ -21,7 +20,6 @@ func Recover(ac appctx.AppContext) gin.HandlerFunc {
 				panic(err)
 			}
 		}()
-
 		c.Next()
 	}
 }
