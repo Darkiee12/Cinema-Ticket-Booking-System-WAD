@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS public.cinemas (
     address TEXT,
     capacity INTEGER,
     email VARCHAR (255),
+    banner VARCHAR (255),
     name VARCHAR (255),
     phone_number BIGINT,
     status INTEGER NOT NULL DEFAULT 1,
@@ -1744,7 +1745,8 @@ INSERT INTO "public"."cinemas"(
         "email",
         "name",
         "owner_id",
-        "phone_number"
+        "phone_number",
+        "banner"
     )
 VALUES (
         '7th Floor | Hùng Vương Plaza, 126 Hồng Bàng Street, Ward 12, District 5, Ho Chi Minh City.',
@@ -1752,7 +1754,9 @@ VALUES (
         'hungvuong@cinema.com',
         'Hung Vuong Cinema',
         1,
-        '+84462755240'
+        '+84462755240',
+        'https://i.imgur.com/mlvL0ig.png'
+
     ),
     (
         '5th Floor, SC VivoCity Shopping Center - 1058 Nguyễn Văn Linh Street, District 7',
@@ -1760,7 +1764,8 @@ VALUES (
         'vivocity@cinema.com',
         'VivoCity Cinema',
         2,
-        '+84462755240'
+        '+84462755240',
+        'https://i.imgur.com/QcKo4xa.png'
     ),
     (
         '10th Floor, Menas Mall Shopping Center, 60A Trường Sơn Street, Ward 2, Tân Bình District, Ho Chi Minh City, Vietnam',
@@ -1768,7 +1773,8 @@ VALUES (
         'menasmall@cinema.com',
         'Menas Mall Cinema',
         3,
-        '+84462755240'
+        '+84462755240',
+        'https://i.imgur.com/CP8YPZj.png'
     ),
     (
         'B1 Floor, Vincom Center Landmark 81, 772 Dien Bien Phu Street, Ward 22, Bình Thạnh District, Ho Chi Minh City',
@@ -1776,7 +1782,8 @@ VALUES (
         'landmark81@cinema.com',
         'Landmark 81 Cinema',
         1,
-        '+84462755240'
+        '+84462755240',
+        'https://i.imgur.com/RHaENR4.png'
     );
 -- Sample data for the auditoriums table
 INSERT INTO "public"."auditoriums"(

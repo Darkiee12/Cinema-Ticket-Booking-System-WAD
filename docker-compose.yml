@@ -45,10 +45,12 @@ services:
     expose:
       - "5173"
     ports:
-      - "80:5173"
+      - "5173:5173"  # Map the frontend service port to the host port 5173
     restart: on-failure
     depends_on:
       - backend
+    networks:
+      - cinema_network
 
   netdata:
     image: netdata/netdata
@@ -67,12 +69,26 @@ services:
       - netdatacache:/var/cache/netdata
       - /etc/passwd:/host/etc/passwd:ro
       - /etc/group:/host/etc/group:ro
-      - /etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/host/etc/localtime:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /etc/os-release:/host/etc/os-release:ro
       - /var/log:/host/var/log:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certificates:/etc/nginx/certificates
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - web
+    networks:
+      - cinema_network
 
 volumes:
   postgresql:

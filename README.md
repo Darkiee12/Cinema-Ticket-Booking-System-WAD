@@ -53,6 +53,10 @@ Following these step to help you run the project
    ```sh
    npm install
    ```
+   or if you use bun
+   ```sh
+   bun install
+   ```
 3. Point to the "frontend" folder and type in terminal
    ```sh
    npm run dev
@@ -108,7 +112,7 @@ Nguyen Mach Khang Huy - ITCSU21072
 Le Tuan Phuc - ITCSIU21096
 * Frontend developer
 * Database design
-* Server deployment, maintainance
+* Server deployment, maintenance
 
 Hoang Nhan Kiet - ITITUN22037
 * Backend developer
