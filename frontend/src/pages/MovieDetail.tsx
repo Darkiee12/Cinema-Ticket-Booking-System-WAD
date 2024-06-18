@@ -10,7 +10,7 @@ const MovieDetail = () => {
   const [movie, setMovie] = useState<Movie>();
   const [shows, setShows] = useState<Show[]>();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   useEffect(() => {
     if (location.state) {
       setMovie(location.state);

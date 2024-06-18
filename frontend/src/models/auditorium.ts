@@ -1,4 +1,5 @@
-import Cinema from './cinema';
+import Cinema from "./cinema"
+
 export default interface Auditorium {
   cinema: Cinema;
   created_at: string;

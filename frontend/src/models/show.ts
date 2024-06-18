@@ -1,5 +1,5 @@
 import Auditorium from './auditorium';
-import Cinema from './cinema';
+import Cinema from "./cinema";
 import Movie from './movie';
 
 export default interface Show {

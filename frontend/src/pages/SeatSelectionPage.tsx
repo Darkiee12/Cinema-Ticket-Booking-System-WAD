@@ -30,7 +30,7 @@ const SeatSelectionPage = () => {
   const location = useLocation();
   const isAuthenticated = useIsAuthenticated();
   const [show, setShow] = useState<Show>();
-  const [info, setInfo] = useState<string>();
+  const [, setInfo] = useState<string>();
   useEffect(() => {
     const id = location.pathname.split('/').pop();
     if (id) {
