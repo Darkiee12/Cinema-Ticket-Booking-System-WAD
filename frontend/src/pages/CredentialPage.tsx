@@ -101,16 +101,16 @@ const Login = () => {
 const Register = () => {
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
+  const [, setEmailFocus] = useState(false);
   const [password, setPassword] = useState('');
   // const [validPassword, setValidPassword] = useState(false);
-  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [, setPasswordFocus] = useState(false);
   const [matchPassword, setMatchPassword] = useState('');
   const [validMatchPassword, setValidMatchPassword] = useState(false);
-  const [matchPasswordFocus, setMatchPasswordFocus] = useState(false);
+  const [, setMatchPasswordFocus] = useState(false);
   const [name, setName] = useState('');
   const [validName, setValidName] = useState(false);
-  const [nameFocus, setNameFocus] = useState(false);
+  const [, setNameFocus] = useState(false);
   const [info, setInfo] = useState<string>('');
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;

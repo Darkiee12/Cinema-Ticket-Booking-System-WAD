@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import Pagination from './pagination';
-
 export interface Error {
   status_code: number;
   message: string;

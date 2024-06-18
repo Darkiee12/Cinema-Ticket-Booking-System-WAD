@@ -2,7 +2,7 @@ import  { useState, useEffect } from 'react';
 
 import CinemaService from '../services/CinemaService';
 
-import Cinema from '../models/cinema';
+import Cinema from "../models/cinema";
 
 const CinemaDetail = () => {
     const [cinema, setCinema] = useState<Cinema>();

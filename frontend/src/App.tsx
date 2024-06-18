@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NavBar, { NavBarMobile } from './components/navbar';
 import Homepage from './pages/Homepage';
 import MoviePage from './pages/Movies';

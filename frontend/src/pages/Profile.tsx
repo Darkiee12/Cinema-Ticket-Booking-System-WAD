@@ -253,8 +253,8 @@ const UserTicket = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [shows, setShows] = useState<Show[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [startTime, setStartTime] = useState<Date[]>([]);
-  const [endTime, setEndTime] = useState<Date[]>([]);
+  const [, setStartTime] = useState<Date[]>([]);
+  const [, setEndTime] = useState<Date[]>([]);
   const navigate = useNavigate();
 
   const fetchTickets = async () => {
