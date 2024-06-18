@@ -11,7 +11,7 @@ services:
       - "5432:5432"
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgresql:/var/lib/postgresql/data
+      # - postgresql:/var/lib/postgresql/data
     networks:
       - cinema_network
 
