@@ -14,7 +14,11 @@ import (
 	ginticket "cinema/module/ticket/transport/gin"
 	"cinema/module/user/transport/ginuser"
 	"cinema/module/user/userstore"
+	"cinema/plugin/caching"
+	"cinema/plugin/caching/sdkredis"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/driver/postgres"
@@ -61,10 +65,28 @@ func main() {
 		}
 	}
 
-	//db = db.Debug()
+	db = db.Debug()
+	redisDB := sdkredis.NewRedisDB(
+		"MyRedis",
+		&sdkredis.RedisDBOpt{
+			RedisUri:  fmt.Sprintf("redis://%s:6379", os.Getenv("REDIS_HOST")),
+			MaxActive: sdkredis.DefaultRedisMaxActive,
+			MaxIde:    sdkredis.DefaultRedisMaxIdle,
+		})
 
+	// Configure and run the Redis client
+	if err := redisDB.Run(); err != nil {
+		log.Fatalf("Failed to configure Redis: %v", err)
+	}
+	defer func() {
+		<-redisDB.Stop()
+	}()
+	client := redisDB.Get().(*redis.Client)
+	if client == nil {
+		log.Fatalln("Failed to get Redis client")
+	}
 	key := os.Getenv("SECRET_KEY")
-	appCtx := appctx.NewAppContext(db, key)
+	appCtx := appctx.NewAppContext(db, key, client)
 
 	r := gin.Default()
 	r.Use(middleware.Recover(appCtx), middleware.CORSMiddleware(appCtx))
@@ -80,7 +102,10 @@ func main() {
 
 	v1 := r.Group("/v1")
 
-	userStore := userstore.NewSQLStore(appCtx.GetMainDBConnection())
+	userStore := userstore.NewSQLStore(db)
+	cacheStore := sdkredis.NewRedisCache(appCtx)
+	userCaching := caching.NewUserCaching(cacheStore, userStore)
+
 	{
 		cinemas := v1.Group("/cinemas")
 		//GET /v1/cinemas
@@ -94,7 +119,7 @@ func main() {
 
 		//POST /v1/cinemas
 		cinemas.POST("",
-			middleware.RequireAuth(appCtx, userStore),
+			middleware.RequireAuth(appCtx, userCaching),
 			middleware.CheckRole(appCtx, "admin", "cinema_owner"),
 			gincinema.CreateCinema(appCtx))
 
@@ -109,7 +134,7 @@ func main() {
 		auditoriums := v1.Group("/auditoriums")
 		//POST /v1/auditoriums
 		auditoriums.POST("",
-			middleware.RequireAuth(appCtx, userStore),
+			middleware.RequireAuth(appCtx, userCaching),
 			middleware.CheckRole(appCtx, "admin", "cinema_owner"),
 			ginauditorium.CreateAuditorium(appCtx))
 		//GET /v1/auditoriums/:id
@@ -134,7 +159,7 @@ func main() {
 		movies.GET("/:imdb_id", ginmovie.GetMovieWithID(appCtx))
 		//POST /v1/movies
 		movies.POST("",
-			middleware.RequireAuth(appCtx, userStore),
+			middleware.RequireAuth(appCtx, userCaching),
 			middleware.CheckRole(appCtx, "admin"),
 			ginmovie.CreateMovie(appCtx))
 	}
@@ -146,7 +171,7 @@ func main() {
 		//GET /v1/shows/:id
 		shows.GET("/:id", ginshow.GetShowWithID(appCtx))
 		//POST /v1/shows
-		shows.POST("", middleware.RequireAuth(appCtx, userStore), ginshow.CreateShow(appCtx))
+		shows.POST("", middleware.RequireAuth(appCtx, userCaching), ginshow.CreateShow(appCtx))
 	}
 
 	{
@@ -154,9 +179,9 @@ func main() {
 		//GET /v1/tickets
 		tickets.GET("", ginticket.ListTickets(appCtx))
 		//GET /v1/tickets/user
-		tickets.GET("/user", middleware.RequireAuth(appCtx, userStore), ginticket.GetTicketsByUser(appCtx))
+		tickets.GET("/user", middleware.RequireAuth(appCtx, userCaching), ginticket.GetTicketsByUser(appCtx))
 		//UPDATE /v1/tickets/
-		tickets.PUT("", middleware.RequireAuth(appCtx, userStore), ginticket.UpdateTicket(appCtx))
+		tickets.PUT("", middleware.RequireAuth(appCtx, userCaching), ginticket.UpdateTicket(appCtx))
 	}
 
 	{
@@ -170,9 +195,9 @@ func main() {
 	{
 		users := v1
 		//GET /v1/profile
-		users.GET("/profile", middleware.RequireAuth(appCtx, userStore), ginuser.GetProfile(appCtx))
+		users.GET("/profile", middleware.RequireAuth(appCtx, userCaching), ginuser.GetProfile(appCtx))
 		//PUT /v1/profile
-		users.PUT("/profile", middleware.RequireAuth(appCtx, userStore), ginuser.UpdateUser(appCtx))
+		users.PUT("/profile", middleware.RequireAuth(appCtx, userCaching), ginuser.UpdateUser(appCtx))
 		//POST /v1/register
 		users.POST("/register", ginuser.Register(appCtx))
 		//POST /v1/login

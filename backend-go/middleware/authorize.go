@@ -3,8 +3,8 @@ package middleware
 import (
 	"cinema/common"
 	"cinema/component/appctx"
-	"cinema/component/tokenprovider/jwt"
 	"cinema/module/user/usermodel"
+	"cinema/plugin/tokenprovider/jwt"
 	"context"
 	"errors"
 	"fmt"
@@ -62,7 +62,9 @@ func RequireAuth(appCtx appctx.AppContext, authStore AuthenStore) func(ctx *gin.
 		//}
 
 		user, err := authStore.FindUser(c.Request.Context(), map[string]interface{}{"id": payload.UserId})
-
+		if err != nil {
+			panic(err)
+		}
 		if user.Status == 0 {
 			panic(common.ErrNoPermission(errors.New("user has been deleted or banned")))
 		}

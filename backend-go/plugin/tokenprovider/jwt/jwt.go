@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"cinema/component/tokenprovider"
+	"cinema/plugin/tokenprovider"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )

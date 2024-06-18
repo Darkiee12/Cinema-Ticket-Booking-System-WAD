@@ -4,10 +4,10 @@ import (
 	"cinema/common"
 	"cinema/component/appctx"
 	"cinema/component/hasher"
-	"cinema/component/tokenprovider/jwt"
 	userbiz "cinema/module/user/business"
 	"cinema/module/user/usermodel"
 	"cinema/module/user/userstore"
+	"cinema/plugin/tokenprovider/jwt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
