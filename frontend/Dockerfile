@@ -3,6 +3,7 @@ WORKDIR /home/bun/app
 COPY package.json bun.lockb ./
 RUN bun install
 COPY . .
-EXPOSE 5173
+EXPOSE 80
+
 RUN bun install
 CMD ["bun", "run", "dev"]

@@ -45,7 +45,7 @@ services:
     expose:
       - "5173"
     ports:
-      - "5173:5173"  # Map the frontend service port to the host port 5173
+      - "5173:5173"
     restart: on-failure
     depends_on:
       - backend
