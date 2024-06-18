@@ -2,8 +2,8 @@ package userbiz
 
 import (
 	"cinema/common"
-	"cinema/component/tokenprovider"
 	"cinema/module/user/usermodel"
+	"cinema/plugin/tokenprovider"
 	"context"
 )
 

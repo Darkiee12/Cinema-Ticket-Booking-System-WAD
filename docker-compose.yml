@@ -23,6 +23,7 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_HOST: redis
       POSTGRES_DB: ${POSTGRES_DB}
       SECRET_KEY: ${SECRET_KEY}
     ports:
@@ -45,10 +46,22 @@ services:
     expose:
       - "5173"
     ports:
-      - "80:5173"
+      - "5173:5173"
     restart: on-failure
     depends_on:
       - backend
+
+  redis:
+    image: bitnami/redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./volumes/redis:/bitnami/redis/data
+    networks:
+        - cinema_network
 
   netdata:
     image: netdata/netdata

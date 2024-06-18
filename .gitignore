@@ -23,7 +23,7 @@ go.work
 .vscode/
 backend-go/.idea/
 backup.dump
-
+volumes/
 # Environment variables file
 .env
 .env.local
