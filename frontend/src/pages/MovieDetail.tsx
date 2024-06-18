@@ -4,21 +4,25 @@ import Movie from '../models/movie';
 import Show, { CinemaAuditorium, MovieShow } from '../models/show';
 import MovieService from '../services/MovieService';
 import ShowService from '../services/ShowService';
+import { unsafe } from 'bun';
 
 const MovieDetail = () => {
   const location: Location<Movie> = useLocation();
+  const [imdbId, setImdbId] = useState<string>();
   const [movie, setMovie] = useState<Movie>();
   const [shows, setShows] = useState<Show[]>();
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>();
   const [, setLoading] = useState(true);
   useEffect(() => {
-    if (location.state) {
+    const id = location.pathname.split('/').pop();
+    if (location.state && location.state.imdbID === id) {
+      setImdbId(location.state.imdbID);
       setMovie(location.state);
     } else {
-      const id = location.pathname.split('/').pop();
       if (id) {
         MovieService.getById(id)
           .then((item) => {
+            setImdbId(item.data.imdbID);
             setMovie(item.data);
           })
           .catch(() => {
@@ -28,20 +32,37 @@ const MovieDetail = () => {
         window.location.href = '/';
       }
     }
-  }, []);
+  }, [imdbId]);
+  useEffect(() => {
+    if (selectedDate && movie) {
+      ShowService.getAll(
+        movie.imdbID,
+        `"${selectedDate.toISOString().substring(0, 10)}"`,
+      )
+        .then((res) => {
+          setShows(res.data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setShows(undefined);
+        });
+    }
+  }, [selectedDate, imdbId]);
+
   useEffect(() => {
     ShowService.getAll(
-      movie?.imdbID,
-      `"${selectedDate.toISOString().substring(0, 10)}"`,
+      movie?.imdbID!,
+      `"${new Date().toISOString().substring(0, 10)}"`,
     )
       .then((res) => {
         setShows(res.data);
+        setSelectedDate(new Date());
         setLoading(false);
       })
       .catch(() => {
         setShows(undefined);
       });
-  }, [selectedDate]);
+  }, []);
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
@@ -65,9 +86,11 @@ const MovieDetail = () => {
                   No shows are available on this date
                 </div>
               ) : (
-                <div className="">
-                  <ShowComponent shows={shows!} selectedDate={selectedDate} />
-                </div>
+                selectedDate && (
+                  <div className="">
+                    <ShowComponent shows={shows!} selectedDate={selectedDate} />
+                  </div>
+                )
               )}
             </div>
           )}
