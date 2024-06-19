@@ -3,6 +3,7 @@ package common
 import (
 	"database/sql/driver"
 	"fmt"
+	"github.com/vmihailenco/msgpack/v5"
 	"strings"
 	"time"
 )
@@ -62,12 +63,16 @@ func (d *Date) Unmarshal(data []byte) error {
 	*d = Date(parsedDate)
 	return nil
 }
+
 func (d *Date) MarshalMsgpack() ([]byte, error) {
-	return []byte(d.String()), nil
+	return msgpack.Marshal(d.String())
 }
 
 func (d *Date) UnmarshalMsgpack(data []byte) error {
-	dateStr := strings.Replace(string(data), "\"", "", -1)
+	var dateStr string
+	if err := msgpack.Unmarshal(data, &dateStr); err != nil {
+		return err
+	}
 	parsedDate, err := time.Parse("2006-01-02", dateStr)
 	if err != nil {
 		return err
