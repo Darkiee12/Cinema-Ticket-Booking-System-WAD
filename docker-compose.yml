@@ -65,6 +65,23 @@ services:
     networks:
         - cinema_network
 
+  jaeger:
+    image: jaegertracing/all-in-one:1.56
+    container_name: jaeger
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+    restart: unless-stopped
+    networks:
+      - cinema_network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 400M
+
   netdata:
     image: netdata/netdata
     container_name: netdata

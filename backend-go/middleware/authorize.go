@@ -37,12 +37,12 @@ func extractTokenFromHeaderString(s string) (string, error) {
 // 2. Validate token and parse to payload
 // 3. From the token payload, we use user_id to find from DB
 func RequireAuth(appCtx appctx.AppContext, authStore AuthenStore) func(ctx *gin.Context) {
-
 	tokenProvider := jwt.NewTokenJWTProvider(appCtx.GetSecretKey())
-
 	return func(c *gin.Context) {
-		token, err := extractTokenFromHeaderString(c.GetHeader("Authorization"))
+		tracer := appCtx.GetTracer()
+		ctx1, span := (*tracer).Start(c.Request.Context(), "RequireAuth")
 
+		token, err := extractTokenFromHeaderString(c.GetHeader("Authorization"))
 		if err != nil {
 			panic(err)
 		}
@@ -61,7 +61,7 @@ func RequireAuth(appCtx appctx.AppContext, authStore AuthenStore) func(ctx *gin.
 		//	panic(err)
 		//}
 
-		user, err := authStore.FindUser(c.Request.Context(), map[string]interface{}{"id": payload.UserId})
+		user, err := authStore.FindUser(ctx1, map[string]interface{}{"id": payload.UserId})
 		if err != nil {
 			panic(err)
 		}
@@ -70,6 +70,7 @@ func RequireAuth(appCtx appctx.AppContext, authStore AuthenStore) func(ctx *gin.
 		}
 
 		user.Mask(false)
+		span.End()
 
 		c.Set(common.CurrentUser, user)
 		c.Next()

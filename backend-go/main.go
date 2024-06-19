@@ -16,11 +16,19 @@ import (
 	"cinema/module/user/userstore"
 	"cinema/plugin/caching"
 	"cinema/plugin/caching/sdkredis"
+	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	"go.opentelemetry.io/otel/sdk/resource"
+	"go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.9.0"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -28,6 +36,43 @@ import (
 	"os"
 	"time"
 )
+
+func startTracing() (*trace.TracerProvider, error) {
+	headers := map[string]string{
+		"content-type": "application/json",
+	}
+
+	exporter, err := otlptrace.New(
+		context.Background(),
+		otlptracehttp.NewClient(
+			otlptracehttp.WithEndpoint("jaeger:4318"),
+			otlptracehttp.WithHeaders(headers),
+			otlptracehttp.WithInsecure(),
+		),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("creating new exporter: %w", err)
+	}
+
+	tracerProvider := trace.NewTracerProvider(
+		trace.WithBatcher(
+			exporter,
+			trace.WithMaxExportBatchSize(trace.DefaultMaxExportBatchSize),
+			trace.WithBatchTimeout(trace.DefaultScheduleDelay*time.Millisecond),
+			trace.WithMaxExportBatchSize(trace.DefaultMaxExportBatchSize),
+		),
+		trace.WithResource(
+			resource.NewWithAttributes(
+				semconv.SchemaURL,
+				semconv.ServiceNameKey.String("cinema-app"),
+			),
+		),
+	)
+
+	otel.SetTracerProvider(tracerProvider)
+
+	return tracerProvider, nil
+}
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
@@ -97,11 +142,25 @@ func main() {
 	if client == nil {
 		log.Fatalln("Failed to get Redis client")
 	}
+
+	tracerProvider, err := startTracing()
+	defer func() {
+		if err := tracerProvider.Shutdown(context.Background()); err != nil {
+			log.Fatalf("failed to shutdown TracerProvider: %v", err)
+		}
+	}()
+
+	tracer := otel.GetTracerProvider().Tracer("")
 	key := os.Getenv("SECRET_KEY")
-	appCtx := appctx.NewAppContext(db, key, client)
+	appCtx := appctx.NewAppContext(db, key, client, &tracer)
 
 	r := gin.Default()
-	r.Use(middleware.Recover(appCtx), middleware.CORSMiddleware(appCtx))
+	r.Use(
+		otelgin.Middleware("", otelgin.WithTracerProvider(tracerProvider)),
+		middleware.AddTrace(tracer),
+		middleware.Recover(appCtx),
+		middleware.CORSMiddleware(appCtx),
+	)
 
 	docs.SwaggerInfo.BasePath = "/v1"
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -215,7 +274,6 @@ func main() {
 		//POST /v1/login
 		users.POST("/login", ginuser.Login(appCtx))
 	}
-
 	if err := r.Run(); err != nil {
 		log.Fatalln(err)
 	}
