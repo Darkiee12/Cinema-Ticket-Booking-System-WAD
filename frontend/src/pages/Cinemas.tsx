@@ -10,13 +10,13 @@ import Button from '../components/button';
 const CinemaUnit: React.FC<{ cinema: Cinema }> = ({cinema}) => {
     return (
         <div className="">
-          {/* <div className="w-full">
+          <div className="w-full">
             <img
-              src={cinema.poster}
+              src={cinema.banner}
               alt={cinema.name}
               className="w-full min-h-[16rem]"
             />
-          </div> */}
+          </div>
           <div>
             <p className="truncate text-xl font-bold text-center py-1">{cinema.name}</p>
           </div>

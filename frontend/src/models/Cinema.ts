@@ -11,4 +11,5 @@ export default interface Cinema {
   owner_id: Owner['id'];
   status: string;
   phone_number: string;
+  banner: string;
 }

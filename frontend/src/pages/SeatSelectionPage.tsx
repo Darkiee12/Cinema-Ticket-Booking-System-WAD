@@ -134,7 +134,7 @@ const Seats: React.FC<{ show: Show }> = ({ show }) => {
 const NotAvailableSeatUnit: React.FC<{ position: number }> = ({ position }) => {
   return (
     <div>
-      <div className="w-full min-w-10 inline-block border-2 border-solid border-black text-white text-center bg-red-500">
+      <div className="w-full min-w-10 p-2 inline-block border-2 border-solid border-black text-white text-center bg-red-500">
       {position < 10 ? `0${position}` : position}
     </div>
     </div>
