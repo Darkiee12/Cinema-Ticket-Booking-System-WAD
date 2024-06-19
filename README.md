@@ -1,8 +1,8 @@
-# CIneU
-This is a booking website that allow user to book movie ticket from all cinema within just one website. This project is made for "Web application development" course
+# CineU
+
+This is a booking website that allows users to book movie tickets from all cinemas within just one website. This project is made for the "Web Application Development" course.
 
 ![Logo](https://scontent.fsgn5-12.fna.fbcdn.net/v/t39.30808-6/448510917_4518499311707564_6026758865277843418_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=iZl5UpbiNVYQ7kNvgGcXKsM&_nc_ht=scontent.fsgn5-12.fna&oh=00_AYDgB8k6AIibY5Y_uAs8cG6nCjSc1-HAXqt4tOa8dqmQJQ&oe=667623AF)
-
 
 <details>
   <summary>Table of Contents</summary>
@@ -28,79 +28,113 @@ This is a booking website that allow user to book movie ticket from all cinema w
 ## About The Project
 ![alt text](./readme%20images/image.png)
 
-Our website will show the movie data from all cinema including movie's informations, movie's showtime from every cinema and allow user to book movie ticket without being have access to a specific cinema's website and we also display all the cinema including their information for user to check easily.
+Our website shows movie data from all cinemas, including movie information, showtimes from every cinema, and allows users to book movie tickets without accessing specific cinema websites. We also display all the cinemas, including their information, for easy user reference.
 
 ### Built With
-For Frontend, we use Typescipt language and React library to render the UI and React Router for routing and React Icon for icon and React Auth Kit for authenticating user and TailwindCSS for decorating. For handling API, we use RestfulAPI and Axios
+
+For the frontend, we use TypeScript and React library to render the UI, React Router for routing, React Icon for icons, React Auth Kit for user authentication, and TailwindCSS for styling. For handling API calls, we use RestfulAPI and Axios.
 
 ![image](https://images.viblo.asia/7be53157-271e-4a02-81ef-1bd05ce05832.png)
 ![image](https://caodang.fpt.edu.vn/wp-content/uploads/Tailwind-Css.jpg)
 
-For Backend, we use Golang language to build 
+For the backend, we use Golang, and our architecture follows the Clean Architecture pattern, which includes a business layer, a store layer, and a transport layer.
 
 ![image](https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Go_Logo_Blue.svg/1200px-Go_Logo_Blue.svg.png)
 
+### Backend Architecture
+
+Our backend is designed using the Clean Architecture pattern, which promotes separation of concerns and ensures that the application is easy to maintain and test.
+
+- **Business Layer:** This layer contains the core business logic and domain models of the application. It is independent of frameworks and other layers, ensuring that changes to the business logic do not affect other parts of the application.
+
+- **Store Layer:** This layer handles data persistence and retrieval. It includes implementations for interacting with databases or any other form of storage. In our system, this layer interacts with Redis for caching and a database for persistent storage.
+
+- **Transport Layer:** This layer deals with the transport mechanisms for interacting with the application. It includes the HTTP server, routes, and request handlers. This layer is responsible for processing incoming requests, delegating work to the business layer, and sending responses back to the client.
+
+### Infrastructure Components
+
+- **Redis for Caching:** Redis is used as an in-memory cache to speed up data access and reduce load on the backend server. It helps in storing frequently accessed data and session management.
+
+- **Netdata for Monitoring:** Netdata is used for real-time performance monitoring of the system. It provides detailed insights into system health, resource usage, and application performance metrics.
+
+- **Jaeger and OpenTelemetry for Tracing:** We use OpenTelemetry for generating and collecting trace data and Jaeger for visualizing and analyzing the traces. This helps in understanding the application's performance and diagnosing issues.
+
+### Deployment
+
+All components of the system are hosted on a virtual machine (VM) in the cloud, which provides flexibility, scalability, and reliability. The cloud environment ensures that the system can scale with increasing demand and provides high availability.
+
 ## Getting Started
-Following these step to help you run the project
+
+Follow these steps to set up and run the project.
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repository:
     ```sh
-   git clone https://github.com/Darkiee12/Cinema-Ticket-Booking-System-WAD.git
-   ```
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
-   or if you use bun
-   ```sh
-   bun install
-   ```
-3. Point to the "frontend" folder and type in terminal
-   ```sh
-   npm run dev
-   ```
-   or if you already have Bun then
-   ```sh
-   bun run dev
-   ```
+    git clone https://github.com/Darkiee12/Cinema-Ticket-Booking-System-WAD.git
+    ```
+2. Install Docker:
+    ```sh
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    ```
+3. Deploy using docker compose:
+    ```sh
+    docker compose up -d --build
+    ```
+
 ## Usage
-At first you will landing on the Homepage, at here you can view some trending movies
+
+Upon accessing the website, you will land on the Homepage where you can view trending movies.
 
 ![alt text](./readme%20images/image-1.png)
 
-On the navigation bar at the top page, you can go to Movies page, where showing all the Current premiere movies and all Upcoming movies, Cinemas page, where you can view all Cinemas that we are working with, and About us page for you to acknowledge more information about our project. On the right side of navigation bar, you can click on Signin/Signup button so that you can go to Signin page and the Buy ticket button will navigate you to the buy movies ticket page.
+The navigation bar at the top of the page allows you to access different sections: Movies, Cinemas, and About Us. The Signin/Signup button allows users to log in or create an account, and the Buy Ticket button navigates users to the movie ticket purchase page.
 
 ![alt text](./readme%20images/image-2.png)
 
-At Movies page, you can view all available movies and you can click on Buy ticket button at each movie's section to go to the Movie's detail page.
+### Movies Page
+This page displays all current and upcoming movies. Users can click on the "Buy ticket" button for each movie to view more details and proceed with the booking.
 
 ![alt text](./readme%20images/image-3.png)
 
-At Movie's detail page, you can view more information about the movies and at the below will show all showtimes of the film regarding to the selected day. You can select 1 showtime and you will be navigated to the Seat select page.
+### Movie Detail Page
+This page shows detailed information about the movie and available showtimes. Users can select a showtime and proceed to the seat selection page.
 
-If you are not sign in yet, then you will be asked to sign in at the sign in page.
+### Sign-in Page
+Users must sign in to book tickets. If not signed in, users will be prompted to log in or register.
 
 ![alt text](./readme%20images/image-8.png)
 
-At here you can sign in or register new account. Once you have logged in, you will be able to buy ticket.
+### Seat Selection Page
+After selecting a showtime, users can pick their seats. Information such as the movie, cinema details, showtime, selected seats, and total price is displayed. Once confirmed, users can book the tickets and are directed to a thank you page.
+
+![alt text](./readme%20images/image-9.png)
+![alt text](./readme%20images/image-10.png)
+
+### Cinemas Page
+This page lists all partner cinemas and their branches. Users can view more details about each cinema by clicking the "Detail" button.
+
+![alt text](./readme%20images/image-11.png)
+![alt text](./readme%20images/image-12.png)
+
+### Profile Page
+Logged-in users can access their profile page to view and update their information and view their booked tickets.
 
 ![alt text](./readme%20images/image-4.png)
 ![alt text](./readme%20images/image-5.png)
 ![alt text](./readme%20images/image-7.png)
 
-After login and you select the movie's showtime you will go to seat select page. At here you can pick some seats by click on the seat and at the below will show some extra information including movie's information, the cinema's detail as well as the showtime and the number of selected seat and the total price. Once you confirm the booking, then you can click on Book button to finish the booking and you will be navigated to thank you page for reviewing the booking.
+## Acknowledgments
 
-![alt text](./readme%20images/image-9.png)
-![alt text](./readme%20images/image-10.png)
+- [React](https://reactjs.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Golang](https://golang.org/)
+- [Redis](https://redis.io/)
+- [Netdata](https://www.netdata.cloud/)
+- [Jaeger](https://www.jaegertracing.io/)
+- [OpenTelemetry](https://opentelemetry.io/)
 
-At Cinemas page, you can view all cinemas that are working with us as well as their branches and you can click on detail button at each cinema's section to view more information about that cinema.
-
-![alt text](./readme%20images/image-11.png)
-![alt text](./readme%20images/image-12.png)
-
-Once you have logged in, you can go to Profile page. At this page, you can view more user's information as well as the booked tickets' information and you can click on update button to update user's information.
+This project is a collective effort of the Web Application Development course participants. Special thanks to all contributors and supporters.
 
 ## Contributing
 
