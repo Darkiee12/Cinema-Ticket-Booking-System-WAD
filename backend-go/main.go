@@ -50,7 +50,9 @@ func main() {
 	//}
 	// dsn = strings.ReplaceAll(string(content), "\n", " ")
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		SkipDefaultTransaction: true,
+	})
 	{
 		i := 0
 		for err != nil {
@@ -64,6 +66,16 @@ func main() {
 			db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		}
 	}
+
+	// Set up the database connection pool
+	configSQLDriver, err := db.DB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	configSQLDriver.SetMaxIdleConns(300)
+	configSQLDriver.SetMaxOpenConns(380) // kept a few connections as buffer for developers
+	configSQLDriver.SetConnMaxIdleTime(30 * time.Minute)
+	configSQLDriver.SetConnMaxLifetime(time.Hour)
 
 	db = db.Debug()
 	redisDB := sdkredis.NewRedisDB(
