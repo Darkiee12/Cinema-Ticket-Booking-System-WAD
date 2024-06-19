@@ -103,21 +103,21 @@ const MovieDetail = () => {
 
 const MovieSection: React.FC<{ movie: Movie }> = ({ movie }) => {
   const release = new Date(movie?.released!);
-  return (
+  return movie && (
     <div className="flex h-full">
       <div className="w-[30%] md:w-[20%] pl-2 lg:pl-5 flex items-center justify-center">
         <img src={movie?.poster} className="w-full h-full" />
       </div>
       <div className="w-[70%] md:w-[80%] px-5 items-center md:text-base text-xs max-h-[15rem] overflow-y-scroll lg:overflow-y-visible">
-        <p className="md:text-2xl text-[#03C04A] font-bold">{movie?.title}</p>
-        <p>{movie?.plot}</p>
-        <p>
+        <p className="md:text-2xl text-[#03C04A] font-bold">{movie.title}</p>
+        <p>{movie.plot}</p>
+        {/* <p>
           Rating:<b className="ml-1">{movie?.rated}</b>
         </p>
         <p>
           Director:<b className="ml-1">{}</b>
         </p>
-        <p>Actor:</p>
+        <p>Actor:</p> */}
         <p>
           Genre:
           <b className="ml-1">
@@ -137,11 +137,11 @@ const MovieSection: React.FC<{ movie: Movie }> = ({ movie }) => {
           </b>
         </p>
         <p>
-          Duration: <b className="ml-1">{movie?.runtime} minutes.</b>
+          Duration: <b className="ml-1">{movie.runtime} minutes.</b>
         </p>
-        <p>
+        {/* <p>
           Language: <b className="ml-1">{}</b>
-        </p>
+        </p> */}
       </div>
     </div>
   );
