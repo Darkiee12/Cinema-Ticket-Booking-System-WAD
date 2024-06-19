@@ -54,6 +54,8 @@ Our backend is designed using the Clean Architecture pattern, which promotes sep
 - **Transport Layer(or Delivery):** This layer deals with the transport mechanisms for interacting with the application. It includes the HTTP server, routes, and request handlers. This layer is responsible for processing incoming requests, delegating work to the business layer, and sending responses back to the client.
 
 - **Entity Layer(or Models):** This layer contains the domain models and entities used throughout the application. It defines the structure of the data and provides a common language for communication between different parts of the system.
+
+![alt text](./readme%20images/image-15.png)
 ### Infrastructure Components
 
 - **Redis for Caching:** Redis is used as an in-memory cache to speed up data access and reduce load on the backend server. It helps in storing frequently accessed data and session management.
@@ -147,8 +149,6 @@ The Swagger UI provides documentation for the backend API endpoints. It lists al
 - [Netdata](https://www.netdata.cloud/)
 - [Jaeger](https://www.jaegertracing.io/)
 - [OpenTelemetry](https://opentelemetry.io/)
-
-This project is a collective effort of the Web Application Development course participants. Special thanks to all contributors and supporters.
 
 ## Contributing
 
