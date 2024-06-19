@@ -68,6 +68,7 @@ type Cinema struct {
 	Capacity    int         `json:"capacity" gorm:"column:capacity;"`
 	Email       string      `json:"email" gorm:"column:email;"`
 	PhoneNumber string      `json:"phone_number" gorm:"column:phone_number;"`
+	Banner      string      `json:"banner" gorm:"column:banner;"`
 }
 
 func (Cinema) TableName() string {

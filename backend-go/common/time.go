@@ -50,6 +50,20 @@ func (d *Date) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (d *Date) MarshalMsgpack() ([]byte, error) {
+	return []byte(d.String()), nil
+}
+
+func (d *Date) UnmarshalMsgpack(data []byte) error {
+	dateStr := strings.Replace(string(data), "\"", "", -1)
+	parsedDate, err := time.Parse("2006-01-02", dateStr)
+	if err != nil {
+		return err
+	}
+	*d = Date(parsedDate)
+	return nil
+}
+
 type Time time.Time
 
 func (t *Time) ToTime() time.Time {
