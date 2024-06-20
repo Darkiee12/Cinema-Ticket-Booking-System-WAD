@@ -42,8 +42,12 @@ func (rdc *redisCache) Get(ctx context.Context, key string, value interface{}) e
 }
 
 func (rdc *redisCache) Delete(ctx context.Context, key string) error {
-
-	return rdc.store.Delete(ctx, key)
+	// Delete from the local cache
+	if err := rdc.store.Delete(ctx, key); err != nil {
+		return err
+	}
+	// Delete from Redis
+	return rdc.client.Del(ctx, key).Err()
 }
 func (rdc *redisCache) Scan(ctx context.Context, cursor uint64, match string, count int64) *redis.ScanCmd {
 

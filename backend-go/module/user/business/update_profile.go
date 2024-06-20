@@ -37,7 +37,7 @@ func (biz *updateUserBiz) UpdateProfileById(ctx context.Context, id int, data *u
 	ctx1, span := tracer.Start(ctx, "updateUserBiz.UpdateProfileById")
 	defer span.End()
 	key := fmt.Sprintf("user-%d", id)
-	if err := biz.cacheStore.Delete(ctx, key); err != nil {
+	if err := biz.cacheStore.Delete(ctx1, key); err != nil {
 		log.Println("Error delete user from cache", err)
 	}
 	return biz.store.UpdateUser(ctx1, map[string]interface{}{"id": id}, data)
