@@ -136,7 +136,7 @@ Jaeger is used for tracing requests and monitoring the application's performance
 ![image](https://www.jaegertracing.io/img/traces-ss.png)
 ### Netdata Monitoring Dashboard
 Netdata is used for real-time monitoring of system performance metrics. The dashboard provides detailed insights into CPU usage, memory consumption, disk I/O, and network traffic. It can be accessed in a web browser by visiting `localhost:19999`.
-![image](https://www.joyfulbikeshedding.com/images/2018/grafana-26f17558.png)
+![Netdata in action](https://user-images.githubusercontent.com/1153921/113440964-449c2180-93a2-11eb-9664-663afa1257a8.gif)
 ### Swagger API Documentation
 The Swagger UI provides documentation for the backend API endpoints. It lists all available routes, request parameters, and response formats. The Swagger UI can be accessed in a web browser by visiting `localhost:8080/swagger/index.html`.
 ![image](./readme%20images/image-14.png)
