@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/go-redis/cache/v8"
 	"github.com/go-redis/redis/v8"
+	"log"
 	"time"
 )
 
@@ -16,8 +17,8 @@ type redisCache struct {
 func NewRedisCache(appContext appctx.AppContext) *redisCache {
 	rdClient := appContext.GetRedisClient()
 	c := cache.New(&cache.Options{
-		Redis:      rdClient,
-		LocalCache: cache.NewTinyLFU(1000, time.Minute),
+		Redis: rdClient,
+		//LocalCache: cache.NewTinyLFU(1000, time.Minute),
 	})
 	return &redisCache{store: c, client: rdClient}
 }
@@ -44,7 +45,7 @@ func (rdc *redisCache) Get(ctx context.Context, key string, value interface{}) e
 func (rdc *redisCache) Delete(ctx context.Context, key string) error {
 	// Delete from the local cache
 	if err := rdc.store.Delete(ctx, key); err != nil {
-		return err
+		log.Println("Error delete from local cache", err)
 	}
 	// Delete from Redis
 	return rdc.client.Del(ctx, key).Err()
